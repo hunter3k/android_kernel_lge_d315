@@ -197,6 +197,42 @@ static int mdss_mdp_rotator_pipe_dequeue(struct mdss_mdp_rotator_session *rot)
 	return 0;
 }
 
+
+
+/**
+ * __mdss_mdp_rotator_to_pipe() - setup pipe according to rotator session params
+ * @rot:	Pointer to rotator session
+ * @pipe:	Pointer to pipe driving structure
+ *
+ * After calling this the pipe structure will contain all parameters required
+ * to use rotator pipe. Note that this function assumes rotator pipe is idle.
+ */
+static int __mdss_mdp_rotator_to_pipe(struct mdss_mdp_rotator_session *rot,
+		struct mdss_mdp_pipe *pipe)
+{
+	int ret;
+
+	pipe->flags = rot->flags;
+	pipe->src_fmt = mdss_mdp_get_format_params(rot->format);
+	pipe->img_width = rot->img_width;
+	pipe->img_height = rot->img_height;
+	pipe->src = rot->src_rect;
+	pipe->dst = rot->src_rect;
+	pipe->dst.x = 0;
+	pipe->dst.y = 0;
+	pipe->params_changed++;
+	rot->params_changed = 0;
+
+	ret = mdss_mdp_smp_reserve(pipe);
+	if (ret) {
+		pr_err("unable to mdss_mdp_smp_reserve rot data\n");
+		return ret;
+	}
+
+	return 0;
+}
+
+
 static int mdss_mdp_rotator_queue_sub(struct mdss_mdp_rotator_session *rot,
 			   struct mdss_mdp_data *src_data,
 			   struct mdss_mdp_data *dst_data)
