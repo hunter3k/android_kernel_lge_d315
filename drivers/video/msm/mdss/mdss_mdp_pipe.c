@@ -187,7 +187,7 @@ int mdss_mdp_smp_reserve(struct mdss_mdp_pipe *pipe)
 	struct mdss_mdp_plane_sizes ps;
 	int i;
 	int rc = 0, rot_mode = 0, wb_mixer = 0;
-	u32 nlines, format;
+	u32 nlines, format, seg_w;
 	u16 width;
 
 	width = pipe->src.w >> pipe->horz_deci;
@@ -197,6 +197,32 @@ int mdss_mdp_smp_reserve(struct mdss_mdp_pipe *pipe)
 			pipe->src_fmt, &ps);
 		if (rc)
 			return rc;
+
+
+		/*
+		 * Override fetch strides with SMP buffer size for both the
+		 * planes. BWC line buffer needs to be divided into 16
+		 * segments and every segment is aligned to format
+		 * specific RAU size
+		 */
+		seg_w = DIV_ROUND_UP(pipe->src.w, 16);
+		if (pipe->src_fmt->fetch_planes == MDSS_MDP_PLANE_INTERLEAVED) {
+			ps.ystride[0] = ALIGN(seg_w, 32) * 16 * ps.rau_h[0] *
+					pipe->src_fmt->bpp;
+			ps.ystride[1] = 0;
+		} else {
+			u32 bwc_width = ALIGN(seg_w, 64) * 16;
+			ps.ystride[0] = bwc_width * ps.rau_h[0];
+			ps.ystride[1] = bwc_width * ps.rau_h[1];
+			/*
+			 * Since chroma for H1V2 is not subsampled it needs
+			 * to be accounted for with bpp factor
+			 */
+			if (pipe->src_fmt->chroma_sample ==
+				MDSS_MDP_CHROMA_H1V2)
+				ps.ystride[1] *= 2;
+		}
+
 		pr_debug("BWC SMP strides ystride0=%x ystride1=%x\n",
 			ps.ystride[0], ps.ystride[1]);
 	} else {
