@@ -571,6 +571,17 @@ int mdss_mdp_rotator_setup(struct msm_fb_data_type *mfd,
 		if (rot)
 			mdss_mdp_rotator_release(rot);
 	}
+
+
+	/*
+	 * overwrite the src format for rotator to dst format
+	 * for use by the user. On subsequent set calls, the
+	 * user is expected to proivde the original src format
+	 */
+	req->src.format = mdss_mdp_get_rotator_dst_format(req->src.format,
+		req->flags & MDP_ROT_90);
+
+	mutex_unlock(&rotator_lock);
 	return ret;
 }
 
