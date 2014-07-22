@@ -468,15 +468,21 @@ struct msm_otg {
 	bool ext_chg_opened;
 	bool ext_chg_active;
 	struct completion ext_chg_wait;
+
 	bool pm_done;
+
+
         int ui_enabled;
 
 #ifdef CONFIG_LGE_PM_USB_ID
 	struct qpnp_vadc_chip		*vadc_dev;
 #endif
+
 #ifdef CONFIG_LGE_PM_VZW_FAST_CHG
     int chg_det_count;
 #endif
+
+
 };
 
 struct ci13xxx_platform_data {

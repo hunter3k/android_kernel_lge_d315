@@ -39,16 +39,19 @@ unsigned char F54_TxToGndReport(void)
    int shift;
 
    unsigned char command;
+
    int read_count = 0;
+
+
 
 #ifdef F54_Porting
 	char buf[512] = {0};
 	int ret = 0;
 
 	ret += sprintf(buf+ret, "\nInfo: Tx=%d\n", numberOfTx);
-	ret += sprintf(buf+ret, "=====================================================\n");
+	ret += sprintf(buf+ret, "====\n");
 	ret += sprintf(buf+ret, "\tTransmitter To Ground Short Test\n");
-	ret += sprintf(buf+ret, "=====================================================\n");
+	ret += sprintf(buf+ret, "====\n");
 #else
 	printk("\nBin #: 10		Name: Transmitter To Ground Short Test\n");
 #endif
@@ -69,10 +72,13 @@ unsigned char F54_TxToGndReport(void)
 
    // Wait until the command is completed
    do {
+
    	if(++read_count > 10) {
 		TOUCH_INFO_MSG("%s[%d], command = %d\n", __func__, __LINE__, command);
 		return 0;
 	}
+
+
       delayMS(1); //wait 1ms
       readRMI(F54_Command_Base, &command, 1);
    } while (command != 0x00);
@@ -230,9 +236,9 @@ int F54_GetTxToGndReport(char *buf)
 	}
 /*
 	ret += sprintf(buf+ret, "\n\nInfo: Tx=%d\n", numberOfTx);
-	ret += sprintf(buf+ret, "\n=====================================================\n");
+	ret += sprintf(buf+ret, "\n====\n");
 	ret += sprintf(buf+ret, "\tTransmitter To Ground Short Test\n");
-	ret += sprintf(buf+ret, "=====================================================\n");
+	ret += sprintf(buf+ret, "====\n");
 	ret += sprintf(buf+ret, " UsedTx:");
 
 	for (i = 0; i < numberOfTx; i++) {

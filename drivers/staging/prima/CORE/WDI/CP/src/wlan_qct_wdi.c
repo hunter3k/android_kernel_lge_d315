@@ -39,7 +39,7 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/*===========================================================================
+/*=====
 
                        W L A N _ Q C T _ W D I. C
 
@@ -59,9 +59,9 @@
   Copyright (c) 2008 QUALCOMM Incorporated.
   All Rights Reserved.
   Qualcomm Confidential and Proprietary
-===========================================================================*/
+=====*/
 
-/*===========================================================================
+/*=====
 
                       EDIT HISTORY FOR FILE
 
@@ -78,7 +78,7 @@
 10/05/11      hap     Adding support for Keep Alive
 2010-08-09    lti     Created module
 
-===========================================================================*/
+=====*/
 
 /*----------------------------------------------------------------------------
  * Include Files
@@ -105,9 +105,9 @@
 #include "pttMsgApi.h"
 #include "vos_trace.h"
 
-/*===========================================================================
+/*=====
    WLAN DAL Control Path Internal Data Definitions and Declarations
- ===========================================================================*/
+ =====*/
 #define WDI_WCTS_ACTION_TIMEOUT       2000 /* in msec a very high upper limit */
 
 #define MAC_ADDR_ARRAY(a) (a)[0], (a)[1], (a)[2], (a)[3], (a)[4], (a)[5]
@@ -678,9 +678,9 @@ void* WDI_GET_PAL_CTX( void )
   return gWDICb.pPALContext;
 }/*WDI_GET_PAL_CTX*/
 
-/*============================================================================
+/*======
   Helper inline converters
- ============================================================================*/
+ ======*/
 /*Convert WDI driver type into HAL driver type*/
 WPT_STATIC WPT_INLINE WDI_Status
 WDI_HAL_2_WDI_STATUS
@@ -1230,11 +1230,11 @@ static char *WDI_getHALStatusMsgString(wpt_uint16 halStatusId)
   }
 }
 
-/*========================================================================
+/*==
 
                              INITIALIZATION APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_Init is used to initialize the DAL.
@@ -1942,11 +1942,11 @@ WDI_Shutdown
 }/*WDI_Shutdown*/
 
 
-/*========================================================================
+/*==
 
                              SCAN APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_InitScanReq will be called when the upper MAC wants
@@ -2189,11 +2189,11 @@ WDI_FinishScanReq
 
 }/*WDI_FinishScanReq*/
 
-/*========================================================================
+/*==
 
                           ASSOCIATION APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_JoinReq will be called when the upper MAC is ready
@@ -2494,11 +2494,11 @@ WDI_DelSTAReq
 
 }/*WDI_DelSTAReq*/
 
-/*========================================================================
+/*==
 
                              SECURITY APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_SetBSSKeyReq will be called when the upper MAC wants to
@@ -3012,11 +3012,11 @@ WDI_TSMStatsReq
 }
 #endif
 
-/*======================================================================== 
+/*== 
  
                             QoS and BA APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_AddTSReq will be called when the upper MAC to inform
@@ -3323,11 +3323,11 @@ WDI_DelBAReq
 
 }/*WDI_DelBAReq*/
 
-/*========================================================================
+/*==
 
                             Power Save APIs
 
-==========================================================================*/
+====*/
 
 /**
  @brief WDI_SetPwrSaveCfgReq will be called when the upper MAC
@@ -4690,11 +4690,11 @@ WDI_StartOemDataReq
 #endif
 
 
-/*========================================================================
+/*==
 
                              CONTROL APIs
 
-==========================================================================*/
+====*/
 /**
  @brief WDI_SwitchChReq will be called when the upper MAC wants
         the WLAN HW to change the current channel of operation.
@@ -6163,11 +6163,11 @@ WDI_Status WDI_HALDumpCmdReq
   return WDI_PostMainEvent(&gWDICb, WDI_REQUEST_EVENT, &wdiEventData);
 }
 
-/*============================================================================
+/*======
 
             DAL Control Path Main FSM Function Implementation
 
- ============================================================================*/
+ ======*/
 
 /**
  @brief Main FSM Start function for all states except BUSY
@@ -6899,15 +6899,15 @@ WDI_MainShutdownBusy
 }/*WDI_MainShutdownBusy*/
 
 
-/*=======================================================================
+/*=
 
            WLAN DAL Control Path Main Processing Functions
 
-*=======================================================================*/
+*=*/
 
-/*========================================================================
+/*==
           Main DAL Control Path Request Processing API
-========================================================================*/
+==*/
 /**
  @brief Process Start Request function (called when Main FSM
         allows it)
@@ -7185,9 +7185,9 @@ WDI_ProcessCloseReq
 }/*WDI_ProcessCloseReq*/
 
 
-/*===========================================================================
+/*=====
                   SCANING REQUEST PROCESSING API
-===========================================================================*/
+=====*/
 
 /**
  @brief Process Init Scan Request function (called when Main FSM
@@ -7709,9 +7709,9 @@ WDI_ProcessFinishScanReq
 }/*WDI_ProcessFinishScanReq*/
 
 
-/*==========================================================================
+/*====
                     ASSOCIATION REQUEST API
-==========================================================================*/
+====*/
 /**
  @brief Process BSS Join for a given Session
 
@@ -8597,9 +8597,9 @@ WDI_ProcessDelSTAReq
 }/*WDI_ProcessDelSTAReq*/
 
 
-/*==========================================================================
+/*====
                  SECURITY REQUEST PROCESSING API
-==========================================================================*/
+====*/
 /**
  @brief Process Set BSS Key Request function (called when Main FSM
         allows it)
@@ -9465,9 +9465,9 @@ WDI_ProcessRemoveStaBcastKeyReq
 
 }/*WDI_ProcessRemoveSTABcastKeyReq*/
 
-/*==========================================================================
+/*====
                    QOS and BA PROCESSING REQUEST API
-==========================================================================*/
+====*/
 /**
  @brief Process Add TSpec Request function (called when Main FSM
         allows it)
@@ -10779,9 +10779,9 @@ WDI_ProcessSetTxPerTrackingReq
                         pwdiSetTxPerTrackingRspCb, pEventData->pUserData, WDI_SET_TX_PER_TRACKING_RESP);
 }/*WDI_ProcessSetTxPerTrackingReq*/
 
-/*=========================================================================
+/*===
                              Indications
-=========================================================================*/
+===*/
 
 /**
  @brief Process Suspend Indications function (called when Main FSM allows it)
@@ -11184,9 +11184,9 @@ WDI_ProcessDelPeriodicTxPtrnInd
   return (wdiStatus != WDI_STATUS_SUCCESS) ? wdiStatus : WDI_STATUS_SUCCESS_SYNC;
 } /* WDI_ProcessDelPeriodicTxPtrnInd */
 
-/*==========================================================================
+/*====
                   MISC CONTROL PROCESSING REQUEST API
-==========================================================================*/
+====*/
 /**
  @brief Process Channel Switch Request function (called when
         Main FSM allows it)
@@ -14875,9 +14875,9 @@ WDI_ProcessShutdownReq
    return WDI_STATUS_SUCCESS;
 }/*WDI_ProcessShutdownReq*/
 
-/*========================================================================
+/*==
           Main DAL Control Path Response Processing API
-========================================================================*/
+==*/
 
 /**
  @brief Process Start Response function (called when a response
@@ -15171,9 +15171,9 @@ WDI_ProcessCloseRsp
 }/*WDI_ProcessCloseRsp*/
 
 
-/*============================================================================
+/*======
                       SCAN RESPONSE PROCESSING API
-============================================================================*/
+======*/
 
 /**
  @brief Process Init Scan Rsp function (called when a response
@@ -16134,9 +16134,9 @@ WDI_ProcessDelSTARsp
 }/*WDI_ProcessDelSTARsp*/
 
 
-/*==========================================================================
+/*====
                    Security Response Processing Functions
-==========================================================================*/
+====*/
 
 /**
  @brief Process Set BSS Key Rsp function (called when a response
@@ -16488,9 +16488,9 @@ WDI_ProcessRemoveStaBcastKeyRsp
 }/*WDI_ProcessRemoveStaBcastKeyRsp*/
 
 
-/*==========================================================================
+/*====
                    QoS and BA Response Processing Functions
-==========================================================================*/
+====*/
 
 /**
  @brief Process Add TSpec Rsp function (called when a response
@@ -17173,9 +17173,9 @@ WDI_ProcessStartOemDataRsp
 }/*WDI_PrcoessStartOemDataRsp*/
 #endif
 
-/*===========================================================================
+/*=====
            Miscellaneous Control Response Processing API
-===========================================================================*/
+=====*/
 
 /**
  @brief Process Channel Switch Rsp function (called when a response
@@ -19584,9 +19584,9 @@ WDI_ProcessSetTxPerTrackingRsp
   return WDI_STATUS_SUCCESS;
 }/*WDI_ProcessSetTxPerTrackingRsp*/
 
-/*==========================================================================
+/*====
                         Indications from HAL
- ==========================================================================*/
+ ====*/
 /**
  @brief Process Low RSSI Indication function (called when an
         indication of this kind is being received over the bus
@@ -20622,12 +20622,12 @@ WDI_ProcessHALDumpCmdRsp
   return WDI_STATUS_SUCCESS;
 }
 
-/*==========================================================================
+/*====
                      CONTRL TRANSPORT INTERACTION
 
     Callback function registered with the control transport - for receiving
     notifications and packets
-==========================================================================*/
+====*/
 /**
  @brief    This callback is invoked by the control transport
    when it wishes to send up a notification like the ones
@@ -20802,9 +20802,9 @@ WDI_RXMsgCTSCB
 }/*WDI_RXMsgCTSCB*/
 
 
-/*========================================================================
+/*==
          Internal Helper Routines
-========================================================================*/
+==*/
 
 /**
  @brief WDI_CleanCB - internal helper routine used to clean the
@@ -21304,9 +21304,9 @@ WDI_ProcessResponse
 }/*WDI_ProcessResponse*/
 
 
-/*=========================================================================
+/*===
                    QUEUE SUPPORT UTILITY FUNCTIONS
-=========================================================================*/
+===*/
 
 /**
  @brief    Utility function used by the DAL Core to help queue a
@@ -21526,7 +21526,10 @@ WDI_DequeuePendingReq
 
   /*Save the global state as we need it on the other side*/
   palMsg->val      = pWDICtx->uGlobalState;
+
   palMsg->type     = 0;
+
+
 
   /*Transition back to BUSY as we need to handle a queued request*/
   WDI_STATE_TRANSITION( pWDICtx, WDI_BUSY_ST);
@@ -22345,9 +22348,9 @@ WDI_Status WDI_SendNvBlobReq
                            WDI_NV_DOWNLOAD_RESP);
 
 }
-/*============================================================================
+/*======
   Helper inline functions for
- ============================================================================*/
+ ======*/
 /**
  @brief Helper routine used to find a session based on the BSSID
  @param  pContext:   pointer to the WLAN DAL context
@@ -22415,9 +22418,9 @@ WDT_GetTransportDriverContext (void *pContext)
    return(pCB->pDTDriverContext);
 }
 
-/*============================================================================
+/*======
   Helper inline converters
- ============================================================================*/
+ ======*/
 /*Convert WDI driver type into HAL driver type*/
 WPT_STATIC WPT_INLINE WDI_Status
 WDI_HAL_2_WDI_STATUS

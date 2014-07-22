@@ -19,13 +19,18 @@
 #define LGE_TOUCH_CORE_H
 
 //#define MT_PROTOCOL_A
+
 //#define LGE_TOUCH_TIME_DEBUG
+
+//                            
+
 #define POWER_FW_UP_LOCK	0x01
 #define POWER_SYSFS_LOCK	0x02
 
 #define MAX_FINGER	5
 #define MAX_BUTTON	4
 #define FW_VER_INFO_NUM	4
+
 #define MAX_POINT_SIZE_FOR_LPWG 12
 
 struct point
@@ -33,6 +38,8 @@ struct point
     int x;
     int y;
 };
+
+
 
 enum{
 	TIME_SINCE_BOOTING = 0,
@@ -66,11 +73,16 @@ struct touch_device_caps
 	u32		y_max;
 	u32		lcd_x;
 	u32		lcd_y;
+
 	u32		lcd_touch_ratio_x;
 	u32		lcd_touch_ratio_y;
 	u32		maker_id;
 	u32		maker_id_gpio;
 	u32		maker_id2_gpio;
+
+	u32		maker_id;
+	u32		maker_id_gpio;
+
 	u16		ghost_detection_value[GHOST_VALUE_MAX];
 };
 
@@ -115,10 +127,16 @@ struct touch_platform_data
 	u32	int_pin;
 	u32	reset_pin;
 	int panel_type;
+
 	u8	panel_id;
 	char	knock_on_type;
 	char	maker[30];
 	u8 fw_version[FW_VER_INFO_NUM];
+
+	char	knock_on_type;
+	char	maker[30];
+	u32 fw_version[FW_VER_INFO_NUM];
+
 	struct touch_device_caps*		caps;
 	u8 num_caps;
 	struct touch_operation_role*	role;
@@ -127,9 +145,13 @@ struct touch_platform_data
 	u8 num_pwr;
 
 	const char *inbuilt_fw_name;
+
 	const char *inbuilt_fw_name_id[4];
 	const char *panel_spec;
 	const char *panel_spec_id[4];
+
+	const char *panel_spec;
+
 	u32 global_access_pixel;
 };
 
@@ -254,6 +276,7 @@ struct accuracy_filter_info {
 	struct accuracy_history_data	his_data;
 };
 
+
 struct state_info
 {
     atomic_t power_state;
@@ -270,6 +293,11 @@ struct lge_touch_data
 {
 	void*			h_touch;
 	struct state_info       state;
+
+struct lge_touch_data
+{
+	void*			h_touch;
+
 	atomic_t		next_work;
 	atomic_t		device_init;
 	u8				work_sync_err_cnt;
@@ -303,6 +331,7 @@ struct lge_touch_data
 };
 
 
+
 enum{
     TA_DISCONNECTED = 0,
     TA_CONNECTED,
@@ -331,6 +360,8 @@ typedef enum error_type {
     IGNORE_EVENT_BUT_SAVE_IT,
 } err_t;
 
+
+
 struct touch_device_driver {
 	int		(*probe)			(struct lge_touch_data *lge_touch_ts);//(struct i2c_client *client);//us10_porting
 	void		(*remove)		(struct i2c_client *client);
@@ -340,9 +371,12 @@ struct touch_device_driver {
 	int		(*ic_ctrl)		(struct i2c_client *client, u8 code, u32 value);
 	int		(*fw_upgrade)		(struct i2c_client *client, struct touch_fw_info* info);
 	int		(*sysfs)			(struct i2c_client *client, char *buf, u8 code, struct touch_fw_info* fw_info);
+
 	err_t	 	(*suspend) (struct i2c_client *client);
 	err_t	 	(*resume) (struct i2c_client *client);
 	err_t	 	(*lpwg) (struct i2c_client *client, u32 code, u32 value, struct point *data);
+
+
 };
 
 enum{
@@ -447,6 +481,7 @@ enum{
 	IC_CTRL_DOUBLE_TAP_WAKEUP_MODE,
 };
 
+
 /* For Error Handling
   *
   * DO_IF : execute 'do_work', and if the result is true, print 'error_log' and goto 'goto_error'.
@@ -508,6 +543,8 @@ enum{
     LPWG_STATUS_BY_PROXI,
     LPWG_MODE_CHANGE,
 };
+
+
 
 enum{
 	DEBUG_NONE				= 0,
@@ -624,8 +661,11 @@ void* get_touch_handle(struct i2c_client *client);
 void power_lock_(int value);
 void power_unlock_(int value);
 
+
 void send_uevent(char* string[2]);
 void send_uevent_lpwg(struct i2c_client* client, int type);
+
+
 
 int touch_i2c_read(struct i2c_client *client, u8 reg, int len, u8 *buf);
 int touch_i2c_write(struct i2c_client *client, u8 reg, int len, u8 *buf);

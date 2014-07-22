@@ -42,21 +42,21 @@
 #if !defined( WLAN_HDD_HOSTAPD_H )
 #define WLAN_HDD_HOSTAPD_H
 
-/**===========================================================================
+/**=====
 
   \file  WLAN_HDD_HOSTAPD_H.h
 
   \brief Linux HDD HOSTAPD include file
          Copyright 2008-2013 (c) Qualcomm, Incorporated.
          All Rights Reserved.
-<<<<<<< HEAD:CORE/HDD/inc/wlan_hdd_hostapd.h
+:CORE/HDD/inc/wlan_hdd_hostapd.h
          Qualcomm Confidential and Proprietary.
   
-=======
+
          Qualcomm Technologies Confidential and Proprietary.
 
 >>>>>>> 009551c... wlan: hdd: remove obsolete "WLAN_SOFTAP_FEATURE" featurization:prima/CORE/HDD/inc/wlan_hdd_hostapd.h
-  ==========================================================================*/
+  ====*/
 
 /*---------------------------------------------------------------------------
   Include files

@@ -47,7 +47,11 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_a[] = {
 		.delay = 1,
 	},
 #if defined(CONFIG_MACH_MSM8X10_W5)
+
 #if defined(CONFIG_MACH_MSM8X10_W5C_VZW) || defined(CONFIG_MACH_MSM8X10_W5C_SPR_US)
+
+#if defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
@@ -55,13 +59,18 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_a[] = {
 		.delay = 0,
 	},
 #endif
+
 #else //temp, comment out for sleep current, will be used from revB, 2013-08-30, yt.jeon@lge.com
+
+#else //                                                                                        
+
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_VDIG,
 		.config_val = GPIO_OUT_HIGH,
 		.delay = 1,
 	},
+
 #if defined(CONFIG_MACH_MSM8226_E9WIFI_OPEN_KR)
 	{
 		.seq_type = SENSOR_GPIO,
@@ -70,6 +79,8 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_a[] = {
 		.delay = 0,
 	},
 #else
+
+
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_STANDBY,
@@ -77,7 +88,10 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_a[] = {
 		.delay = 0,
 	},
 #endif
+
 #endif
+
+
 	{
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_RESET,
@@ -99,7 +113,11 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_a[] = {
 
 };
 
+
 #if defined(CONFIG_MACH_MSM8X10_W5) && !defined(CONFIG_MACH_MSM8X10_W5C_VZW) && !defined(CONFIG_MACH_MSM8X10_W5C_SPR_US)
+
+#if defined(CONFIG_MACH_MSM8X10_W5) && !defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+
 static struct msm_sensor_power_setting hi543_power_setting_rev_b[] = {
 	 {	/* Set GPIO_RESET to low to disable power on reset*/
 		.seq_type = SENSOR_GPIO,
@@ -162,8 +180,13 @@ static struct msm_sensor_power_setting hi543_power_setting_rev_b[] = {
 };
 #endif
 
+
 #if defined(CONFIG_MACH_MSM8X10_W5C_VZW) || defined(CONFIG_MACH_MSM8X10_W5C_SPR_US)
 static struct msm_sensor_power_setting hi543_power_setting_w5c[] = {
+
+#if defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+static struct msm_sensor_power_setting hi543_power_setting_rev_c_w5c[] = {
+
 	 {	/* Set GPIO_RESET to low to disable power on reset*/
 		.seq_type = SENSOR_GPIO,
 		.seq_val = SENSOR_GPIO_RESET,
@@ -277,13 +300,21 @@ static int32_t hi543_platform_probe(struct platform_device *pdev)
 	int32_t rc = 0;
 	const struct of_device_id *match;
 	match = of_match_device(hi543_dt_match, &pdev->dev);
+
 /* LGE_CHANGE_S : WBT, 2013-5-31, jonghwan.ko@lge.com */
+
+/*                                                    */
+
 	if(!match)
 	{
 		  pr_err(" %s failed ",__func__);
 		  return -ENODEV;
 	 }
+
 /* LGE_CHANGE_E : WBT, 2013-5-31, jonghwan.ko@lge.com */
+
+/*                                                    */
+
 	rc = msm_sensor_platform_probe(pdev, match->data);
 	return rc;
 }
@@ -292,16 +323,25 @@ static int __init hi543_init_module(void)
 {
 	int32_t rc = 0;
 	pr_info("%s:%d\n", __func__, __LINE__);
+
 /* LGE_CHANGE_S, yt.jeon, 2013.10.07, To separate power settings depending on HW revisions. */
 #if defined(CONFIG_MACH_MSM8X10_W5)
 	switch(lge_get_board_revno()) {
 		case HW_REV_A:
 			printk("%s: Sensor power is set as Rev.A, line(%d)\n", __func__, __LINE__);
+
+/*                                                                                          */
+#if defined(CONFIG_MACH_MSM8X10_W5)
+	switch(lge_get_board_revno()) {
+		case HW_REV_A:
+			printk("%s: Sensor power is set as Rev.A\n", __func__);
+
 			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_a;
 			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_a);
 			break;
 		case HW_REV_B:
 			#if defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+
 			printk("%s: (W5C_VZW)Sensor power is set as over Rev.A, line(%d)\n", __func__, __LINE__);
 			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_a;
 			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_a);
@@ -320,11 +360,32 @@ static int __init hi543_init_module(void)
 			break;
 			#else
 			printk("%s: Sensor power is set as Rev.B, line(%d)\n", __func__, __LINE__);
+
+			printk("%s: (W5C_VZW)Sensor power is set as over Rev.A\n", __func__);
+			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_a;
+			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_a);
+			break;
+			#else
+			printk("%s: Sensor power is set as Rev.B\n", __func__);
+			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_b;
+			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_b);
+			break;
+			#endif
+		case HW_REV_C:
+			#if defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+			printk("%s: (W5C_VZW)Sensor power is set as Rev.C\n", __func__);
+			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_c_w5c;
+			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_c_w5c);
+			break;
+			#else
+			printk("%s: Sensor power is set as Rev.B\n", __func__);
+
 			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_b;
 			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_b);
 			break;
 			#endif
 		default:
+
 			#if defined(CONFIG_MACH_MSM8X10_W5C_VZW) || defined(CONFIG_MACH_MSM8X10_W5C_SPR_US)
 			printk("%s: (W5C_VZW)Sensor power is set as over Rev.C, line(%d)\n", __func__, __LINE__);
 			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_w5c;
@@ -332,6 +393,15 @@ static int __init hi543_init_module(void)
 			break;
 			#else
 			printk("%s: Sensor power is set as Rev.B, line(%d)\n", __func__, __LINE__);
+
+			#if defined(CONFIG_MACH_MSM8X10_W5C_VZW)
+			printk("%s: (W5C_VZW)Sensor power is set as over Rev.C\n", __func__);
+			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_c_w5c;
+			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_c_w5c);
+			break;
+			#else
+			printk("%s: Sensor power is set as Rev.B\n", __func__);
+
 			hi543_s_ctrl.power_setting_array.power_setting = hi543_power_setting_rev_b;
 			hi543_s_ctrl.power_setting_array.size = ARRAY_SIZE(hi543_power_setting_rev_b);
 			break;
@@ -351,7 +421,11 @@ static int __init hi543_init_module(void)
 			break;
 	}
 #endif
+
 /* LGE_CHANGE_E, yt.jeon, 2013.10.07, To separate power settings depending on HW revisions. */
+
+/*                                                                                          */
+
 	rc = platform_driver_probe(&hi543_platform_driver,
 		hi543_platform_probe);
 	if (!rc)
@@ -417,10 +491,17 @@ static void __exit hi543_exit_module(void)
 
 static struct msm_sensor_ctrl_t hi543_s_ctrl = {
 	.sensor_i2c_client = &hi543_sensor_i2c_client,
+
 /* LGE_CHANGE_S, yt.jeon, 2013.10.07, To separate power settings depending on HW revisions. */
 	//.power_setting_array.power_setting = hi543_power_setting,
 	//.power_setting_array.size = ARRAY_SIZE(hi543_power_setting),
 /* LGE_CHANGE_E, yt.jeon, 2013.10.07, To separate power settings depending on HW revisions. */
+
+/*                                                                                          */
+	//.power_setting_array.power_setting = hi543_power_setting,
+	//.power_setting_array.size = ARRAY_SIZE(hi543_power_setting),
+/*                                                                                          */
+
 	.msm_sensor_mutex = &hi543_mut,
 	.sensor_v4l2_subdev_info = hi543_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(hi543_subdev_info),

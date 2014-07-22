@@ -47,6 +47,7 @@
 			revision = "rev_a...";
 			status = "ok";
 		};
+
 		lge_ts_misc {
 			revision = "rev_a";
 			vdd_on = <1>;
@@ -64,5 +65,7 @@
 			status ="okay";
 			revision = "rev_0";
 		};
+
+
 	};
 };

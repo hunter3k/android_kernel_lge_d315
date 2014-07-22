@@ -31,11 +31,14 @@
 				qcom,mode-ctrl = <0x60>;
 				};
 		};
+
 		qcom,power-on@800 {
 				qcom,pon_3 {
 					qcom,support-reset = <0>;
 				};
 		};
+
+
 	};
 	qcom,pm8226@1 {
 		qcom,vibrator@c000 {

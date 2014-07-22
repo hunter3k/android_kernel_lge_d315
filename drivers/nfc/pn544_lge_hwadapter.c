@@ -1,6 +1,7 @@
 
 #include "pn544_lge_hwadapter.h"
 
+
 bool pn544_validate_boot_mode(void) {
     enum lge_boot_mode_type boot_mode;
     boot_mode = lge_get_boot_mode();
@@ -11,6 +12,8 @@ bool pn544_validate_boot_mode(void) {
     }
     return true;
 }
+
+
 
 int pn544_get_hw_revision(void)
 {
@@ -60,7 +63,7 @@ void pn544_gpio_enable(struct pn544_dev *pn544_dev)
 void pn544_shutdown_cb(struct pn544_dev *pn544_dev)
 {
 #if defined(CONFIG_LGE_NFC_HW_QCT_MSM8660)
-		dprintk("================ pn544_shutdown() start ================\n");
+		dprintk("== pn544_shutdown() start ==\n");
 	
 		// Make all output GPIOs to Low
 		gpio_set_value(pn544_dev->ven_gpio, 0);
@@ -70,7 +73,7 @@ void pn544_shutdown_cb(struct pn544_dev *pn544_dev)
 		gpio_get_value(pn544_dev->ven_gpio), 
 		gpio_get_value(pn544_dev->firm_gpio));
 	
-		dprintk("================ pn544_shutdown() end ================\n");
+		dprintk("== pn544_shutdown() end ==\n");
 	
 #elif defined(CONFIG_LGE_NFC_HW_NV_AP3X)
 		gpio_set_value(pn544_dev->ven_gpio, 0);

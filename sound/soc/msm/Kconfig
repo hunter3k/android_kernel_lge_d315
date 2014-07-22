@@ -289,6 +289,7 @@ config SND_LGE_MABL
     help
      To support LGE DSP MABL
 
+
 config LGE_STEREO_SPEAKER
 	bool "LGE STEREO SPEAKER"
 	depends on MACH_MSM8226_E9WIFI_OPEN_KR
@@ -300,4 +301,6 @@ config LGE_SW_IRRC_MUTE_SPEAKER
 	depends on (MACH_MSM8226_E9WIFI_OPEN_KR && LGE_STEREO_SPEAKER)
 	help
 	 To support mute stereo speaker for msm8x26
+
+
 endmenu

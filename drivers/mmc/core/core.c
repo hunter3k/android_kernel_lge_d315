@@ -65,9 +65,15 @@ static void mmc_clk_scaling(struct mmc_host *host, bool from_wq);
 #define MMC_CACHE_DISBALE_TIMEOUT_MS 180000 /* msec */
 
 /*
+
  * LGE_CHANGE_S
  * Comment : FMBT porting
  * 2013-11-22, p1-fs@lge.com
+
+               
+                         
+                            
+
  */
 #if defined(CONFIG_FMBT_TRACE_EMMC)
 #include <linux/mmc/mem_log.h>
@@ -206,15 +212,25 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
 {
 	struct mmc_command *cmd = mrq->cmd;
 /*
+
  * LGE_CHANGE_S
  * FMBT porting
  * 2013-11-22, p1-fs@lge.com
+
+               
+               
+                            
+
  */
 #if defined(CONFIG_FMBT_TRACE_EMMC)
 	unsigned long long currentTime = 0;
 	int i;
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 	int err = cmd->error;
 #ifdef CONFIG_MMC_PERF_PROFILING
@@ -268,9 +284,15 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
 				mmc_hostname(host),
 				mrq->data->bytes_xfered, mrq->data->error);
 /*
+
  * LGE_CHANGE_S
  * Comment : FMBT porting
  * 2013-11-22, p1-fs@lge.com
+
+               
+                         
+                            
+
  */
 #if defined(CONFIG_FMBT_TRACE_EMMC)
 			if(!strncmp(mmc_hostname(host), "mmc0",4))
@@ -289,6 +311,21 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
 					}
 				}
 			}
+
+
+		}
+		else {
+			if(!strncmp(mmc_hostname(host), "mmc0",4))
+			{
+				if(mrq->cmd->opcode != MMC_SEND_STATUS)
+				{
+					currentTime = sched_clock();
+					memlog_emmc_add(mrq, currentTime, currentTime - glTimeGap1);
+				}
+			}
+#endif
+/*              */
+
 		}
 		else {
 			if(!strncmp(mmc_hostname(host), "mmc0",4))
@@ -304,6 +341,8 @@ void mmc_request_done(struct mmc_host *host, struct mmc_request *mrq)
 		}
 
 /* LGE_CHANGE_E */
+
+/*              */
 
 		if (mrq->stop) {
 			pr_debug("%s:     (CMD%u): %d: %08x %08x %08x %08x\n",
@@ -385,9 +424,15 @@ mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
 			host->perf.start = ktime_get();
 #endif
 /* 
+
  * LGE_CHANGE_S
  * Comment : FMBT porting
  * 2013-11-22, p1-fs@lge.com
+
+               
+                         
+                            
+
  */
 #if defined(CONFIG_FMBT_TRACE_EMMC)
 		glTimeGap2 = sched_clock();
@@ -397,7 +442,11 @@ mmc_start_request(struct mmc_host *host, struct mmc_request *mrq)
 	{
 		glTimeGap1 = sched_clock();
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 	
 	}
 	mmc_host_clk_hold(host);
@@ -1344,12 +1393,21 @@ void mmc_set_data_timeout(struct mmc_data *data, const struct mmc_card *card)
 			limit_us = 3000000;
 		else
 			#ifdef CONFIG_MACH_LGE
+
 			/* LGE_CHANGE
 			 * Although we already applied enough time,
 			 * timeout-error occurs until now with several-ultimate-crappy-memory.
 			 * So, we give more time than before.
 			 * 2013-03-09, G2-FS@lge.com
 			 */
+
+			/*           
+                                              
+                                                                         
+                                        
+                               
+    */
+
 			limit_us = 300000;
 			#else
 			limit_us = 100000;
@@ -1979,10 +2037,17 @@ void mmc_power_up(struct mmc_host *host)
 	 * to reach the minimum voltage.
 	 */
 	#ifdef CONFIG_MACH_LGE
+
 	/* LGE_CHANGE
 	* Augmenting delay-time for some crappy card.
 	* 2013-03-09, G2-FS@lge.com
 	*/
+
+	/*           
+                                              
+                            
+ */
+
 	mmc_delay(20);
 	#else
 	mmc_delay(10);
@@ -1998,10 +2063,17 @@ void mmc_power_up(struct mmc_host *host)
 	 * time required to reach a stable voltage.
 	 */
 #ifdef CONFIG_MACH_LGE
+
 	/* LGE_CHANGE
 	* Augmenting delay-time for some crappy card.
 	* 2013-03-09, G2-FS@lge.com
 	*/
+
+	/*           
+                                              
+                            
+ */
+
 	mmc_delay(20);
 #else
 	mmc_delay(10);
@@ -3869,14 +3941,24 @@ static int __init mmc_init(void)
 	if (ret)
 		goto unregister_host_class;
 /*
+
  * LGE_CHANGE_S
  * Comment : FMBT porting
  * 2013-11-22, p1-fs@lge.com
+
+               
+                         
+                            
+
  */
 #if defined(CONFIG_FMBT_TRACE_EMMC)
 	init_memLog();
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 	return 0;
 

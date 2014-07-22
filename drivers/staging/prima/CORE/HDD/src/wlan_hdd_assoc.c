@@ -40,13 +40,13 @@
  */
 
 
-/**========================================================================
+/**==
 
   \file  wlan_hdd_assoc.c
   \brief WLAN Host Device Driver implementation
 
-  ========================================================================*/
-/**=========================================================================
+  ==*/
+/**===
                        EDIT HISTORY FOR FILE
 
 
@@ -60,7 +60,7 @@
   when        who    what, where, why
   --------    ---    --------------------------------------------------------
   05/06/09     Shailender     Created module.
-  ==========================================================================*/
+  ====*/
 
 #include "wlan_hdd_includes.h"
 #include <aniGlobal.h>
@@ -1515,12 +1515,12 @@ static eHalStatus hdd_AssociationCompletionHandler( hdd_adapter_t *pAdapter, tCs
     return eHAL_STATUS_SUCCESS;
 }
 
-/**============================================================================
+/**======
  *
   @brief hdd_RoamIbssIndicationHandler() - Here we update the status of the
   Ibss when we receive information that we have started/joined an ibss session
 
-  ===========================================================================*/
+  =====*/
 static void hdd_RoamIbssIndicationHandler( hdd_adapter_t *pAdapter,
                                            tCsrRoamInfo *pRoamInfo,
                                            tANI_U32 roamId,
@@ -1606,7 +1606,7 @@ static void hdd_RoamIbssIndicationHandler( hdd_adapter_t *pAdapter,
    return;
 }
 
-/**============================================================================
+/**======
  *
   @brief roamSaveIbssStation() - Save the IBSS peer MAC address in the adapter.
   This information is passed to iwconfig later. The peer that joined
@@ -1614,7 +1614,7 @@ static void hdd_RoamIbssIndicationHandler( hdd_adapter_t *pAdapter,
   If we add HDD_MAX_NUM_IBSS_STA or less STA we return success else we
   return FALSE.
 
-  ===========================================================================*/
+  =====*/
 static int roamSaveIbssStation( hdd_station_ctx_t *pHddStaCtx, v_U8_t staId, v_MACADDR_t *peerMacAddress )
 {
    int fSuccess = FALSE;
@@ -1635,13 +1635,13 @@ static int roamSaveIbssStation( hdd_station_ctx_t *pHddStaCtx, v_U8_t staId, v_M
 
    return( fSuccess );
 }
-/**============================================================================
+/**======
  *
   @brief roamRemoveIbssStation() - Remove the IBSS peer MAC address in the adapter.
   If we remove HDD_MAX_NUM_IBSS_STA or less STA we return success else we
   return FALSE.
 
-  ===========================================================================*/
+  =====*/
 static int roamRemoveIbssStation( hdd_station_ctx_t *pHddStaCtx, v_U8_t staId )
 {
    int fSuccess = FALSE;
@@ -1689,12 +1689,12 @@ static int roamRemoveIbssStation( hdd_station_ctx_t *pHddStaCtx, v_U8_t staId )
    return( fSuccess );
 }
 
-/**============================================================================
+/**======
  *
   @brief roamIbssConnectHandler() : We update the status of the IBSS to
   connected in this function.
 
-  ===========================================================================*/
+  =====*/
 static eHalStatus roamIbssConnectHandler( hdd_adapter_t *pAdapter, tCsrRoamInfo *pRoamInfo )
 {
    struct cfg80211_bss *bss;
@@ -1726,11 +1726,11 @@ static eHalStatus roamIbssConnectHandler( hdd_adapter_t *pAdapter, tCsrRoamInfo 
 
    return( eHAL_STATUS_SUCCESS );
 }
-/**============================================================================
+/**======
  *
   @brief hdd_RoamSetKeyCompleteHandler() - Update the security parameters.
 
-  ===========================================================================*/
+  =====*/
 static eHalStatus hdd_RoamSetKeyCompleteHandler( hdd_adapter_t *pAdapter, tCsrRoamInfo *pRoamInfo,
                                                  tANI_U32 roamId, eRoamCmdStatus roamStatus,
                                                  eCsrRoamResult roamResult )
@@ -1826,10 +1826,10 @@ static eHalStatus hdd_RoamSetKeyCompleteHandler( hdd_adapter_t *pAdapter, tCsrRo
    EXIT();
    return( eHAL_STATUS_SUCCESS );
 }
-/**============================================================================
+/**======
  *
   @brief hdd_RoamMicErrorIndicationHandler() - This function indicates the Mic failure to the supplicant.
-  ===========================================================================*/
+  =====*/
 static eHalStatus hdd_RoamMicErrorIndicationHandler( hdd_adapter_t *pAdapter, tCsrRoamInfo *pRoamInfo,
                                                  tANI_U32 roamId, eRoamCmdStatus roamStatus,                                                                              eCsrRoamResult roamResult )
 {
@@ -1873,12 +1873,12 @@ static eHalStatus hdd_RoamMicErrorIndicationHandler( hdd_adapter_t *pAdapter, tC
    return( eHAL_STATUS_SUCCESS );
 }
 
-/**============================================================================
+/**======
  *
   @brief roamRoamConnectStatusUpdateHandler() - The Ibss connection status is
   updated regularly here in this function.
 
-  ===========================================================================*/
+  =====*/
 static eHalStatus roamRoamConnectStatusUpdateHandler( hdd_adapter_t *pAdapter, tCsrRoamInfo *pRoamInfo,
    tANI_U32 roamId, eRoamCmdStatus roamStatus,
    eCsrRoamResult roamResult )
@@ -2019,13 +2019,13 @@ static eHalStatus roamRoamConnectStatusUpdateHandler( hdd_adapter_t *pAdapter, t
 }
 
 #ifdef FEATURE_WLAN_TDLS
-/**============================================================================
+/**======
  *
   @brief hdd_roamRegisterTDLSSTA() - Construct the staDesc and register with
   TL the new STA. This is called as part of ADD_STA in the TDLS setup
   Return: VOS_STATUS
 
-  ===========================================================================*/
+  =====*/
 VOS_STATUS hdd_roamRegisterTDLSSTA( hdd_adapter_t *pAdapter,
                                     tANI_U8 *peerMac, tANI_U16 staId, tANI_U8 ucastSig)
 {
@@ -2539,7 +2539,11 @@ eHalStatus hdd_smeRoamCallback( void *pContext, tCsrRoamInfo *pRoamInfo, tANI_U3
                            pHddCtx->configuredMcastBcastFilter);
                     hddLog(VOS_TRACE_LEVEL_INFO,
                            "offload: already called mcastbcast filter");
+
 /* LGE_UPDATE, 20131107, real-wifi@lge.com by beaver, add the checking function for the configuredMcastBcastFilter value */
+
+/*                                                                                                                       */
+
 #if 1
                     if (pHddCtx->configuredMcastBcastFilter != pHddCtx->cfg_ini->mcastBcastFilterSetting)
                     {

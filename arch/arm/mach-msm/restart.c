@@ -293,6 +293,16 @@ static void msm_restart_prepare(const char *cmd)
 			__raw_writel(0x77665500, restart_reason);
 		} else if (!strncmp(cmd, "recovery", 8)) {
 			__raw_writel(0x77665502, restart_reason);
+
+
+		} else if (!strcmp(cmd, "rtc")) {
+			__raw_writel(0x77665503, restart_reason);
+#ifdef CONFIG_LGE_SLATE
+		} else if (!strncmp(cmd, "adbrecovery", 11)) {
+			__raw_writel(0x77665511, restart_reason);
+#endif //                 
+
+
 #ifdef CONFIG_LGE_BNR_RECOVERY_REBOOT
 			/* PC Sync B&R : Add restart reason */
 		} else if (!strncmp(cmd, "--bnr_recovery", 14)) {

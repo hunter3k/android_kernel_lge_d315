@@ -70,7 +70,11 @@ unsigned long msm_fb_phys_addr_backup;
 #define MDSS_FB_NUM 2
 #endif
 
+
 #if defined(CONFIG_MACH_MSM8926_X3_TRF_US) || defined(CONFIG_MACH_MSM8926_X3N_KR) || defined(CONFIG_MACH_MSM8926_F70N_KR) || defined(CONFIG_MACH_MSM8926_X3N_OPEN_EU) || defined(CONFIG_MACH_MSM8926_F70N_GLOBAL_COM) || \
+
+#if defined(CONFIG_MACH_MSM8926_X3_TRF_US) || defined(CONFIG_MACH_MSM8926_X3_KR) || defined(CONFIG_MACH_MSM8926_X3N_OPEN_EU) || \
+
 	defined(CONFIG_MACH_MSM8926_X3N_GLOBAL_COM)
 #define UI_BL_OFF		0
 #define UI_0_BL			10
@@ -257,7 +261,11 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 	pr_info("value=%d, cal_value=%d\n", value, cal_value);
 #else
 
+
 #if defined(CONFIG_MACH_MSM8926_X3_TRF_US) || defined(CONFIG_MACH_MSM8926_X3N_KR) || defined(CONFIG_MACH_MSM8926_F70N_KR) || defined(CONFIG_MACH_MSM8926_X3N_OPEN_EU) || defined(CONFIG_MACH_MSM8926_F70N_GLOBAL_COM) || \
+
+#if defined(CONFIG_MACH_MSM8926_X3_TRF_US) || defined(CONFIG_MACH_MSM8926_X3_KR) || defined(CONFIG_MACH_MSM8926_X3N_OPEN_EU) || \
+
 	defined(CONFIG_MACH_MSM8926_X3N_GLOBAL_COM)
 	if(value >= UI_BL_OFF && value <= UI_0_BL)
 		bl_lvl = (value - UI_BL_OFF) * (LGE_0_BL - LGE_BL_OFF) / (UI_0_BL - UI_BL_OFF) + LGE_BL_OFF;
@@ -275,6 +283,10 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 	pr_debug("value=%d, bl_lvl=%d\n", value, bl_lvl);
 #else
 	MDSS_BRIGHT_TO_BL(bl_lvl, value, mfd->panel_info->bl_max,
+
+
+		//		mfd->panel_info->brightness_max);  // Quarx: We Need it?!
+
 						MDSS_MAX_BL_BRIGHTNESS);
 #endif
 
@@ -765,8 +777,13 @@ void mdss_fb_set_backlight(struct msm_fb_data_type *mfd, u32 bkl_lvl)
 
   #ifdef CONFIG_MACH_LGE
   if( force_set_bl_f || lge_get_boot_mode()== LGE_BOOT_MODE_QEM_130K
+
   	/* lge_get_laf_mode() || is_dsv_cont_splash_screening_f
     || lge_get_boot_mode()==LGE_BOOT_MODE_CHARGERLOGO */ ) {
+
+  	/*                                                     
+                                                      */ ) {
+
     pdata = dev_get_platdata(&mfd->pdev->dev);
     if ((pdata) && (pdata->set_backlight)) {
       mdss_fb_scale_bl(mfd, &temp);

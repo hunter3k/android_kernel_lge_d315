@@ -1433,9 +1433,9 @@ static ssize_t mms_chstatus_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "*** LCD STATUS : O N ***\n");
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->dev.tx_ch_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1480,6 +1480,7 @@ static ssize_t mms_chstatus_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->dev.key_num) {
 		/* read touch key chstatus */
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
@@ -1517,9 +1518,47 @@ static ssize_t mms_chstatus_show(struct i2c_client *client, char *buf)
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", chstatus);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+	/* read touch key chstatus */
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+
+	write_buf[0] = MMS_UNIVERSAL_CMD;
+	write_buf[1] = MMS_KEY_CHSTATUS;
+	write_buf[2] = 0xff; //KEY CH.
+	write_buf[3] = 0; //Dummy Info
+	i2c_master_send(ts->client, write_buf, 4);
+	while (gpio_get_value(ts->pdata->int_pin)) {
+		flag++;
+
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+	flag = 0;
+	write_buf[0] = MMS_UNIVERSAL_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+	write_buf[0] = MMS_UNIVERSAL_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+	for (t = 0; t < ts->dev.key_num ; t++) //Model Dependent
+	{
+		chstatus = read_buf[2 * t] | (read_buf[2 * t + 1] << 8);
+		if((alloc_flag != -1) && (ret != -1)){
+			if((chstatus > chstatus_max[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t]) || (chstatus < chstatus_min[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t])){
+				error_point[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t] = 1;
+				ts->pdata->selfdiagnostic_state[0] = 0;
+			}
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", chstatus);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	write_buf[0] = MMS_UNIVERSAL_CMD;
 	write_buf[1] = MMS_UNIVERSAL_CMD_EXIT;
 	i2c_master_send(ts->client, write_buf, 2);
@@ -1553,9 +1592,9 @@ static ssize_t mms_chstatus_show(struct i2c_client *client, char *buf)
 	} else {
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->selfdiagnostic_state[0] == 1 ? "PASS" : "FAIL");
 		if (ts->pdata->selfdiagnostic_state[0] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->dev.tx_ch_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1584,9 +1623,9 @@ static ssize_t mms_chstatus_show(struct i2c_client *client, char *buf)
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	TOUCH_INFO_MSG("enable_irq\n");
 	enable_irq(ts->client->irq);
@@ -1716,9 +1755,9 @@ static ssize_t mms_rawdata_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "*** LCD STATUS : O N ***\n");
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->dev.tx_ch_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1763,6 +1802,7 @@ static ssize_t mms_rawdata_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->dev.key_num) {
 		/* read touch key rawdata */
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
@@ -1797,11 +1837,45 @@ static ssize_t mms_rawdata_show(struct i2c_client *client, char *buf)
 			}
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", rawdata);
 		}
+
+	/* read touch key rawdata */
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+
+	write_buf[0] = MMS_UNIVERSAL_CMD;
+	write_buf[1] = MMS_KEY_RAWDATA;
+	write_buf[2] = 0xff; //KEY CH.
+	write_buf[3] = 0; //Dummy Info
+	i2c_master_send(ts->client, write_buf, 4);
+	while (gpio_get_value(ts->pdata->int_pin)) {
+		flag++;
+
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+	flag = 0;
+	write_buf[0] = MMS_UNIVERSAL_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+	write_buf[0] = MMS_UNIVERSAL_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+	for (t = 0; t < ts->dev.key_num ; t++) //Model Dependent
+	{
+		rawdata = read_buf[2 * t] | (read_buf[2 * t + 1] << 8);
+		if ((rawdata > raw_data_max[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t]) || (rawdata < raw_data_min[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t])) {
+			error_point[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t] = 1;
+			ts->pdata->selfdiagnostic_state[1] = 0;
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", rawdata);
+
 	}
 
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	write_buf[0] = MMS_UNIVERSAL_CMD;
 	write_buf[1] = MMS_UNIVERSAL_CMD_EXIT;
 	i2c_master_send(ts->client, write_buf, 2);
@@ -1835,9 +1909,9 @@ static ssize_t mms_rawdata_show(struct i2c_client *client, char *buf)
 	} else {
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->selfdiagnostic_state[1] == 1 ? "PASS" : "FAIL");
 		if (ts->pdata->selfdiagnostic_state[1] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->dev.tx_ch_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1866,9 +1940,9 @@ static ssize_t mms_rawdata_show(struct i2c_client *client, char *buf)
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	TOUCH_INFO_MSG("enable_irq\n");
 	enable_irq(ts->client->irq);
@@ -1919,9 +1993,9 @@ static ssize_t mms_delta_show(struct i2c_client *client, char *buf)
 	TOUCH_INFO_MSG("disable_irq\n");
 	disable_irq(ts->client->irq);
 
-	len += snprintf(buf + len, PAGE_SIZE - len, "=============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->dev.tx_ch_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1957,6 +2031,7 @@ static ssize_t mms_delta_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->dev.key_num) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
 		for(j = 0; j<ts->dev.key_num; j++){
@@ -1981,10 +2056,34 @@ static ssize_t mms_delta_show(struct i2c_client *client, char *buf)
 			delta = ((delta<<8)|read_buf[0]);
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", delta);
 		}
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+	for(j = 0; j<ts->dev.key_num; j++){
+		write_buf[0] = MMS_UNIVERSAL_CMD;
+		write_buf[1] = MMS_DELTA_KEY;
+		write_buf[2] = j;
+		msg[0].len = 4;
+		if(i2c_transfer(ts->client->adapter, &msg[0], 1)!=1){
+			TOUCH_INFO_MSG("intensity i2c transfer failed\n");
+			return -1;
+		}
+		sz = i2c_smbus_read_byte_data(ts->client, MMS_UNIVERSAL_RESULT_SIZE);
+		write_buf[0] = MMS_UNIVERSAL_RESULT;
+		msg[0].len = 1;
+		msg[1].len = sz;
+		msg[1].buf = read_buf;
+		if(i2c_transfer(ts->client->adapter, msg, ARRAY_SIZE(msg))!=ARRAY_SIZE(msg)){
+			return -1;
+		}
+		sz>>=1;
+		delta = read_buf[1];
+		delta = ((delta<<8)|read_buf[0]);
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", delta);
+
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n=============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n===");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	TOUCH_INFO_MSG("enable_irq\n");
 	enable_irq(ts->client->irq);
@@ -2094,9 +2193,9 @@ static ssize_t mms_jitter_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
 
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->dev.tx_ch_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2140,6 +2239,7 @@ static ssize_t mms_jitter_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->dev.key_num) {
 		/* read touch key jitter */
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
@@ -2176,9 +2276,46 @@ static ssize_t mms_jitter_show(struct i2c_client *client, char *buf)
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", jitter);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+	/* read touch key jitter */
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+
+	write_buf[0] = MMS_UNIVERSAL_CMD;
+	write_buf[1] = MMS_KEY_JITTER;
+	write_buf[2] = 0xff; //KEY CH.
+	write_buf[3] = 0; //Dummy Info
+	i2c_master_send(ts->client, write_buf, 4);
+	while (gpio_get_value(ts->pdata->int_pin)) {
+		flag++;
+
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+	flag = 0;
+	write_buf[0] = MMS_UNIVERSAL_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+	write_buf[0] = MMS_UNIVERSAL_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+	for (t = 0; t < ts->dev.key_num ; t++) //Model Dependent
+	{
+		//jitter = read_buf[2 * t] | (read_buf[2 * t + 1] << 8);
+		jitter = read_buf[0];
+		if ((jitter > jitter_upper_limit) || (jitter < jitter_low_limit)) {
+			error_point[ts->dev.rx_ch_num* ts->dev.tx_ch_num + t] = 1;
+			ts->pdata->selfdiagnostic_state[2] = 0;
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", jitter);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	write_buf[0] = MMS_UNIVERSAL_CMD;
 	write_buf[1] = MMS_UNIVERSAL_CMD_EXIT;
 	i2c_master_send(ts->client, write_buf, 2);
@@ -2209,9 +2346,9 @@ static ssize_t mms_jitter_show(struct i2c_client *client, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->selfdiagnostic_state[2] == 1 ? "PASS" : "FAIL");
 
 		if (ts->pdata->selfdiagnostic_state[2] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->dev.tx_ch_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2240,9 +2377,9 @@ static ssize_t mms_jitter_show(struct i2c_client *client, char *buf)
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	TOUCH_INFO_MSG("enable_irq\n");
 	enable_irq(ts->client->irq);
@@ -2280,7 +2417,7 @@ static ssize_t mms_self_diagnostic_show(struct i2c_client *client, char *buf)
 	len += snprintf(buf + len, PAGE_SIZE - len, "FW Product : %s \n", ts->module.product_code);
 	if (ts_pdata->panel_id != 0xFF)
 		len += snprintf(buf + len, PAGE_SIZE - len, "Panel ID : %d [%c] \n", ts_pdata->panel_id, ts_pdata->panel_type[ts_pdata->panel_id]);
-	len += snprintf(buf + len, PAGE_SIZE - len, "=======RESULT========\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "RESULT=\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "Channel Status : %s\n", ts->pdata->selfdiagnostic_state[0] == 1 ? "PASS" : "FAIL");
 	len += snprintf(buf + len, PAGE_SIZE - len, "Raw Data : %s\n", ts->pdata->selfdiagnostic_state[1] == 1 ? "PASS" : "FAIL");
 	//len += snprintf(buf + len, PAGE_SIZE - len, "Jitter Test: %s\n", ts->pdata->selfdiagnostic_state[2] == 1 ? "PASS" : "FAIL");

@@ -48,6 +48,7 @@ struct lge_ts_misc_info {
 	int					gpio_int;
 	int					vdd_on;
 	int					vio_l19_on;
+
 	int					vio_l6_on;
 	int					vio_lvs1_on;
 	int					vdd_voltage;
@@ -57,6 +58,14 @@ struct lge_ts_misc_info {
 	struct regulator		*vdd;
 	struct regulator		*vio_l19;
 	struct regulator		*vio_l6;
+
+	int					vio_lvs1_on;
+	int					vdd_voltage;
+	int					vio_l19_voltage;
+	int					vio_lvs1_voltage;
+	struct regulator		*vdd;
+	struct regulator		*vio_l19;
+
 	struct regulator		*vio_lvs1;
 };
 
@@ -88,11 +97,17 @@ static int lge_ts_misc_parse_dt(struct device *dev, struct lge_ts_misc_info *inf
 		{ "gpio_int",			&info->gpio_int,			DT_U32, 0 },
 		{ "vdd_on",			&info->vdd_on,			DT_U32, 0 },
 		{ "vio_l19_on",		&info->vio_l19_on,		DT_U32, 0 },
+
 		{ "vio_l6_on",			&info->vio_l6_on,		DT_U32,	0 },
 		{ "vio_lvs1_on",		&info->vio_lvs1_on,		DT_U32, 0 },
 		{ "vdd_voltage",		&info->vdd_voltage,		DT_U32, 0 },
 		{ "vio_l19_voltage",	&info->vio_l19_voltage,	DT_U32, 0 },
 		{ "vio_l6_voltage",	&info->vio_l6_voltage,	DT_U32,	0 },
+
+		{ "vio_lvs1_on",		&info->vio_lvs1_on,		DT_U32, 0 },
+		{ "vdd_voltage",		&info->vdd_voltage,		DT_U32, 0 },
+		{ "vio_l19_voltage",	&info->vio_l19_voltage,	DT_U32, 0 },
+
 		{ "vio_lvs1_voltage",	&info->vio_lvs1_voltage,	DT_U32, 0 },
 		{ NULL,				NULL,					0,		0 },
 	};
@@ -197,6 +212,7 @@ static int lge_ts_misc_regulator_configure(struct lge_ts_misc_info *info, bool o
 		}
 	}
 
+
 	if (info->vio_l6_on && info->vio_l6 == NULL) {
 		info->vio_l6 = regulator_get(&info->client->dev, "vio_l6");
 		if (IS_ERR(info->vio_l6)) {
@@ -204,6 +220,8 @@ static int lge_ts_misc_regulator_configure(struct lge_ts_misc_info *info, bool o
 			return PTR_ERR(info->vio_l6);
 		}
 	}
+
+
 
 	if (info->vio_lvs1_on && info->vio_lvs1 == NULL) {
 		info->vio_lvs1 = regulator_get(&info->client->dev, "vio_lvs1");
@@ -225,11 +243,14 @@ static int lge_ts_misc_regulator_configure(struct lge_ts_misc_info *info, bool o
 			TOUCH_INFO_MSG("regulator_set_voltage(vio_l19) failed retval=%d\n", retval);
 	}
 
+
 	if(info->vio_l6 && info->vio_l6_voltage) {
 		retval = regulator_set_voltage(info->vio_l6, info->vio_l6_voltage, info->vio_l6_voltage);
 		if (retval)
 			TOUCH_INFO_MSG("regulator_set_voltage(vio_l6) failed retval=%d\n", retval);
 	}
+
+
 
 	if(info->vio_lvs1 && info->vio_lvs1_voltage) {
 		retval = regulator_set_voltage(info->vio_lvs1, info->vio_lvs1_voltage, info->vio_lvs1_voltage);

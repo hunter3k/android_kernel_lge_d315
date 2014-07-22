@@ -28,7 +28,11 @@
 
 	syncoam_sm100_rev_a {
 		compatible = "syncoam,sm100";
+
 		status = "disable";
+
+		status = "ok";
+
 		revision = "rev_a";
 		
 		vdd_ana-supply = <&pm8226_l23>;
@@ -41,7 +45,11 @@
 
 	syncoam_sm100_rev_b {
 		compatible = "syncoam,sm100";
+
 		status = "disable";
+
+		status = "ok";
+
 		revision = "rev_b..."; // for CI(rev.e) SMT
 		
 		vdd_ana-supply = <&pm8226_l23>;
@@ -58,7 +66,11 @@
 			status = "ok";
 		};
 		lp5521@32 {
+
 			status = "disable";
+
+			status = "ok";
+
 		};
 	};
 	/*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up */

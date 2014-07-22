@@ -11,8 +11,12 @@
  */
 
 &mdss_dsi0{
+
 	qcom,dsi-pref-prim-pan = <&dsi_lgd_lg4577_vid>;
 	qcom,dsi-pref-secondary-pan  =  <&dsi_tovis_ili9806e_vid>;
+
+	qcom,dsi-pref-prim-pan = <&dsi_tovis_ili9806e_vid>;
+
 };
 
 &dsi_lgd_incell_vid {
@@ -21,5 +25,8 @@
 };
 &dsi_tovis_ili9806e_vid{
 };
+
 &dsi_lgd_lg4577_vid{
 };
+
+

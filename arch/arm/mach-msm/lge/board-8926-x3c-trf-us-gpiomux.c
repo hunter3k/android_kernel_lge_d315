@@ -211,7 +211,11 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
+
 #ifdef CONFIG_MACH_LGE  /* LGE_CHANGE_S,  Added for COMMON_I2C */
+
+#ifdef CONFIG_MACH_LGE  /*                                     */
+
 	{
 		.gpio      = 6,		/* BLSP1 QUP2 I2C_SDA */
 		.settings = {
@@ -312,14 +316,22 @@ static struct gpiomux_setting sd_card_det_sleep_config = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_IN,
 };
+
 #else // not CONFIG_MACH_LGE
+
+#else //                    
+
 static struct gpiomux_setting sd_card_det_sleep_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
 	.pull = GPIOMUX_PULL_UP,
 	.dir = GPIOMUX_IN,
 };
+
 #endif // CONFIG_MACH_LGE
+
+#endif //                
+
 
 static struct msm_gpiomux_config sd_card_det __initdata = {
 	.gpio = 37,
@@ -533,6 +545,7 @@ static struct msm_gpiomux_config usb_otg_sw_configs[] __initdata = {
 		},
 	},
 };
+
 static struct gpiomux_setting main_cam_id_gpio_act_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
@@ -558,6 +571,11 @@ static struct msm_gpiomux_config main_cam_id_gpio[] __initdata = {
 #endif
 
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+#endif
+
+/*                                                      */
+
 #ifdef CONFIG_LGE_NFC_PN547
 static struct gpiomux_setting nfc_pn547_sda_cfg = {
 	.func = GPIOMUX_FUNC_3,
@@ -635,7 +653,11 @@ static struct msm_gpiomux_config msm_nfc_configs[] __initdata = {
 	},
 };
 #endif
+
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+/*                                                      */
+
 
 void __init msm8226_init_gpiomux(void)
 {
@@ -666,7 +688,10 @@ void __init msm8226_init_gpiomux(void)
 #ifndef CONFIG_MACH_LGE
 	msm_gpiomux_install(msm_auxpcm_configs,
 			ARRAY_SIZE(msm_auxpcm_configs));
+
 	msm_gpiomux_install(main_cam_id_gpio, ARRAY_SIZE(main_cam_id_gpio));	/* MAIN_CAM_ID */
+
+
 
 	if (of_board_is_cdp() || of_board_is_mtp() || of_board_is_xpm())
 		msm_gpiomux_install(usb_otg_sw_configs,
@@ -674,11 +699,19 @@ void __init msm8226_init_gpiomux(void)
 #endif
 
 
+
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up */
 #ifdef CONFIG_LGE_NFC_PN547
 	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
 #endif
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up */
+
+/*                                                       */
+#ifdef CONFIG_LGE_NFC_PN547
+	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
+#endif
+/*                                                       */
+
 }
 
 

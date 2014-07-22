@@ -296,10 +296,13 @@ struct qpnp_bms_chip {
 	unsigned long			last_iavg_cal_time;
 	int				last_uuc_uah;
 #endif
+
 #ifdef CONFIG_MAX17048_FUELGAUGE
 	//bool use_external_fuelgauge;
 	struct power_supply *maxim17048;
 #endif
+
+
 };
 
 static struct of_device_id qpnp_bms_match_table[] = {
@@ -341,6 +344,7 @@ extern bool external_qpnp_chg_is_usb_chg_plugged_in(void);
 extern int32_t vzw_llk_enable_charging(bool enable);
 #endif
 
+
 #ifdef CONFIG_MAX17048_FUELGAUGE
 static int check_use_external_fuelgauge(struct qpnp_bms_chip *chip)
 {
@@ -375,6 +379,8 @@ static int set_use_external_fuelgauge(struct qpnp_bms_chip *chip, int val)
 
 
 #endif
+
+
 
 static bool bms_reset;
 #ifdef CONFIG_LGE_PM_BATTERY_SOC_RESCALING
@@ -1932,7 +1938,11 @@ int cal_rnd_avg(int *soc_value, int unit_num)
 #define SOC_CHANGE_PER_SEC		5
 
 #ifdef CONFIG_LGE_PM_BATTERY_SOC_RESCALING
+
 #define SOC_RESCALING_FACTOR	100/94
+
+#define SOC_RESCALING_FACTOR      100/94
+
 #define I_MAX 10 /*numner of SOC averaging unit*/
 #define MAX_SLEEP_AVG_CAL_TIME  120
 #endif
@@ -3980,6 +3990,10 @@ static int64_t read_battery_id(struct qpnp_bms_chip *chip)
 
 	return result.physical;
 #endif
+
+
+
+
 }
 #endif
 
@@ -4100,6 +4114,7 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 		case BATT_ID_DS2704_C : // FALL THROUGH
 		case BATT_ID_ISL6296_N : // FALL THROUGH
 		case BATT_ID_ISL6296_L : // FALL THROUGH
+
 #ifdef CONFIG_LGE_PM_BATTERY_HITACI_2100mAh
             batt_data = &LGE_Hitaci_2040mAh_data;
 			pr_err("[BATTERY PROFILE] Using default profile - Hitaci_2100mAh for id(%d)\n",battery_id);
@@ -4107,6 +4122,10 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
             batt_data = &LGE_Tocad_2040mAh_data;
 			pr_err("[BATTERY PROFILE] Using default profile - Tocad_2100mAh for id(%d)\n",battery_id);
 #endif
+
+            batt_data = &LGE_Tocad_2040mAh_data;
+			pr_err("[BATTERY PROFILE] Using default profile - Tocad_2100mAh for id(%d)\n",battery_id);
+
             break;
 		case BATT_ID_ISL6296_C : // FALL THROUGH
 		default : 
@@ -4114,6 +4133,7 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 			pr_err("[BATTERY PROFILE] No battery ID matching\nUsing default profile - LGChem_2100mAh for id(%d)\n",battery_id);
 			break;
 	}
+
 #elif defined(CONFIG_LGE_PM_BATTERY_CAPACITY_3200mAh)
 	switch ( battery_id ){
 		case BATT_ID_ISL6296_C : // FALL THROUGH
@@ -4131,6 +4151,8 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 			pr_err("[BATTERY PROFILE] No battery ID matching\nUsing default profile - LGChem_3200mAh for id(%d)\n",battery_id);
 			break;
 	}
+
+
 #else
 	batt_data = &LGE_BL_54SH_2540mAh_LG_Chem_data;
 	pr_err("[BATTERY PROFILE] No battery capacity defconfig\nUsing default profile - LGChem_2540mAh for id(%d)\n",battery_id);
@@ -4138,6 +4160,7 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 
 #else // Not PM battery ID checker
 	// Set Default Battery Profile
+
 #if defined(CONFIG_MACH_MSM8226_E9WIFI_OPEN_KR) || defined(CONFIG_MACH_MSM8226_E7WIFI_OPEN_KR) || defined(CONFIG_MACH_MSM8226_E7LTE_OPEN_KR)
         batt_data = &LGE_LGC_4600mAH_data;
         pr_err("[BATTERY PROFILE] Using default profile - LGChem_4600mAh\n");
@@ -4145,6 +4168,11 @@ static int set_battery_data(struct qpnp_bms_chip *chip)
 	batt_data = &LGE_BL_54SH_2540mAh_LG_Chem_data;
 	pr_err("[BATTERY PROFILE] This version doesn't support BATTERY ID CHECKER\nUsing default profile-LGChem_2540mAh\n");
 #endif
+
+	batt_data = &LGE_BL_54SH_2540mAh_LG_Chem_data;
+	pr_err("[BATTERY PROFILE] This version doesn't support BATTERY ID CHECKER\nUsing default profile-LGChem_2540mAh\n");
+
+
 #endif
 #if 1 //FIXME
 	goto assign_data;
@@ -4234,6 +4262,10 @@ assign_data:
 	chip->default_rbatt_mohm = batt_data->default_rbatt_mohm;
 	chip->rbatt_capacitive_mohm = batt_data->rbatt_capacitive_mohm;
 	chip->flat_ocv_threshold_uv = batt_data->flat_ocv_threshold_uv;
+
+
+
+
 #ifndef CONFIG_LGE_PM_BATTERY_PROFILE_DATA
 	/* Override battery properties if specified in the battery profile */
 	if (batt_data->max_voltage_uv >= 0 && dt_data)

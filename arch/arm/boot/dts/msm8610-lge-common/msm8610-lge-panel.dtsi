@@ -17,8 +17,11 @@
 		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
 		qcom,mdss-dsi-panel-type = "dsi_video_mode";
 		qcom,mdss-dsi-panel-destination = "display_1";
+
     qcom,mdss-pan-physical-width-dimension = <68>;
     qcom,mdss-pan-physical-height-dimension = <109>;
+
+
 		qcom,mdss-dsi-panel-width = <480>;
 		qcom,mdss-dsi-panel-height = <800>;
 		qcom,mdss-dsi-bpp = <24>;
@@ -83,6 +86,7 @@
 				39 01 00 00 00 00 04
 				  C6 41 63 03
 				39 01 00 00 00 00 0A
+
 				  D0 00 55 67 02 01 00 31 02 02
 				39 01 00 00 00 00 0A
 				  D1 00 55 67 02 01 00 31 02 02
@@ -94,6 +98,19 @@
 				  D4 00 55 67 02 01 00 31 02 02
 				39 01 00 00 00 00 0A
 				  D5 00 55 67 02 01 00 31 02 02
+
+				  D0 00 66 77 02 00 00 20 01 02
+				39 01 00 00 00 00 0A
+				  D1 00 66 77 02 00 00 20 01 02
+				39 01 00 00 00 00 0A
+				  D2 00 66 77 02 00 00 20 01 02
+				39 01 00 00 00 00 0A
+				  D3 00 66 77 02 00 00 20 01 02
+				39 01 00 00 00 00 0A
+				  D4 00 66 77 02 00 00 20 01 02
+				39 01 00 00 00 00 0A
+				  D5 00 66 77 02 00 00 20 01 02
+
 				05 01 00 00 78 00 01
 				  11
 				05 01 00 00 28 00 01
@@ -111,8 +128,11 @@
 		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
 		qcom,mdss-dsi-panel-type = "dsi_video_mode";
 		qcom,mdss-dsi-panel-destination = "display_1";
+
 		qcom,mdss-pan-physical-width-dimension = <56>;
 		qcom,mdss-pan-physical-height-dimension = <94>;
+
+
 		qcom,mdss-dsi-panel-width = <480>;
 		qcom,mdss-dsi-panel-height = <800>;
 		qcom,mdss-dsi-bpp = <24>;
@@ -139,13 +159,22 @@
 		qcom,mdss-dsi-lane-0-state;
 		qcom,mdss-dsi-lane-1-state;
 		qcom,mdss-dsi-lane-map = "lane_map_3012";
+
 		qcom,mdss-dsi-t-clk-pre = <0x2D>;
 		qcom,mdss-dsi-t-clk-post = <0x19>;
+
+		qcom,mdss-dsi-t-clk-pre = <0x17>;
+		qcom,mdss-dsi-t-clk-post = <0x04>;
+
 		qcom,mdss-dsi-stream = <0>;
 		qcom,mdss-dsi-mdp-trigger = "none";
 		qcom,mdss-dsi-dma-trigger = "trigger_sw";
 		qcom,mdss-dsi-panel-framerate = <60>;
+
 		qcom,mdss-dsi-panel-timings = [A5 89 15 00 8F 8F 18 8B 0F 03 04 00];
+
+		qcom,mdss-dsi-panel-timings = [A6 89 15 00 90 8F 18 8B 0F 03 04 00];
+
 		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
 		qcom,mdss-dsi-off-command-state = "dsi_lp_mode";
 		qcom,mdss-dsi-on-command = [
@@ -162,7 +191,11 @@
 				39 01 00 00 00 00 02
 				  B3 02
 				39 01 00 00 00 00 02
+
 				  B4 04
+
+				  B4 00
+
 				39 01 00 00 00 00 06
 				  B5 40 10 10 00 00
 				39 01 00 00 00 00 07
@@ -172,6 +205,7 @@
 				39 01 00 00 00 00 07
 				  C4 12 24 18 18 02 49
 				39 01 00 00 00 00 02
+
 				  C5 6D
 				39 01 00 00 00 00 04
 				  C6 42 63 03
@@ -187,6 +221,23 @@
 				  D4 22 05 65 03 00 04 21 00 02
 				39 01 00 00 00 00 0A
 				  D5 22 05 65 03 00 04 21 00 02
+
+				  C5 69
+				39 01 00 00 00 00 04
+				  C6 41 63 03
+				39 01 00 00 00 00 0A
+				  D0 00 24 67 02 00 00 20 00 02
+				39 01 00 00 00 00 0A
+				  D1 00 24 67 02 00 00 20 00 02
+				39 01 00 00 00 00 0A
+				  D2 00 24 67 02 00 00 20 00 02
+				39 01 00 00 00 00 0A
+				  D3 00 24 67 02 00 00 20 00 02
+				39 01 00 00 00 00 0A
+				  D4 00 24 67 02 00 00 20 00 02
+				39 01 00 00 00 00 0A
+				  D5 00 24 67 02 00 00 20 00 02
+
 				05 01 00 00 78 00 01
 				  11
 				05 01 00 00 28 00 01
@@ -499,6 +550,7 @@
 				  B7 08
 				];
 	};
+
 	
 	//W35 Display
 	dsi_w35_tovis_hvga_cmd: qcom,dsi_v2_w35_tovis_hvga_cmd {
@@ -601,6 +653,9 @@
 				];
 	};
 	
+
+
+
 	dsi_innolux_hvga_vid: qcom,dsi_v2_innolux_hvga_video {
 		qcom,mdss-dsi-panel-name = "INNOLUX 320p video mode dsi panel";
 		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
@@ -745,8 +800,11 @@
 				  53 24
 				15 01 00 00 05 00 02
 				  55 01
+
 				15 01 00 00 00 00 02
 				  CC 00
+
+
 				29 01 00 00 00 00 03
 				  C0 13 13
 				23 01 00 00 00 00 02
@@ -770,16 +828,28 @@
 				29 01 00 00 00 00 03
 				  F8 21 06
 				29 01 00 00 00 00 10
+
 				  E0 00 09 0F 03 0D 05 33 36 4C 0E 1B 0F 24 23 0F
 				29 01 00 00 00 00 10
 				  E1 00 14 1C 00 0F 07 37 44 53 09 0D 0C 35 37 0F
 				29 01 00 00 00 00 11
 				  E2 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 C0
+
+				  E0 00 05 08 00 06 04 31 49 4B 0C 16 0E 23 24 0F
+				29 01 00 00 00 00 10
+				  E1 00 13 1C 02 10 06 3A 41 56 0B 15 0F 3E 3B 0F
+				29 01 00 00 00 00 11
+				  E2 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0 A0
+
 				29 01 00 00 00 00 41
 				  E3 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 				  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 				  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
 				  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 30
+
+				  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+
 				15 01 00 00 00 00 02
 				  35 00
 				05 01 00 00 96 00 01
@@ -885,6 +955,7 @@
 				  10
 				];
 	};
+
 	dsi_lgd_lg4577_wvga_video: qcom,dsi_v2_lgd_lg4577_wvga_video {
 		qcom,mdss-dsi-panel-name = "LGD LG4577 WVGA video mode dsi panel";
 		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
@@ -977,6 +1048,8 @@
 				  10
 				];
 	};
+
+
 	/* W5DS Shrink display - TOVIS */
 	dsi_tovis_shrink_wvga_video: qcom,dsi_v2_tovis_shrink_wvga_video {
 		qcom,mdss-dsi-panel-name = "TOVIS ILI9806E WVGA video mode dsi panel";
@@ -1059,11 +1132,19 @@
 				15 01 00 00 00 00 02 /* VCOM Control 1~2 */
 					52 00 
 				15 01 00 00 00 00 02 /* VCOM Control 1~2 */
+
 					53 47 
 				15 01 00 00 00 00 02 /* VCOM Control 3~4 */
 					54 00 
 				15 01 00 00 00 00 02 /* VCOM Control 3~4 */
 					55 47 
+
+					53 2E 
+				15 01 00 00 00 00 02 /* VCOM Control 3~4 */
+					54 00 
+				15 01 00 00 00 00 02 /* VCOM Control 3~4 */
+					55 2E 
+
 				15 01 00 00 00 00 02 /* VCOM Control 5 */
 					56 00 
 				15 01 00 00 00 00 02 /* Positive Gamma Control (01h~16h) */
@@ -1071,6 +1152,7 @@
 				15 01 00 00 00 00 02 
 					A1 00 
 				15 01 00 00 00 00 02 
+
 					A2 0C 
 				15 01 00 00 00 00 02 
 					A3 06 
@@ -1090,6 +1172,27 @@
 					AA 15
 				15 01 00 00 00 00 02 
 					AB 08
+
+					A2 09 
+				15 01 00 00 00 00 02 
+					A3 07 
+				15 01 00 00 00 00 02 
+					A4 03
+				15 01 00 00 00 00 02 
+					A5 09
+				15 01 00 00 00 00 02 
+					A6 06
+				15 01 00 00 00 00 02 
+					A7 02
+				15 01 00 00 00 00 02 
+					A8 09
+				15 01 00 00 00 00 02 
+					A9 0E
+				15 01 00 00 00 00 02 
+					AA 16
+				15 01 00 00 00 00 02 
+					AB 0C
+
 				15 01 00 00 00 00 02 
 					AC 11 
 				15 01 00 00 00 00 02 
@@ -1103,7 +1206,11 @@
 				15 01 00 00 00 00 02 
 					C1 00
 				15 01 00 00 00 00 02 
+
 					C2 08
+
+					C2 07
+
 				15 01 00 00 00 00 02 
 					C3 08
 				15 01 00 00 00 00 02 
@@ -1111,6 +1218,7 @@
 				15 01 00 00 00 00 02 
 					C5 07
 				15 01 00 00 00 00 02 
+
 					C6 05
 				15 01 00 00 00 00 02 
 					C7 04
@@ -1122,6 +1230,19 @@
 					CA 16
 				15 01 00 00 00 00 02 
 					CB 08
+
+					C6 09
+				15 01 00 00 00 00 02 
+					C7 07
+				15 01 00 00 00 00 02 
+					C8 08
+				15 01 00 00 00 00 02 
+					C9 0A
+				15 01 00 00 00 00 02 
+					CA 15
+				15 01 00 00 00 00 02 
+					CB 09
+
 				15 01 00 00 00 00 02 
 					CC 11
 				15 01 00 00 00 00 02 
@@ -1263,6 +1384,7 @@
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					01 00
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+
 					02 02
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					03 02
@@ -1384,6 +1506,129 @@
 					3D 01
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					3E 00
+
+					02 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					03 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					04 10
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					05 10
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					06 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					07 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					08 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					09 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0A 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0B 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0C 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0D 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0E 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0F 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					10 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					11 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					12 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					13 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					14 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					15 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					16 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					17 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					18 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					19 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1A 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1B 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1C 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1D 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1E 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1F 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					20 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					21 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					22 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					23 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					24 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					25 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					26 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					27 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					28 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					29 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2A 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2B 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2C 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2D 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2E 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2F 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					30 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					31 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					32 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					33 40
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					34 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					35 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					36 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					37 30
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					38 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					39 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3A 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3B 20
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3C 10
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3D 10
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3E 10
+
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					3F 00
 				39 01 00 00 00 00 06 /* Set EXTC - Change to page 3 */
@@ -1421,6 +1666,7 @@
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					0F 00
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+
 					10 02
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					11 02
@@ -1870,6 +2116,489 @@
 					6E 02
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					6F 02
+
+					10 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					11 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					12 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					13 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					14 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					15 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					16 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					17 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					18 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					19 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					20 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					21 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					22 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					23 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					24 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					25 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					26 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					27 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					28 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					29 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					30 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					31 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					32 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					33 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					34 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					35 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					36 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					37 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					38 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					39 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					40 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					41 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					42 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					43 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					44 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					45 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					46 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					47 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					48 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					49 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					50 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					51 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					52 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					53 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					54 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					55 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					56 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					57 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					58 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					59 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					60 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					61 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					62 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					63 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					64 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					65 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					66 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					67 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					68 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					69 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					70 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					71 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					72 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					73 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					74 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					75 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					76 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					77 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					78 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					79 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					7F 00
+				39 01 00 00 00 00 06 /* Set EXTC - Change to page 4 */
+					FF FF 98 06 04 04	
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					00 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					01 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					02 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					03 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					04 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					05 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					06 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					07 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					08 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					09 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					0F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					10 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					11 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					12 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					13 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					14 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					15 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					16 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					17 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					18 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					19 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					1F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					20 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					21 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					22 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					23 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					24 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					25 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					26 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					27 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					28 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					29 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					2F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					30 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					31 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					32 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					33 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					34 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					35 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					36 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					37 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					38 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					39 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					3F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					40 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					41 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					42 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					43 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					44 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					45 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					46 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					47 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					48 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					49 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					4F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					50 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					51 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					52 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					53 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					54 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					55 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					56 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					57 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					58 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					59 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					50 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					51 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					52 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					53 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					54 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					55 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					56 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					57 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					58 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					59 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					5F 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					60 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					61 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					62 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					63 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					64 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					65 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					66 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					67 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					68 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					69 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6A 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6B 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6C 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6D 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6E 00
+				15 01 00 00 00 00 02 /* Digital gamma control 1 */
+					6F 00
+
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
 					70 00
 				15 01 00 00 00 00 02 /* Digital gamma control 1 */
@@ -1913,7 +2642,11 @@
 				15 01 00 00 00 00 02 /* White Display Brightness Value */
 					51 FF
 				15 01 00 00 00 00 02 /* White CTRL Display Value*/
+
 					53 00
+
+					53 2C
+
 				15 01 00 00 00 00 02 /* Color Medium enhancement function Enable */
 					55 B0
 				05 01 00 00 78 00 01 /* Sleep out */
@@ -1929,6 +2662,7 @@
 		];
 		qcom,off-cmds-dsi-state = "DSI_HS_MODE";
 	};
+
 	/* W65 Shrink display - TOVIS */
 	dsi_w65_tovis_shrink_wvga_video: qcom,dsi_v2_w65_tovis_shrink_wvga_video {
 		qcom,mdss-dsi-panel-name = "TOVIS ILI9806E WVGA video mode dsi panel";
@@ -2209,6 +2943,8 @@
 		];
 		qcom,off-cmds-dsi-state = "DSI_HS_MODE";
 	};
+
+
 	/* W5 display - LGD Incell */
 	dsi_v2_lgd_incell_wvga_video: qcom,dsi_v2_lgd_incell_wvga_video {
 		qcom,mdss-dsi-panel-name = "LGD 480p incell video mode dsi panel";

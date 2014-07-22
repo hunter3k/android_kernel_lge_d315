@@ -87,7 +87,11 @@ static struct gpiomux_setting touch_misc_cfg = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_IN,
 };
+
 #endif /* CONFIG_TOUCHSCREEN_LGE_TS_MISC */
+
+#endif /*                                */
+
 #endif
 
 #if defined(CONFIG_LGE_TOUCHSCREEN_SYNAPTIC) || defined(CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
@@ -104,7 +108,11 @@ static struct gpiomux_setting synaptics_reset_cfg = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_OUT_HIGH,
 };
+
 #endif /* CONFIG_LGE_TOUCHSCREEN_SYNAPTIC || CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 */
+
+#endif /*                                                                          */
+
 
 #if defined(CONFIG_TOUCHSCREEN_AGS04_TOUCH_KEYPAD)
 static struct gpiomux_setting ags04_touch_keypad_int_act_cfg = {
@@ -256,7 +264,11 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
+
 #ifdef CONFIG_MACH_LGE  /* LGE_CHANGE_S,  Added for COMMON_I2C */
+
+#ifdef CONFIG_MACH_LGE  /*                                     */
+
 	{
 		.gpio      = 6,		/* BLSP1 QUP2 I2C_SDA */
 		.settings = {
@@ -360,7 +372,11 @@ static struct msm_gpiomux_config msm_touch_configs_rev_b[] __initdata = {
 		},
 	},
 };
+
 #endif /* CONFIG_LGE_TOUCHSCREEN_SYNAPTIC || CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 */
+
+#endif /*                                                                          */
+
 
 #if defined(CONFIG_TOUCHSCREEN_LGE_TS_MISC)
 static struct msm_gpiomux_config msm_touch_configs_rev_a2[] __initdata = {
@@ -386,7 +402,11 @@ static struct msm_gpiomux_config msm_touch_configs_rev_a2[] __initdata = {
 		},
 	},
 };
+
 #endif /* CONFIG_TOUCHSCREEN_LGE_TS_MISC */
+
+#endif /*                                */
+
 
 static struct gpiomux_setting sd_card_det_active_config = {
 	.func = GPIOMUX_FUNC_GPIO,
@@ -402,14 +422,22 @@ static struct gpiomux_setting sd_card_det_sleep_config = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_IN,
 };
+
 #else // not CONFIG_MACH_LGE
+
+#else //                    
+
 static struct gpiomux_setting sd_card_det_sleep_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
 	.pull = GPIOMUX_PULL_UP,
 	.dir = GPIOMUX_IN,
 };
+
 #endif // CONFIG_MACH_LGE
+
+#endif //                
+
 
 static struct msm_gpiomux_config sd_card_det __initdata = {
 	.gpio = 37,
@@ -626,7 +654,11 @@ static struct msm_gpiomux_config usb_otg_sw_configs[] __initdata = {
 };
 #endif
 
+
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+/*                                                      */
+
 #ifdef CONFIG_LGE_NFC_PN547
 static struct gpiomux_setting nfc_pn547_sda_cfg = {
 	.func = GPIOMUX_FUNC_3,
@@ -704,7 +736,11 @@ static struct msm_gpiomux_config msm_nfc_configs[] __initdata = {
 	},
 };
 #endif
+
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+/*                                                      */
+
 #if defined(CONFIG_BU52061NVX)
 static struct msm_gpiomux_config msm_hall_ic_configs[] __initdata = {
 	{
@@ -729,7 +765,11 @@ void __init msm8226_init_gpiomux(void)
 #ifdef CONFIG_MACH_LGE
 	hw_rev_type hw_rev;
 	hw_rev = lge_get_board_revno();
+
 #endif /* CONFIG_MACH_LGE */
+
+#endif /*                 */
+
 	rc = msm_gpiomux_init_dt();
 	if (rc) {
 		pr_err("%s failed %d\n", __func__, rc);
@@ -755,6 +795,7 @@ void __init msm8226_init_gpiomux(void)
 #if defined(CONFIG_TOUCHSCREEN_LGE_TS_MISC)
 		msm_gpiomux_install(msm_touch_configs_rev_a2, ARRAY_SIZE(msm_touch_configs_rev_a2));
 		printk(KERN_ERR "[Touch] HW_REV_A2 configs \n");
+
 #endif /* CONFIG_TOUCHSCREEN_LGE_TS_MISC */
 	} else if(hw_rev >= HW_REV_B) {
 #if defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC) || defined(CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
@@ -767,6 +808,16 @@ void __init msm8226_init_gpiomux(void)
 #endif /* CONFIG_LGE_TOUCHSCREEN_SYNAPTIC || CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4 */
 	} else {}
 #endif /* CONFIG_MACH_LGE */
+
+#endif /*                                */
+	} else if(hw_rev >= HW_REV_B) {
+#if defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC) || defined(CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4)
+		msm_gpiomux_install(msm_touch_configs_rev_b, ARRAY_SIZE(msm_touch_configs_rev_b));
+		printk(KERN_ERR "[Touch] over HW_REV_B configs \n");
+#endif /*                                                                          */
+	} else {}
+#endif /*                 */
+
 #if defined(CONFIG_BU52061NVX)
 	msm_gpiomux_install(msm_hall_ic_configs, ARRAY_SIZE(msm_hall_ic_configs));
 #endif /* CONFIG_BU52061NVX */
@@ -782,11 +833,19 @@ void __init msm8226_init_gpiomux(void)
 					ARRAY_SIZE(usb_otg_sw_configs));
 #endif
 
+
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up */
 #ifdef CONFIG_LGE_NFC_PN547
 	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
 #endif
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up */
+
+/*                                                       */
+#ifdef CONFIG_LGE_NFC_PN547
+	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
+#endif
+/*                                                       */
+
 }
 
 

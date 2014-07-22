@@ -56,7 +56,7 @@
     of the "Portable" HDD.   This file also includes the underlying Linux
     Wireless Extensions Data types referred to by CCP.
 
-  ======================================================================== */
+  == */
 
 #include <linux/version.h>
 #include <linux/module.h>
@@ -5555,7 +5555,11 @@ static int iw_set_dynamic_mcbc_filter(struct net_device *dev,
 
         pHddCtx->configuredMcastBcastFilter = pRequest->mcastBcastFilterSetting;
 
+
 /* LGE_UPDATE, 20131031, real-wifi@lge.com by beaver, store the configuredMcastBcastFilter value */
+
+/*                                                                                               */
+
 #if 1
         pHddCtx->cfg_ini->mcastBcastFilterSetting = pHddCtx->configuredMcastBcastFilter;
 #endif

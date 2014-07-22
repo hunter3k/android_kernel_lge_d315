@@ -49,12 +49,20 @@
 #include <mach/msm_bus.h>
 #include <mach/rpm-regulator.h>
 
+
 /* LGE_CHANGE_S: Cable Detection */
+
+/*                               */
+
 #ifdef  CONFIG_LGE_PM
 #include    <mach/board_lge.h>
 #include    <linux/power_supply.h>
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 #ifdef CONFIG_LGE_PM_VZW_FAST_CHG
 extern void set_vzw_usb_charging_state(int state);
@@ -1093,7 +1101,11 @@ static int msm_otg_suspend(struct msm_otg *motg)
 #else
 		msm_hsusb_ldo_enable(motg, USB_PHY_REG_OFF);
 #endif // (defined (CONFIG_MACH_MSM8X10_W3DS_TIM_BR) || defined (CONFIG_MACH_MSM8X10_W3DS_GLOBAL_COM) || defined (CONFIG_MACH_MSM8X10_W3C_VZW))
+
 #endif // CONFIG_USB_G_LGE_ANDROID
+
+#endif //                         
+
 		motg->lpm_flags |= PHY_PWR_COLLAPSED;
 	} else if (motg->caps & ALLOW_PHY_REGULATORS_LPM &&
 			!host_bus_suspend && !device_bus_suspend && !dcp) {
@@ -1200,7 +1212,11 @@ static int msm_otg_resume(struct msm_otg *motg)
 #else
 		msm_hsusb_ldo_enable(motg, USB_PHY_REG_ON);
 #endif // (defined (CONFIG_MACH_MSM8X10_W3DS_TIM_BR) || defined (CONFIG_MACH_MSM8X10_W3DS_GLOBAL_COM) || defined (CONFIG_MACH_MSM8X10_W3C_VZW))
+
 #endif // CONFIG_USB_G_LGE_ANDROID
+
+#endif //                         
+
 		motg->lpm_flags &= ~PHY_PWR_COLLAPSED;
 	} else if (motg->lpm_flags & PHY_REGULATORS_LPM) {
 		msm_hsusb_ldo_enable(motg, USB_PHY_REG_LPM_OFF);
@@ -1379,7 +1395,11 @@ static int msm_otg_notify_power_supply(struct msm_otg *motg, unsigned mA)
 		goto psy_error;
 	}
 
+
 /* LGE_CHANGE_S: Cable Detect & Current Set */
+
+/*                                          */
+
 #ifdef CONFIG_LGE_PM
     if (motg->chg_type == USB_DCP_CHARGER || motg->chg_type == USB_PROPRIETARY_CHARGER ||
 		motg->chg_type == USB_FLOATED_CHARGER){
@@ -1407,7 +1427,11 @@ static int msm_otg_notify_power_supply(struct msm_otg *motg, unsigned mA)
 
 	pr_debug("[LGE] motg->cur_power: %d mA: %d\n", motg->cur_power, mA);
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 	if (motg->cur_power == 0 && mA > 2) {
 #ifdef CONFIG_LGE_PM
@@ -1475,11 +1499,19 @@ static int msm_otg_notify_power_supply(struct msm_otg *motg, unsigned mA)
 		}
 #endif
 
+
         /* LGE_CHANGE_S */
         /* Below line comes from 'msm_otg_sm_work' because of AC(TA) removal detection*/
         if(mA == 0)
             motg->chg_type = USB_INVALID_CHARGER;
         /* LGE_CHANGE_E */
+
+        /*              */
+        /* Below line comes from 'msm_otg_sm_work' because of AC(TA) removal detection*/
+        if(mA == 0)
+            motg->chg_type = USB_INVALID_CHARGER;
+        /*              */
+
 	}
 	// Suspend Mode
 	else if (motg->cur_power > 0 && (mA == 2)) {
@@ -1567,7 +1599,11 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 {
 	struct usb_gadget *g = motg->phy.otg->gadget;
 
+
 #if defined (CONFIG_LGE_PM) && ( defined (CONFIG_MACH_MSM8X10_W3C_VZW) || defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+#if defined (CONFIG_LGE_PM) && defined (CONFIG_MACH_MSM8X10_W3C_VZW)
+
 	acc_cable_type cable;
 #endif
 
@@ -1586,8 +1622,13 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 			"Failed notifying %d charger type to PMIC\n",
 							motg->chg_type);
 
+
 /* LGE_CHANGE_S: Cable Detection */
 #if defined (CONFIG_LGE_PM) && ( !defined (CONFIG_MACH_MSM8X10_W3C_VZW) && !defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+/*                               */
+#if defined (CONFIG_LGE_PM) && !defined (CONFIG_MACH_MSM8X10_W3C_VZW)
+
     if (mA > 2 && lge_pm_get_cable_type() != NO_INIT_CABLE) {
         if (motg->chg_type == USB_SDP_CHARGER)
             mA  = lge_pm_get_usb_current();
@@ -1595,7 +1636,11 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
 		         motg->chg_type == USB_FLOATED_CHARGER)
             mA  = lge_pm_get_ta_current();
 	}
+
 #elif defined (CONFIG_LGE_PM) && ( defined (CONFIG_MACH_MSM8X10_W3C_VZW) || defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+#elif defined (CONFIG_LGE_PM) && defined (CONFIG_MACH_MSM8X10_W3C_VZW)
+
     cable = lge_pm_get_cable_type();
 
     if (mA > 2 && cable != NO_INIT_CABLE) {
@@ -1605,7 +1650,11 @@ static void msm_otg_notify_charger(struct msm_otg *motg, unsigned mA)
         }
     }
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 	if (motg->cur_power == mA)
 		return;
@@ -2523,12 +2572,22 @@ int32_t lge_pm_get_cable_usb_id_adc(struct msm_otg *motg)
 #ifdef CONFIG_ARCH_MSM8610
 			rc = qpnp_vadc_read(motg->vadc_dev,P_MUX3_1_1, &result);
 #else
+
 #if defined(CONFIG_MACH_MSM8226_W7_GLOBAL_COM) \
 	|| defined(CONFIG_MACH_MSM8226_W7_GLOBAL_SCA) \
 	|| defined(CONFIG_MACH_MSM8226_W7DS_GLOBAL_COM) \
 	|| defined(CONFIG_MACH_MSM8226_W7N_GLOBAL_COM) \
 	|| defined(CONFIG_MACH_MSM8226_W7N_GLOBAL_SCA) \
 	|| defined(CONFIG_MACH_MSM8226_W7DSN_GLOBAL_COM)
+
+#if defined(CONFIG_MACH_MSM8226_W7DS_OPEN_CIS)	\
+	|| defined(CONFIG_MACH_MSM8226_W7_OPEN_CIS) \
+	|| defined(CONFIG_MACH_MSM8226_W7_OPEN_EU) \
+	|| defined(CONFIG_MACH_MSM8226_W7_GLOBAL_COM) \
+	|| defined(CONFIG_MACH_MSM8226_W7_GLOBAL_SCA) \
+	|| defined(CONFIG_MACH_MSM8226_W7DS_GLOBAL_SCA)\
+	|| defined(CONFIG_MACH_MSM8226_W7DS_GLOBAL_COM)
+
 			if(lge_get_board_revno() == HW_REV_0)
 				rc = qpnp_vadc_read(motg->vadc_dev,P_MUX8_1_1, &result);
 			else
@@ -2835,14 +2894,21 @@ static void msm_otg_wait_for_ext_chg_done(struct msm_otg *motg)
 #if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC)
 extern void trigger_usb_state_from_otg(int usb_type);
 #endif
+
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_S540
 extern void trigger_baseline_state_machine(int plug_in, int type);
 #endif
+
+
+
 static void msm_otg_sm_work(struct work_struct *w)
 {
 	struct msm_otg *motg = container_of(w, struct msm_otg, sm_work);
 	struct usb_otg *otg = motg->phy.otg;
 	bool work = 0, srp_reqd, dcp;
+#ifdef CONFIG_USB_G_LGE_ANDROID
+	struct msm_otg_platform_data *pdata = motg->pdata;
+#endif
 
 #if ( defined(CONFIG_MACH_MSM8X10_W3C_VZW) || defined(CONFIG_MACH_MSM8X10_W5C_VZW))
     bool invalid;
@@ -2907,9 +2973,12 @@ static void msm_otg_sm_work(struct work_struct *w)
 #if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC)
 					trigger_usb_state_from_otg(USB_DCP_CHARGER);
 #endif
+
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_S540
 					trigger_baseline_state_machine(1, 1);
 #endif
+
+
 					/* Enable VDP_SRC */
 					ulpi_write(otg->phy, 0x2, 0x85);
 					if (motg->ext_chg_opened) {
@@ -2919,7 +2988,11 @@ static void msm_otg_sm_work(struct work_struct *w)
 					}
 					/* fall through */
 				case USB_PROPRIETARY_CHARGER:
+
 #if ( defined (CONFIG_MACH_MSM8X10_W3C_VZW) || defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+#if defined (CONFIG_MACH_MSM8X10_W3C_VZW)
+
 					msm_otg_notify_charger(motg, IDEV_CHG_DCP);
 #else
 					msm_otg_notify_charger(motg, IDEV_CHG_MAX);
@@ -2941,7 +3014,11 @@ static void msm_otg_sm_work(struct work_struct *w)
 					 */
 					break;
 				case USB_CDP_CHARGER:
+
 #if ( defined (CONFIG_MACH_MSM8X10_W3C_VZW) || defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+#if defined (CONFIG_MACH_MSM8x10_W3C_VZW)
+
 					msm_otg_notify_charger(motg,
 							IDEV_CHG_CDP);
 #else
@@ -2954,9 +3031,12 @@ static void msm_otg_sm_work(struct work_struct *w)
 #if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTICS)
 					trigger_usb_state_from_otg(USB_CDP_CHARGER);
 #endif
+
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_S540
 					trigger_baseline_state_machine(1, 0);
 #endif
+
+
 					break;
 				case USB_ACA_C_CHARGER:
 					msm_otg_notify_charger(motg,
@@ -2966,7 +3046,20 @@ static void msm_otg_sm_work(struct work_struct *w)
 						OTG_STATE_B_PERIPHERAL;
 					break;
 				case USB_SDP_CHARGER:
+
 #if ( defined (CONFIG_MACH_MSM8X10_W3C_VZW) || defined (CONFIG_MACH_MSM8X10_W5C_VZW) )
+
+#ifdef CONFIG_LGE_PM_VZW_FAST_CHG
+					{
+						bool tmout = motg->dcd_time >= MSM_CHG_DCD_TIMEOUT;
+						if (tmout) {
+							set_vzw_usb_charging_state(0 /* IS_OPEN_TA */);
+							break;
+						}
+					}
+#endif
+#if defined (CONFIG_MACH_MSM8X10_W3C_VZW)
+
 					msm_otg_notify_charger(motg, IUNIT);
 #elif defined(CONFIG_LGE_PM)
 					msm_otg_notify_charger(motg,
@@ -2975,6 +3068,7 @@ static void msm_otg_sm_work(struct work_struct *w)
 #if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC)
 					trigger_usb_state_from_otg(USB_SDP_CHARGER);
 #endif
+
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_S540
 					trigger_baseline_state_machine(1, 0);
 #endif
@@ -2994,6 +3088,8 @@ static void msm_otg_sm_work(struct work_struct *w)
                         }
                     }
 #endif
+
+
 					msm_otg_start_peripheral(otg, 1);
 					otg->phy->state =
 						OTG_STATE_B_PERIPHERAL;
@@ -3028,13 +3124,18 @@ static void msm_otg_sm_work(struct work_struct *w)
 #endif
 			dcp = (motg->chg_type == USB_DCP_CHARGER);
 			motg->chg_state = USB_CHG_STATE_UNDEFINED;
+
             /* LGE_CHANGE_S */
+
+            /*              */
+
             /* Below line is moved to 'msm_otg_notify_power_supply'
             * for AC(TA) removal detection
             */
             #ifndef CONFIG_LGE_PM
 			motg->chg_type = USB_INVALID_CHARGER;
             #endif
+
             /* LGE_CHANGE_E */
 #if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC)
 			trigger_usb_state_from_otg(0);
@@ -3042,6 +3143,12 @@ static void msm_otg_sm_work(struct work_struct *w)
 
 #ifdef CONFIG_TOUCHSCREEN_ATMEL_S540
 			trigger_baseline_state_machine(0, -1);
+#endif
+
+
+            /*              */
+#if defined (CONFIG_TOUCHSCREEN_ATMEL_S336) || defined (CONFIG_LGE_TOUCHSCREEN_SYNAPTIC)
+			trigger_usb_state_from_otg(0);
 #endif
 
 			msm_otg_notify_charger(motg, 0);
@@ -3062,6 +3169,7 @@ static void msm_otg_sm_work(struct work_struct *w)
 			 * switch from ACA to PMIC.  Check ID state
 			 * before entering into low power mode.
 			 */
+
 #ifdef CONFIG_USB_G_LGE_ANDROID
 			if (pdata->mode != USB_PERIPHERAL) {
 				if (!msm_otg_read_pmic_id_state(motg)) {
@@ -3072,6 +3180,21 @@ static void msm_otg_sm_work(struct work_struct *w)
 				}
 			}
 #endif
+
+			if (!msm_otg_read_pmic_id_state(motg)) {
+				pr_debug("process missed ID intr\n");
+#ifdef CONFIG_USB_G_LGE_ANDROID
+                if (pdata->mode != USB_PERIPHERAL) {
+                    clear_bit(ID, &motg->inputs);
+                }
+#else
+				clear_bit(ID, &motg->inputs);
+#endif
+				work = 1;
+				break;
+			}
+
+
 #ifdef CONFIG_MACH_MSM8926_X5_VZW /* Detecting Cradle for VZW */
 			if (carkit_get_deskdock()) {
 				carkit_set_deskdock(0);

@@ -70,7 +70,11 @@ static struct wake_lock ear_hook_wake_lock;
 
 #if 0 //QCT ORG code 
 #define HS_DETECT_PLUG_TIME_MS (5 * 1000)
+
 #else // hj74.kim@lge.com : decrease device polling time
+
+#else //                                                
+
 #define HS_DETECT_PLUG_TIME_MS (3 * 1000)
 #endif
 
@@ -79,7 +83,11 @@ static struct wake_lock ear_hook_wake_lock;
 
 #if 0 //QCT ORG code 
 #define SWCH_IRQ_DEBOUNCE_TIME_US 5000
+
 #else // hj74.kim@lge.com : increase debounce time
+
+#else //                                          
+
 #define SWCH_IRQ_DEBOUNCE_TIME_US 300000
 #endif
 
@@ -115,6 +123,9 @@ static struct wake_lock ear_hook_wake_lock;
  * of plug type with current source
  */
 
+
+
+
 #ifdef CONFIG_MACH_LGE // hj74.kim : change value for square reader
 #define WCD9XXX_CS_MEAS_INVALD_RANGE_LOW_MV 130
 #else
@@ -140,6 +151,7 @@ static struct wake_lock ear_hook_wake_lock;
 /* RX_HPH_CNP_WG_TIME increases by 0.24ms */
 #define WCD9XXX_WG_TIME_FACTOR_US	240
 
+
 //#ifdef CONFIG_MACH_LGE // hj74.kim : change value for HTC Innovation HS
 //#define WCD9XXX_V_CS_HS_MAX 650
 //#else
@@ -149,10 +161,21 @@ static struct wake_lock ear_hook_wake_lock;
 #ifdef CONFIG_MACH_LGE // LGE CHANGED : change value for 3pole headset detect issue
 #define WCD9XXX_V_CS_NO_MIC 10
 #else
+
+#ifdef CONFIG_MACH_LGE // hj74.kim : change value for HTC Innovation HS
+#define WCD9XXX_V_CS_HS_MAX 650
+#else
+#define WCD9XXX_V_CS_HS_MAX 500
+#endif
+
+
 #define WCD9XXX_V_CS_NO_MIC 5
 #endif
 
 #define WCD9XXX_MB_MEAS_DELTA_MAX_MV 80
+
+
+
 
 #ifdef CONFIG_MACH_LGE // hj74.kim : change value for some 4pole earjack
 #define WCD9XXX_CS_MEAS_DELTA_MAX_MV 30
@@ -167,7 +190,11 @@ MODULE_PARM_DESC(impedance_detect_en, "enable/disable impedance detect");
 
 static bool detect_use_vddio_switch;
 
+
 #if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //LGE_UPDATE 20130626 beekay.lee@lge.com WX_MAXIM
+
+#if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //                                               
+
 extern bool maxim_enabled;
 #endif
 
@@ -645,6 +672,10 @@ static void wcd9xxx_codec_switch_cfilt_mode(struct wcd9xxx_mbhc *mbhc,
 static void wcd9xxx_jack_report(struct wcd9xxx_mbhc *mbhc,
 				struct snd_soc_jack *jack, int status, int mask)
 {
+
+	// sound-bsp, 2013-11-19, hj74.kim : add debugging log
+	printk("[LGE MBHC]: wcd9xxx_jack_report status = 0x%x mask = 0x%x\n", status, mask);
+
 	if (jack == &mbhc->headset_jack) {
 		wcd9xxx_resmgr_cond_update_cond(mbhc->resmgr,
 						WCD9XXX_COND_HPH_MIC,
@@ -654,6 +685,7 @@ static void wcd9xxx_jack_report(struct wcd9xxx_mbhc *mbhc,
 						status & SND_JACK_HEADPHONE);
 	}
 
+
 	// LGE CHANGE START , 2014-01-21 : wrong headset detection issue - work around code
 	if((switch_get_state(&mbhc->sdev)==LGE_HEADSET_NO_MIC) && (mask == WCD9XXX_JACK_MASK)&& (status == SND_JACK_HEADSET) )
 	{
@@ -661,6 +693,8 @@ static void wcd9xxx_jack_report(struct wcd9xxx_mbhc *mbhc,
 		snd_soc_jack_report_no_dapm(jack, 0, mask);
 	}
 	// LGE CHANGE END
+
+
 
 #if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) // hj74.kim : add switch dev
 			if( maxim_enabled == false )
@@ -688,8 +722,12 @@ static void wcd9xxx_jack_report(struct wcd9xxx_mbhc *mbhc,
 				}
 			}
 #endif
+
 	// sound-bsp, 2013-11-19, hj74.kim : add debugging log
 	printk("[LGE MBHC]: wcd9xxx_jack_report status = 0x%x mask = 0x%x\n", status, mask);
+
+
+
 	snd_soc_jack_report_no_dapm(jack, status, mask);
 }
 
@@ -906,7 +944,11 @@ static void wcd9xxx_insert_detect_setup(struct wcd9xxx_mbhc *mbhc, bool ins)
 	snd_soc_update_bits(mbhc->codec, WCD9XXX_A_MBHC_INSERT_DETECT, 1, 0);
 
 	// sound-bsp, 2013-11-19, hj74.kim : add debugging log
+
 	//printk("[LGE MBHC] %d[NO=0,NC=1]\n", mbhc->mbhc_cfg->gpio_level_insert);
+
+	//                                                                        
+
 	
 	if (mbhc->mbhc_cfg->gpio_level_insert)
 		snd_soc_write(mbhc->codec, WCD9XXX_A_MBHC_INSERT_DETECT,
@@ -3457,9 +3499,13 @@ irqreturn_t wcd9xxx_dce_handler(int irq, void *data)
 
 	// sound-bsp, 2013-11-19, hj74.kim : add debugging log
 	printk("[LGE MBHC]: wcd9xxx_dce_handler enter\n");
+
 //LGE CHANGE START
 	wake_lock_timeout(&ear_hook_wake_lock, 4 * HZ);	
 //LGE CHANGE END	
+
+
+
 	WCD9XXX_BCL_LOCK(mbhc->resmgr);
 	/* QCT case 01448950 polling noise fix [2014/02/28] */
 	mutex_lock(&mbhc->mbhc_lock);
@@ -3690,7 +3736,11 @@ static irqreturn_t wcd9xxx_release_handler(int irq, void *data)
 							 &mbhc->button_jack,
 							 mbhc->buttons_pressed,
 							 mbhc->buttons_pressed);
+
 #ifdef CONFIG_MACH_LGE //2014.01.06  hj74.kim@lge.com
+
+#ifdef CONFIG_MACH_LGE //                            
+
 					msleep(10);
 #endif					
 					pr_debug("%s: Reporting btn release\n",
@@ -4902,7 +4952,11 @@ int wcd9xxx_mbhc_init(struct wcd9xxx_mbhc *mbhc, struct wcd9xxx_resmgr *resmgr,
 			return ret;
 		}
 
+
 #ifdef CONFIG_MACH_LGE // hj74.kim@lge.com
+
+#ifdef CONFIG_MACH_LGE //                 
+
 		ret = snd_jack_set_key(mbhc->button_jack.jack,
 				       SND_JACK_BTN_7,
 				       KEY_VOLUMEDOWN);
@@ -4967,7 +5021,11 @@ int wcd9xxx_mbhc_init(struct wcd9xxx_mbhc *mbhc, struct wcd9xxx_resmgr *resmgr,
 		impedance_detect_en = impedance_det_en ? 1 : 0;
 
 	core_res = mbhc->resmgr->core_res;
+
 #if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //LGE_UPDATE 20130626 beekay.lee@lge.com WX_MAXIM
+
+#if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //                                               
+
 if( maxim_enabled )
 	goto skip;
 #endif
@@ -5007,7 +5065,11 @@ if( maxim_enabled )
 			mbhc->intr_ids->button_release);
 		goto err_release_irq;
 	}
+
 #if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //LGE_UPDATE 20130626 beekay.lee@lge.com WX_MAXIM
+
+#if defined(CONFIG_MACH_LGE) && defined(CONFIG_SWITCH_MAX1462X) //                                               
+
 	skip :
 #endif
 	ret = wcd9xxx_request_irq(core_res, mbhc->intr_ids->hph_left_ocp,

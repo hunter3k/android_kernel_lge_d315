@@ -17,6 +17,7 @@
  *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+
 /* Change History
  *
  * 1.0.1	Functions apds9190_show_rev(), apds9190_show_id() and apds9190_show_status()
@@ -37,6 +38,28 @@
  *
  * 1.0.7	2013/07/11, WX-BSP-TS@lge.com(Sanghun.lee)
  * 		- device tree implementation
+
+/*               
+  
+                                                                                     
+                                                                             
+                                                  
+  
+                                                                     
+  
+                                                                     
+  
+                                 
+  
+                                                     
+                                
+  
+                                                     
+                                             
+  
+                                                   
+                                 
+
  */
 
 #include <linux/module.h>

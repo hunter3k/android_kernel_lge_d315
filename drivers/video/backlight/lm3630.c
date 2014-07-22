@@ -44,7 +44,11 @@
 #define BL_OFF       0
 
 
+
 /* LGE_CHANGE  - To turn backlight on by setting default brightness while kernel booting */
+
+/*                                                                                       */
+
 #define BOOT_BRIGHTNESS 1
 
 static struct i2c_client *lm3630_i2c_client;
@@ -111,7 +115,11 @@ EXPORT_SYMBOL(wireless_backlight_state);
 static void lm3630_hw_reset(void)
 {
 	int gpio = main_lm3630_dev->gpio;
+
 	/* LGE_CHANGE - Fix GPIO Setting Warning*/
+
+	/*                                      */
+
 	if (gpio_is_valid(gpio)) {
 		gpio_direction_output(gpio, 1);
 		gpio_set_value_cansleep(gpio, 1);
@@ -236,6 +244,7 @@ void lm3630_backlight_on(int level)
 		pr_info("%s with level %d\n", __func__, level);
 		lm3630_hw_reset();
 
+
 #if defined( CONFIG_MACH_MSM8226_E7WIFI_OPEN_KR ) || defined ( CONFIG_MACH_MSM8926_E7LTE_ATT_US)
 		lm3630_write_reg(main_lm3630_dev->client, 0x02, 0x50); //OVP 32V, OCP 1.0A Boost Freq. 500Khz
 
@@ -254,6 +263,10 @@ void lm3630_backlight_on(int level)
 
 		/*  OVP(24V),OCP(1.0A) , Boost Frequency(500khz) */
 #if !defined(CONFIG_MACH_MSM8926_X10_VZW) && !defined(CONFIG_MACH_MSM8926_B2L_ATT) && !defined(CONFIG_MACH_MSM8926_B2LN_LGU) && !defined(CONFIG_MACH_MSM8926_B2LN_SKT) && !defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM)
+
+		/*  OVP(24V),OCP(1.0A) , Boost Frequency(500khz) */
+#if !defined(CONFIG_MACH_MSM8926_B1L_VZW) && !defined(CONFIG_MACH_MSM8926_B1L_ATT)
+
 		lm3630_write_reg(main_lm3630_dev->client, 0x02, 0x30);
 #else
 		lm3630_write_reg(main_lm3630_dev->client, 0x02, 0x50);  /*B1L Rev0,A... OVP = 32V */
@@ -274,7 +287,11 @@ void lm3630_backlight_on(int level)
 		lm3630_write_reg(main_lm3630_dev->client, 0x05, 0x16);
 
 		/* Enable LED A to Exponential, LED2 is connected to BANK_A */
+
 #if !defined(CONFIG_MACH_MSM8926_X10_VZW) && !defined(CONFIG_MACH_MSM8926_B2L_ATT) && !defined(CONFIG_MACH_MSM8926_B2LN_LGU) && !defined(CONFIG_MACH_MSM8926_B2LN_SKT) && !defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM)
+
+#if !defined(CONFIG_MACH_MSM8926_B1L_VZW) && !defined(CONFIG_MACH_MSM8926_B1L_ATT)
+
 		lm3630_write_reg(main_lm3630_dev->client, 0x00, 0x15);
 #else
 		if(HW_REV_0 == hw_rev)
@@ -288,7 +305,10 @@ void lm3630_backlight_on(int level)
 			lm3630_write_reg(main_lm3630_dev->client, 0x00, 0x15 /*0x14*/); /* 0x15 : enable BANK A | enable LED A | LED2 on BANK A */
 		}
 #endif
+
 #endif//defined( CONFIG_MACH_MSM8226_E7WIFI_OPEN_KR ) || defined ( CONFIG_MACH_MSM8926_E7LTE)
+
+
 
 	}
 	mdelay(1);
@@ -339,7 +359,11 @@ static int bl_set_intensity(struct backlight_device *bd)
 {
 	struct i2c_client *client = to_i2c_client(bd->dev.parent);
 
+
 	/* LGE_CHANGE - if it's trying to set same backlight value, skip it.*/
+
+	/*                                                                  */
+
 	if(bd->props.brightness == cur_main_lcd_level){
 		pr_debug("%s level is already set. skip it\n", __func__);
 		return 0;

@@ -105,6 +105,7 @@
 		qcom,master-en = <1>;	/* Enable GPIO */
 	};
 
+
 	gpio@c100 { /* GPIO 2 */		/* EXT_OVP_CTRL */
 		qcom,mode = <1>;			/* QPNP_PIN_MODE_DIG_OUT */
 		qcom,output-type = <0>;	    /* CMOS logic */
@@ -114,6 +115,12 @@
 		qcom,out-strength = <2>;	/* QPNP_PIN_OUT_STRENGTH_MED */
 		qcom,src-sel = <0>;			/* QPNP_PIN_SEL_FUNC_CONSTANT */
 		qcom,master-en = <1>;		/* Enable GPIO */
+
+	gpio@c100 { /* GPIO 2 */		/* Reserved Pin */
+		qcom,mode = <0>;			/* QPNP_PIN_MODE_DIG_IN */
+		qcom,pull = <4>;			/* QPNP_PIN_PULL_DN */
+		qcom,master-en = <0>;		/* Disable GPIO */
+
 	};
 
 	gpio@c200 { /* GPIO 3 */		/* NFC_CLK_REQ */
@@ -275,6 +282,7 @@
 			lge,cable-56k = <496875 1500 1500>;
 			lge,cable-100k = <654545 500 500>;
 			lge,cable-130k = <780861 1500 1500>;
+
 			lge,cable-180k = <876316 1200 500>;
 			lge,cable-200k = <921429 1200 500>;
 			lge,cable-220k = <988450 1200 500>;
@@ -283,6 +291,16 @@
 			lge,cable-620k = <1418326 500 500>;
 			lge,cable-910k = <1637838 1500 1500>;
 			lge,cable-none = <1900000 1200  500>;
+
+			lge,cable-180k = <876316 800 500>;
+			lge,cable-200k = <921429 800 500>;
+			lge,cable-220k = <988450 800 500>;
+			lge,cable-270k = <1077399 800 500>;
+			lge,cable-330k = <1240865 500 500>;
+			lge,cable-620k = <1418326 500 500>;
+			lge,cable-910k = <1637838 1500 1500>;
+			lge,cable-none = <1900000 800  500>;
+
 		};
 	};
 };
@@ -292,12 +310,18 @@
        qcom,vddmax-mv = <4350>;
 	qcom,vddsafe-mv = <4380>;
 	qcom,vinmin-mv = <4350>;
+
 	qcom,ibatterm-ma = <150>;
 	qcom,vbatdet-delta-mv = <100>;
 	qcom,tchg-mins = <480>;
 	qcom,ext-ovp-present = <1>;
 
 	lge,ext_ovp_gpio = <&pm8226_gpios 2 0x00>;
+
+	qcom,ibatterm-ma = <100>;
+	qcom,vbatdet-delta-mv = <100>;
+	qcom,tchg-mins = <480>;
+
 };
 &pm8226_bms{
 

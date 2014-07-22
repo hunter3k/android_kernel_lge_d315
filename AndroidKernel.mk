@@ -106,6 +106,7 @@ $(KERNEL_CONFIG): $(KERNEL_OUT)
 # RF_SW kyuhyung.lee
 ifneq ($(TARGET_BUILD_VARIANT), user)
 	echo "CONFIG_LGE_RSSI_DEBUG=y" >> $(KERNEL_CONFIG)
+
 endif
 # LGE_CHANGE_END
 endif
@@ -117,6 +118,12 @@ ifeq ($(strip $(USES_VMWARE_VIRTUALIZATION)), true)
 	echo "CONFIG_VMWARE_PVTCP_DEBUG=y" >> $(KERNEL_CONFIG)
 endif
 # VMware_E
+
+endif 
+# LGE_CHANGE_END
+endif
+# porting bootchart2 to android
+
 
 $(KERNEL_OUT)/piggy : $(TARGET_PREBUILT_INT_KERNEL)
 	$(hide) gunzip -c $(KERNEL_OUT)/arch/arm/boot/compressed/piggy.gzip > $(KERNEL_OUT)/piggy

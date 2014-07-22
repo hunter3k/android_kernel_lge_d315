@@ -3,27 +3,47 @@
  */
  
 #include <linux/nfc/pn544_lge.h>
+
 // seokmin.hong@lge.com    header file added for removing depedency of platform and managing LGE modification
 #include "pn544_lge_hwadapter.h"
 /*  LGE_CHANGE_S, [NFC][minwoo.kwon@lge.com], 2013-03-07, NFC Bring up */
 #include <linux/of_gpio.h>
 /*  LGE_CHANGE_E, [NFC][minwoo.kwon@lge.com], 2013-03-07, NFC Bring up */
 
+//                                                                                                           
+#include "pn544_lge_hwadapter.h"
+/*                                                                     */
+#include <linux/of_gpio.h>
+/*                                                                     */
+
+
 
 #ifdef CONFIG_LGE_NFC_MULTICORE_FASTBOOT
 #include <linux/kthread.h>
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 #define MAX_BUFFER_SIZE	512
 #define PN544_RESET_CMD 	0
 #define PN544_DOWNLOAD_CMD	1
+
 
 // LGE_START byunggu.kang@lge.com 2013-11-11 Modify for Balanced IRQ Reg/Dereg
 #ifdef CONFIG_LGE_NFC_SET_IRQ_WAKEUP
 static bool sIrqState = false;
 #endif
 // LGE_END byunggu.kang@lge.com 2013-07-21 Modify for Balanced IRQ Reg/Dereg
+
+//                                                                            
+#ifdef CONFIG_LGE_NFC_SET_IRQ_WAKEUP
+static bool sIrqState = false;
+#endif
+//                                                                          
+
 
 
 #ifdef LGE_NFC_READ_IRQ_MODIFY
@@ -55,7 +75,11 @@ static void pn544_disable_irq(struct pn544_dev *pn544_dev)
 	spin_lock_irqsave(&pn544_dev->irq_enabled_lock, flags);
 	if (pn544_dev->irq_enabled) {
 		disable_irq_nosync(pn544_get_irq_pin(pn544_dev));
+
 // 20120831, jh.heo@lge.com Fix to irq interrupt in sleep mode.
+
+//                                                             
+
 #if !defined(CONFIG_LGE_NFC_HW_QCT_MSM8660)&&!defined(CONFIG_LGE_NFC_HW_QCT_MSM8255)
 		disable_irq_wake(pn544_get_irq_pin(pn544_dev));
 #endif
@@ -95,12 +119,21 @@ void pn544_factory_standby_set(void)
     pn544_dev = i2c_get_clientdata(pn544_client);
     // 1. Go To Dnld mode 2
             
+
     gpio_set_value(pn544_dev->ven_gpio, 1);
     gpio_set_value(pn544_dev->firm_gpio, 1);
     msleep(10);
     gpio_set_value(pn544_dev->ven_gpio, 0);
     msleep(10);
     gpio_set_value(pn544_dev->ven_gpio, 1);
+
+    gpio_set_value(pn544_pData.ven_gpio, 1);
+    gpio_set_value(pn544_pData.firm_gpio, 1);
+    msleep(10);
+    gpio_set_value(pn544_pData.ven_gpio, 0);
+    msleep(10);
+    gpio_set_value(pn544_pData.ven_gpio, 1);
+
     msleep(10);
 
     // 2. I2c write
@@ -116,6 +149,7 @@ void pn544_factory_standby_set(void)
     dprintk("%s Go To PN544 reset\n", __func__);
            
     //--> # reset 1
+
     gpio_set_value(pn544_dev->firm_gpio, 0);
     gpio_set_value(pn544_dev->ven_gpio, 1);
     msleep(10);
@@ -128,13 +162,32 @@ void pn544_factory_standby_set(void)
     //--> # reset 1                              
     gpio_set_value(pn544_dev->firm_gpio, 0);
     gpio_set_value(pn544_dev->ven_gpio, 1);
+
+    gpio_set_value(pn544_pData.firm_gpio, 0);
+    gpio_set_value(pn544_pData.ven_gpio, 1);
+    msleep(10);
+                     
+    //--> # reset 0   
+    gpio_set_value(pn544_pData.firm_gpio, 0);
+    gpio_set_value(pn544_pData.ven_gpio, 0);
+    msleep(10);
+
+    //--> # reset 1                              
+    gpio_set_value(pn544_pData.firm_gpio, 0);
+    gpio_set_value(pn544_pData.ven_gpio, 1);
+
     msleep(10);
 
            
     // 4. power off
     dprintk(PN544_DRV_NAME ":%s power off\n", __func__);
+
     gpio_set_value(pn544_dev->firm_gpio, 0);
     gpio_set_value(pn544_dev->ven_gpio, 0);
+
+    gpio_set_value(pn544_pData.firm_gpio, 0);
+    gpio_set_value(pn544_pData.ven_gpio, 0);
+
     msleep(10);
 }
 #elif defined(CONFIG_LGE_NFC_PN544_C3)
@@ -187,12 +240,20 @@ static int __pn544_kread(void *dev, unsigned int length)
     dprintk(PN544_DRV_NAME ":IRQ GPIO = %d\n", irq_gpio_val);
     if (irq_gpio_val == 0) {
         pn544_dev->irq_enabled = true;
+
 #ifdef LGE_NFC_READ_IRQ_MODIFY
+
+#ifdef READ_IRQ_MODIFY
+
         do_reading=0;//DY_TEST
 #endif
         enable_irq_wake(pn544_get_irq_pin(pn544_dev));
         enable_irq(pn544_get_irq_pin(pn544_dev));
+
 #ifdef LGE_NFC_READ_IRQ_MODIFY
+
+#ifdef READ_IRQ_MODIFY
+
         ret = wait_event_interruptible(pn544_dev->read_wq, do_reading);
 #else
         ret = wait_event_interruptible(pn544_dev->read_wq, gpio_get_value(pn544_dev->irq_gpio));
@@ -235,10 +296,17 @@ void pn544_factory_standby_set(void)
     pn544_dev = i2c_get_clientdata(pn544_client);
     // 1. Go To Dnld mode 2
     dprintk("%s Go To Dnld mode 2\n", __func__);
+
     gpio_set_value(pn544_dev->ven_gpio, 0);
     gpio_set_value(pn544_dev->firm_gpio, 0);
     msleep(10);
     gpio_set_value(pn544_dev->ven_gpio, 1);
+
+    gpio_set_value(pn544_pData.ven_gpio, 0);
+    gpio_set_value(pn544_pData.firm_gpio, 0);
+    msleep(10);
+    gpio_set_value(pn544_pData.ven_gpio, 1);
+
     msleep(10);
 
     // 2. I2c write
@@ -279,6 +347,7 @@ void pn544_factory_standby_set(void)
 
     return;
 }
+
 #endif /* CONFIG_LGE_NFC_PN544_C2 & CONFIG_LGE_NFC_PN544_C3 */
 #endif /* CONFIG_LGE_NFC_PRESTANDBY */
 
@@ -289,6 +358,18 @@ void pn544_factory_standby_set(void)
  * in order to reduce booting time.
  * 
  * byungchul.park@lge.com 20120328
+
+#endif /*                                                   */
+#endif /*                           */
+
+/*             
+   
+                                  
+                                    
+                                   
+   
+                                  
+
  */
 #if defined(CONFIG_LGE_NFC_MULTICORE_FASTBOOT)&&defined(CONFIG_LGE_NFC_PRESTANDBY)
 static int pn544_factory_standby_set_thread(void *arg)
@@ -297,8 +378,13 @@ static int pn544_factory_standby_set_thread(void *arg)
 	dprintk("%s end\n", __func__);
 	return 0;
 }
+
 #endif /* defined(CONFIG_LGE_NFC_MULTICORE_FASTBOOT)&&defined(CONFIG_LGE_NFC_PRESTANDBY) */
 /* LGE_CHANGE_E */
+
+#endif /*                                                                                */
+/*              */
+
 
 static ssize_t pn544_dev_read(struct file *filp, char __user *buf,
 		size_t count, loff_t *offset)
@@ -329,7 +415,11 @@ static ssize_t pn544_dev_read(struct file *filp, char __user *buf,
 #ifdef LGE_NFC_READ_IRQ_MODIFY
 		do_reading=0;//DY_TEST
 #endif
+
 // 20120831, jh.heo@lge.com Fix to irq interrupt in sleep mode.
+
+//                                                             
+
 #if !defined(LGE_NFC_HW_QCT_MSM8660)
 			enable_irq_wake(pn544_get_irq_pin(pn544_dev));
 #endif
@@ -600,6 +690,7 @@ static int pn544_probe(struct i2c_client *client,
     pn544_disable_irq(pn544_dev);
     i2c_set_clientdata(client, pn544_dev);
     dprintk(PN544_DRV_NAME ": pn544_probe() end\n");
+
 /* LGE_CHANGE_S
  *
  * do device driver initialization
@@ -607,6 +698,15 @@ static int pn544_probe(struct i2c_client *client,
  * in order to reduce booting time.
  *
  * byungchul.park@lge.com 20120328
+
+/*             
+  
+                                  
+                                    
+                                   
+  
+                                  
+
  */
 #ifdef CONFIG_LGE_NFC_PRESTANDBY
     if (pn544_validate_boot_mode()) {
@@ -624,7 +724,11 @@ static int pn544_probe(struct i2c_client *client,
 #else
         pn544_factory_standby_set();
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
     }
 #endif
     return 0;
@@ -752,9 +856,15 @@ static void __exit pn544_dev_exit(void)
 }
 module_exit(pn544_dev_exit);
 
+
 /* LGE_CHANGE_S, [NFC][minwoo.kwon@lge.com], 2013-03-07, NFC Bring up */
 MODULE_DEVICE_TABLE(i2c, pn544_id);
 /* LGE_CHANGE_E, [NFC][minwoo.kwon@lge.com], 2013-03-07, NFC Bring up */
+
+/*                                                                    */
+MODULE_DEVICE_TABLE(i2c, pn544_id);
+/*                                                                    */
+
 MODULE_AUTHOR("Sylvain Fonteneau");
 MODULE_DESCRIPTION("NFC PN544 driver");
 MODULE_LICENSE("GPL");

@@ -39,7 +39,7 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/*===========================================================================
+/*=====
 
                        W L A N _ Q C T _ C T S . C
 
@@ -59,9 +59,9 @@
   Copyright (c) 2010-2011 QUALCOMM Incorporated.
   All Rights Reserved.
   Qualcomm Confidential and Proprietary
-===========================================================================*/
+=====*/
 
-/*===========================================================================
+/*=====
 
                       EDIT HISTORY FOR FILE
 
@@ -78,15 +78,15 @@
   2011-02-28    jtj    Linux/Android implementation which utilizes SMD
   2010-08-09    mss    Created module
 
-===========================================================================*/
+=====*/
 
 
 
-/*===========================================================================
+/*=====
 
                           INCLUDE FILES FOR MODULE
 
-===========================================================================*/
+=====*/
 
 /*----------------------------------------------------------------------------
  * Include Files
@@ -734,11 +734,17 @@ WCTS_OpenTransport
     */
    pWCTSCb->wctsOpenMsg.callback = WCTS_PALOpenCallback;
    pWCTSCb->wctsOpenMsg.pContext = pWCTSCb;
+
    pWCTSCb->wctsOpenMsg.type= WPAL_MC_MSG_SMD_NOTIF_OPEN_SIG;
 
    pWCTSCb->wctsDataMsg.callback = WCTS_PALDataCallback;
    pWCTSCb->wctsDataMsg.pContext = pWCTSCb;
    pWCTSCb-> wctsDataMsg.type= WPAL_MC_MSG_SMD_NOTIF_DATA_SIG;
+
+
+   pWCTSCb->wctsDataMsg.callback = WCTS_PALDataCallback;
+   pWCTSCb->wctsDataMsg.pContext = pWCTSCb;
+
 
    /*---------------------------------------------------------------------
      Open the SMD channel

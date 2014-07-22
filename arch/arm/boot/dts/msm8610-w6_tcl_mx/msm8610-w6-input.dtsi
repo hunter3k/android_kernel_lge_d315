@@ -65,11 +65,16 @@
 		synaptics_s220x@20 {
 			status = "ok";
 			revision = "rev_b...";
+
 			synaptics,fw_version_info = <0x12 0x05 0x01>;
 			synaptics,fw_image = "synaptics/w6_tcl_mx/PLG337-T001-PR1592892-DS4.3.5.1.16_12050101.img";
 			synaptics,panel_spec = "synaptics/w6_tcl_mx/w6_tcl_mx_limit.txt";
                         synaptics,global_access_pixel = <10>;
 			lge,knock_on_type = <1>;
+
+			synaptics,fw_version_info = <0x14 0x05 0x01>;
+			synaptics,fw_image = "synaptics/w6ds_tim_br/PLG323-T001-PR1578894-DS4.3.5.1.16_14050101.img";
+
 			synaptics,platform_data	{
 				number_of_button = <2>;
 				button_name = [9e 8b];
@@ -85,8 +90,11 @@
 				/*maker_id  disable(0), enable(1)*/
 				maker_id = <1>;
 				maker_id_gpio = <76>;
+
                                 palm_detect_mode = <1>;
                                 ghost_detection_enable = <0>;
+
+
 			};		
 		};
 	};

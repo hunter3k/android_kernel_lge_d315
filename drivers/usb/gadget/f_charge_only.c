@@ -15,6 +15,7 @@
  *
  */
 
+
 /* This function driver is implemented for charge only feature of
  * LGE Android USB connection mode. This function do nothing about
  * the real USB data transfer. It is for only interface between Android
@@ -28,6 +29,21 @@
  * for this. Of course, this driver has no effect on host PC. This driver
  * is based on f_hid.c.
  * 2012-03-07, hyunhui.park@lge.com
+
+/*                                                               
+                                                                  
+                                                                       
+                                            
+                                   
+ */
+
+/*                                                                  
+                                                                          
+                                                                       
+                                                                         
+                       
+                                   
+
  */
 
 #include <linux/module.h>

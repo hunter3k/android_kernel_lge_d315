@@ -22,7 +22,11 @@
 			rt8542,min_brightness = <0x04>;
 			rt8542,default_brightness = <0x66>;
 			rt8542,max_brightness = <0x7D>;
+
 			rt8542,enable_pwm = <0>;
+
+			rt8542,enable_pwm = <1>;
+
 			rt8542,blmap_size = <127>;
 			rt8542,blmap = <
 				5 5 5 5 5 5 5 5 5 5 				//9
@@ -55,6 +59,7 @@
 };
 
 &i2c {
+
 
 /* IMX111(8M) & IMX219(8M) actuator */
 	actuator1: qcom,actuator@18 {
@@ -123,6 +128,22 @@
 		compatible = "msm_eeprom";
 		qcom,slave-addr = <0x14>;
 
+	actuator0: qcom,actuator@18 {
+		cell-index = <0>;	//Use Af_main_0 of dw9716 with HI543
+		reg = <0x18 0x0>;
+		compatible = "qcom,actuator";
+		qcom,cci-master = <0>;
+	};
+
+	eeprom0: msm_eeprom@28 { //EEPROM READ
+		cell-index = <1>;
+		reg = <0x28 0x0>;
+		qcom,eeprom-name = "hi543_eeprom";
+		compatible = "msm_eeprom";
+		qcom,slave-addr = <0x28>;
+		qcom,cci-master = <0>;
+
+
 		qcom,num-blocks = <1>;
 		qcom,page0 = <0 0x0 1 0x0 1 20>; // valid size, addr, addr_t, data, data_t, delay
 		qcom,poll0 = <0 0x0 1 0x0 1 20>;
@@ -182,6 +203,10 @@
 		qcom,csi-lane-mask = <0x7>;
 		qcom,sensor-position = <0>;
 		qcom,sensor-mode = <0>;
+
+
+		qcom,cci-master = <0>;
+
 		status = "okay";
 		revision = "rev_a";
 	};
@@ -219,6 +244,10 @@
 		qcom,csi-lane-mask = <0x3>;
 		qcom,sensor-position = <1>;
 		qcom,sensor-mode = <1>;
+
+
+		qcom,cci-master = <0>;
+
 		status = "okay";
 		revision = "rev_a";
 	};
@@ -258,7 +287,12 @@
 		qcom,csi-lane-mask = <0x7>;
 		qcom,sensor-position = <0>;
 		qcom,sensor-mode = <0>;
+
 		status = "decide_in_lk";
+
+		qcom,cci-master = <0>;
+		status = "okay";
+
 		revision = "rev_b...";
 	};
 
@@ -295,6 +329,7 @@
 		qcom,csi-lane-mask = <0x3>;
 		qcom,sensor-position = <1>;
 		qcom,sensor-mode = <1>;
+
 		status = "okay";
 		revision = "rev_b...";
 	};
@@ -384,3 +419,11 @@
 		imx219 = &imx219;	/* 8M Main Camera */
 	};
 };
+
+		qcom,cci-master = <0>;
+		status = "okay";
+		revision = "rev_b...";
+	};
+
+};
+

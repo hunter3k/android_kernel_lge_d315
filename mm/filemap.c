@@ -1661,6 +1661,7 @@ int filemap_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
 		/* No page in the page cache at all */
 		do_sync_mmap_readahead(vma, ra, file, offset);
 		count_vm_event(PGMAJFAULT);
+
 		/* LGE_CHANGE_S
 		*
 		* Profile files related to pgmajfault during 1st booting
@@ -1670,6 +1671,17 @@ int filemap_fault(struct vm_area_struct *vma, struct vm_fault *vmf)
 		*/
 		sreadahead_prof(file, 0, 0);
 		/* LGE_CHANGE_E */
+
+		/*             
+   
+                                                          
+                                              
+   
+                              
+  */
+		sreadahead_prof(file, 0, 0);
+		/*              */
+
 		mem_cgroup_count_vm_event(vma->vm_mm, PGMAJFAULT);
 		ret = VM_FAULT_MAJOR;
 retry_find:

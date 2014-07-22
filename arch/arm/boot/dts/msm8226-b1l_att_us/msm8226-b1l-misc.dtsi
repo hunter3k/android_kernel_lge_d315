@@ -13,6 +13,7 @@
 &soc {
     hall-bu52061nvx {
         status = "ok";
+
         interrupts = <66 0x0>;
         hallic-pouch-irq-gpio = <&msmgpio 66 0x00>;
         revision = "rev_a...";
@@ -20,11 +21,22 @@
 
     hall-bu52033nvx-carkit {
         status = "disable";
+
+    };
+
+    hall-bu52033nvx-carkit {
+        status = "ok";
+        revision = "rev_a...";
+
     };
 
     i2c@f9925000 {
     	lp5521@32 {
+
     		status = "disable";
+
+    		status = "ok";
+
     		ti,led_en = <&msmgpio 112 0x0>;
     	};
     };

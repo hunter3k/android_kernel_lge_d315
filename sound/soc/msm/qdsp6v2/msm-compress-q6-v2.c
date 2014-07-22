@@ -635,7 +635,7 @@ static int msm_compr_free(struct snd_compr_stream *cstream)
 	int dir = IN, ret = 0, stream_id;
 	unsigned long flags;
 
-	pr_debug("%s\n", __func__);
+	pr_err("%s\n", __func__);
 	pdata->cstream[soc_prtd->dai_link->be_id] = NULL;
 	if (cstream->direction == SND_COMPRESS_PLAYBACK) {
 		if (atomic_read(&pdata->audio_ocmem_req) > 1)
@@ -668,7 +668,11 @@ static int msm_compr_free(struct snd_compr_stream *cstream)
 	spin_lock_irqsave(&prtd->lock, flags);
 	stream_id = ac->stream_id;
 	if (prtd->gapless_state.stream_opened[stream_id^1]) {
+
 		prtd->gapless_state.stream_opened[stream_id^1] = 0;
+
+		pr_err("CMD_CLOSE %d\n", stream_id^1);
+
 		spin_unlock_irqrestore(&prtd->lock, flags);
 		q6asm_stream_cmd(ac, CMD_CLOSE, stream_id^1);
 		spin_lock_irqsave(&prtd->lock, flags);
@@ -676,6 +680,7 @@ static int msm_compr_free(struct snd_compr_stream *cstream)
 	if (prtd->gapless_state.stream_opened[stream_id]) {
 		prtd->gapless_state.stream_opened[stream_id] = 0;
 		spin_unlock_irqrestore(&prtd->lock, flags);
+		pr_err("CMD_CLOSE %d\n", stream_id);
 		q6asm_stream_cmd(ac, CMD_CLOSE, stream_id);
 		spin_lock_irqsave(&prtd->lock, flags);
 	}
@@ -683,9 +688,12 @@ static int msm_compr_free(struct snd_compr_stream *cstream)
 
 	/* client buf alloc was with stream id 0, so free with the same */
 	ac->stream_id = 0;
+	pr_err("q6asm_audio_client_buf_free_contiguous ++\n");
 	q6asm_audio_client_buf_free_contiguous(dir, ac);
+	pr_err("q6asm_audio_client_buf_free_contiguous --\n");
 
 	q6asm_audio_client_free(ac);
+	pr_err("q6asm_audio_client_free--\n");
 
 	kfree(pdata->audio_effects[soc_prtd->dai_link->be_id]);
 	kfree(prtd);
@@ -1358,12 +1366,20 @@ static int msm_compr_set_metadata(struct snd_compr_stream *cstream,
 		return -EINVAL;
 
 	prtd = cstream->runtime->private_data;
+
 //LGE_UPDATE_S beekay.lee@lge.com WBT test
+
+//                                        
+
 #if 0
 	if (!prtd && !prtd->audio_client)
 #endif
 	if (!prtd || !prtd->audio_client)
+
 //LGE_UPDATE_E
+
+//            
+
 		return -EINVAL;
 
 	ac = prtd->audio_client;
@@ -2445,6 +2461,22 @@ static int msm_compr_add_audio_effects_control(struct snd_soc_pcm_runtime *rtd)
 	kfree(mixer_str);
 	return 0;
 }
+
+#ifdef CONFIG_MACH_LGE
+static int msm_compr_add_LGE_effects_control(struct snd_soc_pcm_runtime *rtd)
+{
+
+	if (!rtd) {
+		pr_err("%s NULL rtd\n", __func__);
+		return 0;
+	}
+
+	snd_soc_add_platform_controls(rtd->platform,
+				msm_compr_LGE_effect_controls,
+				ARRAY_SIZE(msm_compr_LGE_effect_controls));
+	return 0;
+}
+#endif
 
 #ifdef CONFIG_MACH_LGE
 static int msm_compr_add_LGE_effects_control(struct snd_soc_pcm_runtime *rtd)

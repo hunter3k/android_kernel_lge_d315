@@ -16,12 +16,21 @@
     };
 
     hall-bu52033nvx-carkit {
+
         status = "disable";
+
+        status = "ok";
+        revision = "rev_a...";
+
     };
 
     i2c@f9925000 {
     	lp5521@32 {
+
     		status = "disable";
+
+    		status = "ok";
+
     		ti,led_en = <&msmgpio 112 0x0>;
     	};
     };

@@ -65,7 +65,10 @@
 	};
 
 /* HI543(5M) eeprom */
+
 /* Rev A ~ */
+
+
 	eeprom0: msm_eeprom_hi543@14 { //EEPROM READ
 		cell-index = <0>;
 		reg = <0x14 0x0>;
@@ -97,6 +100,7 @@
 		qcom,cam-power-seq-cfg-val = <1 1>;
 		qcom,cam-power-seq-delay = <1 1>;
 	};
+
 	/* Rev C ~ */
 	eeprom1: msm_eeprom_hi543@14 { //EEPROM READ
 		cell-index = <0>;
@@ -125,6 +129,11 @@
 	};
 /* Rev A ~ */
 	hi543a: qcom,camera_rev_a@40 {
+
+
+/* Rev A ~ */
+	hi543: qcom,camera_rev_a@40 {
+
 		compatible = "qcom,hi543";
 		reg = <0x40 0x0>;
 		qcom,slave-id = <0x40 0x0 0x1F3C>;
@@ -160,6 +169,7 @@
 		qcom,sensor-position = <0>;
 		qcom,sensor-mode = <0>;
 		status = "okay";
+
 		revision = "rev_a";
 	};
 /* Rev B ~ */
@@ -232,6 +242,10 @@
 		qcom,sensor-mode = <1>;
 		status = "okay";
 		revision = "rev_b...";
+	};
+
+
+		revision = "rev_a...";
 	};
 
 };

@@ -66,10 +66,17 @@
 	};
 
 	/* Rev A */
+
 	qcom,camera_rev_a@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
 		qcom,slave-id = <0x20 0x0 0x111>;
+
+	qcom,camera_rev_a@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
@@ -104,6 +111,7 @@
 		status = "okay";
 		revision = "rev_a";
 	};
+
 	qcom,camera_rev_a@34 {
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
@@ -142,6 +150,8 @@
 		status = "okay";
 		revision = "rev_a";
 	};	
+
+
 	qcom,camera_rev_a@6e {
 		compatible = "qcom,imx119";
 		reg = <0x6e>;
@@ -178,10 +188,17 @@
 		revision = "rev_a";
 	};
 	/* Rev B */
+
 	qcom,camera_rev_b@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
 		qcom,slave-id = <0x20 0x0 0x111>;
+
+	qcom,camera_rev_b@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
@@ -216,6 +233,7 @@
 		status = "okay";
 		revision = "rev_b";
 	};
+
 	qcom,camera_rev_b@34 {
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
@@ -254,6 +272,8 @@
 		status = "okay";
 		revision = "rev_b";
 	};	
+
+
 	qcom,camera_rev_b@6e {
 		compatible = "qcom,imx119";
 		reg = <0x6e>;
@@ -290,6 +310,7 @@
 		revision = "rev_b";
 	};
 	/* Rev C */
+
 	qcom,camera_rev_c@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
@@ -332,13 +353,23 @@
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
 		qcom,slave-id = <0x34 0x0 0x219>;
+
+	qcom,camera_rev_c@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
 		qcom,led-flash-src = <&led_flash0>;
 		qcom,eeprom-src = <&eeprom>;
 		qcom,mount-angle = <90>;
+
 		qcom,sensor-name = "imx219";
+
+		qcom,sensor-name = "imx111";
+
 		cam_vdig-supply = <&pm8226_l5>;		//CAM_DVDD_1V8_1V2
 		qcom,cam-vreg-name = "cam_vdig";
 		qcom,cam-vreg-type = <0>;
@@ -366,7 +397,10 @@
 		status = "okay";
 		revision = "rev_c";
 	};
+
 	
+
+
 	qcom,camera_rev_c@60 {
 		compatible = "qcom,hi707";
 		reg = <0x60>;
@@ -400,6 +434,7 @@
 	};
 
 	/* Rev D */
+
 	imx111: qcom,camera_rev_d@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
@@ -442,13 +477,23 @@
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
 		qcom,slave-id = <0x34 0x0 0x219>;
+
+	imx111: qcom,camera_rev_d@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
 		qcom,led-flash-src = <&led_flash0>;
 		qcom,eeprom-src = <&eeprom>;
 		qcom,mount-angle = <90>;
+
 		qcom,sensor-name = "imx219";
+
+		qcom,sensor-name = "imx111";
+
 		cam_vdig-supply = <&pm8226_l5>;		//CAM_DVDD_1V8_1V2
 		qcom,cam-vreg-name = "cam_vdig";
 		qcom,cam-vreg-type = <0>;

@@ -49,7 +49,11 @@
    their framework which is 0.1DegC. True resolution of 0.1DegC
    will result in the below table size to increase by 10 times */
 
+
 /* LGE_CHANGE_S; apply battery thermistor adc value for W7 */
+
+/*                                                         */
+
 #ifdef CONFIG_LGE_PM_CHARGING_TEMP_SCENARIO
 static const struct qpnp_vadc_map_pt adcmap_btm_threshold_for_rev0[] = {
 	{-300,	1668},
@@ -136,6 +140,7 @@ static const struct qpnp_vadc_map_pt adcmap_btm_threshold_for_rev0[] = {
 	{780,	345},
 	{790,	342}
 };
+
 
 #ifdef CONFIG_MACH_MSM8926_X5_SPR
 static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
@@ -353,6 +358,8 @@ static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
 };
 
 #else
+
+
 static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
 	{-300,	1627},
 	{-200,	1507},
@@ -438,7 +445,10 @@ static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
 	{780,	409},
 	{790,	407}
 };
+
 #endif
+
+
 #else
 static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
 	{-300,	1642},
@@ -526,7 +536,11 @@ static const struct qpnp_vadc_map_pt adcmap_btm_threshold[] = {
 	{790,	203}
 };
 #endif
+
 /* LGE_CHANGE_E */
+
+/*              */
+
 
 static const struct qpnp_vadc_map_pt adcmap_qrd_btm_threshold[] = {
 	{-200,	1540},

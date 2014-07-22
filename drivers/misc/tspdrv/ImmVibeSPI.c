@@ -1,5 +1,5 @@
 /*
-** =========================================================================
+** ===
 ** File:
 **     ImmVibeSPI.c
 **
@@ -24,7 +24,7 @@
 ** FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. Please see 
 ** the License for the specific language governing rights and limitations 
 ** under the License.
-** =========================================================================
+** ===
 */
 
 /* Debug Mask setting */
@@ -456,6 +456,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
 		if(sm100_flag) {
 	        sm100_pwm_set(1, nForce); //MSM GP CLK update bit issue.
 		} else {
+
 			if(vib_dev != NULL) {
 #ifdef CONFIG_TSPDRV_3_0V_VIBRATOR
 				qpnp_vib_set_with_vtglevel(vib_dev, (nForce * 31) / 128 + 1, true);
@@ -463,6 +464,10 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
 				qpnp_vib_set_with_vtglevel(vib_dev, (nForce * 31) / 128 + 3, true);
 #endif
 			}
+
+			if(vib_dev != NULL)
+				qpnp_vib_set_with_vtglevel(vib_dev, (nForce * 31) / 128 + 3, true);
+
 		}
     }
     return VIBE_S_SUCCESS;

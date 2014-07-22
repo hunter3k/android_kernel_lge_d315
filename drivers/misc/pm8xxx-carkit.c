@@ -241,10 +241,13 @@ static int __devinit pm8xxx_carkit_probe(struct platform_device *pdev)
 
 	wake_lock_init(&cradle->wake_lock, WAKE_LOCK_SUSPEND, "dock_wakeups");
 
+
 #if defined(CONFIG_MACH_MSM8926_X5_VZW)
 	platform_set_drvdata(pdev, cradle);
 	return 0;
 #endif
+
+
 
 	INIT_DELAYED_WORK(&cradle->carkit_work, pm8xxx_carkit_work_func);
 

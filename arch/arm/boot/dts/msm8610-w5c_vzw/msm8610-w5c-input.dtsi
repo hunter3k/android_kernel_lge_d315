@@ -33,6 +33,7 @@
 		synaptics_s220x_rev_b@20 {
 			status = "ok";
 			revision = "rev_b";
+
 			synaptics,fw_version_info = <0x32 0x04 0x51>;
 			lge,knock_on_type = <1>;
 			synaptics,fw_image = "synaptics/w5c_vzw/PLG317-V1.11-PR1600582-DS4.3.5.1.16_3204518B.img";
@@ -41,6 +42,17 @@
 			synaptics,platform_data	{
 				/* maker_id disable(0), enable(1) */
 				maker_id = <0>;
+
+			synaptics,fw_version_info = <0x32 0x04 0x51>;
+			lge,knock_on_type = <1>;
+			synaptics,fw_image = "synaptics/w5c_vzw/PLG317-T009-PR1581873_DS4.3.5.1.16_32045109.img";
+			synaptics,platform_data	{
+				/*Caps*/
+				panel_type = <5>;
+				/* maker_id disable(0), enable(1) */
+				maker_id = <1>;
+				maker_id_gpio = <76>;
+
 				number_of_button = <2>;
 				button_name = [9e 8b];
 				x_max = <960>;
@@ -49,14 +61,20 @@
 				use_vio_regulator = <1>;
 				lcd_x = <480>;
 				lcd_y = <800>;
+
 				ghost_detection_enable=<0>;
 				ghost_detection_value = <200 5 4 6 5 5 10 500 100 6 5>;
+
+				ghost_detection_enable=<1>;
+				ghost_detection_jitter_value=<10>;
+
 			};
 		};
 		
 		synaptics_s220x@20 {
 			status = "ok";
 			revision = "rev_c...";
+
 			synaptics,fw_version_info = <0x32 0x04 0x51>;
 			lge,knock_on_type = <1>;
 			vdd-supply = <&pm8110_l22>;
@@ -66,6 +84,18 @@
 			synaptics,platform_data	{
 				/* maker_id disable(0), enable(1) */
 				maker_id = <0>;
+
+			synaptics,fw_version_info = <0x32 0x04 0x51>;
+			lge,knock_on_type = <1>;
+			vdd-supply = <&pm8110_l22>;
+			synaptics,fw_image = "synaptics/w5c_vzw/PLG317-T009-PR1581873_DS4.3.5.1.16_32045109.img";
+			synaptics,platform_data	{
+				/*Caps*/
+				panel_type = <5>;
+				/* maker_id disable(0), enable(1) */
+				maker_id = <1>;
+				maker_id_gpio = <76>;
+
 				number_of_button = <2>;
 				button_name = [9e 8b];
 				x_max = <960>;
@@ -75,8 +105,13 @@
 				use_regulator = <1>;
 				vdd_voltage = <3000000>;
 				palm_detect_mode=<1>;
+
 				ghost_detection_enable=<0>;
 				ghost_detection_value = <200 5 4 6 5 5 10 500 100 6 5>;
+
+				ghost_detection_enable=<1>;
+				ghost_detection_jitter_value=<10>;
+
 			};
 		};
 	};

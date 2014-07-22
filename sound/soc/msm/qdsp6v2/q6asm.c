@@ -680,7 +680,7 @@ int q6asm_audio_client_buf_free_contiguous(unsigned int dir,
 	struct audio_port_data *port;
 	int cnt = 0;
 	int rc = 0;
-	pr_debug("%s: Session id %d\n", __func__, ac->session);
+	pr_err("%s: Session id %d\n", __func__, ac->session);
 	mutex_lock(&ac->cmd_lock);
 	port = &ac->port[dir];
 	if (!port->buf) {
@@ -697,7 +697,7 @@ int q6asm_audio_client_buf_free_contiguous(unsigned int dir,
 	}
 
 	if (port->buf[0].data) {
-		pr_debug("%s:data[%p]phys[%p][%p] , client[%p] handle[%p]\n",
+		pr_err("%s:data[%p]phys[%p][%p] , client[%p] handle[%p]\n",
 			__func__,
 			(void *)port->buf[0].data,
 			(void *)port->buf[0].phys,
@@ -749,11 +749,14 @@ void q6asm_audio_client_free(struct audio_client *ac)
 	q6asm_session_free(ac);
 	q6asm_mmap_apr_dereg();
 
-	pr_debug("%s: APR De-Register\n", __func__);
+	pr_err("%s: APR De-Register\n", __func__);
 
 /*done:*/
 	kfree(ac);
 	ac = NULL;
+
+
+
 
 	mutex_unlock(&session_lock);
 	
@@ -1116,7 +1119,11 @@ static int32_t q6asm_srvc_callback(struct apr_client_data *data, void *priv)
 				"Payload(CMD) = [0x%x] status[0x%x]\n",
 				__func__, payload[0], payload[1]);
 
+
 		/* [LGE_UPDATE] Adding temporary panic code for debugging */
+
+		/*                                                        */
+
 		panic("q6asm open at mmapcallback func. Contact WX-BSP-Audio@lge.com");
 
 		return 0;
@@ -1141,11 +1148,11 @@ static int32_t q6asm_srvc_callback(struct apr_client_data *data, void *priv)
 				atomic_set(&ac->cmd_state, 0);
 				wake_up(&ac->cmd_wait);
 			}
-			pr_debug("%s:Payload = [0x%x] status[0x%x]\n",
+			pr_err("%s:Payload = [0x%x] status[0x%x]\n",
 					__func__, payload[0], payload[1]);
 			break;
 		default:
-			pr_debug("%s:command[0x%x] not expecting rsp\n",
+			pr_err("%s:command[0x%x] not expecting rsp\n",
 						__func__, payload[0]);
 			break;
 		}
@@ -1296,7 +1303,7 @@ static int32_t q6asm_callback(struct apr_client_data *data, void *priv)
 		case ASM_DATA_CMD_REMOVE_INITIAL_SILENCE:
 		case ASM_DATA_CMD_REMOVE_TRAILING_SILENCE:
 		case ASM_SESSION_CMD_REGISTER_FOR_RX_UNDERFLOW_EVENTS:
-		pr_debug("%s:Payload = [0x%x]stat[0x%x]\n",
+		pr_err("%s:Payload = [0x%x]stat[0x%x]\n",
 				__func__, payload[0], payload[1]);
 			if (atomic_read(&ac->cmd_state) && wakeup_flag) {
 				atomic_set(&ac->cmd_state, 0);
@@ -1872,7 +1879,11 @@ static int __q6asm_open_write(struct audio_client *ac, uint32_t format,
 	if (!rc) {
 		pr_err("%s: timeout. waited for open write rc[%d]\n", __func__,
 			rc);
+
         panic("__q6asm_open_write panic. Contact WX-BSP-Audio@lge.com"); //LGE_UPDATE temporarily panic code for debugging
+
+        panic("__q6asm_open_write panic. Contact WX-BSP-Audio@lge.com"); //                                               
+
 		goto fail_cmd;
 	}
 	ac->io_mode |= TUN_WRITE_IO_MODE;
@@ -3074,7 +3085,7 @@ int q6asm_memory_unmap(struct audio_client *ac, uint32_t buf_add, int dir)
 		pr_err("%s: APR handle NULL\n", __func__);
 		return -EINVAL;
 	}
-	pr_debug("%s: Session[%d]\n", __func__, ac->session);
+	pr_err("%s: Session[%d]\n", __func__, ac->session);
 
 	q6asm_add_mmaphdr(ac, &mem_unmap.hdr,
 			sizeof(struct avs_cmd_shared_mem_unmap_regions),
@@ -3090,7 +3101,7 @@ int q6asm_memory_unmap(struct audio_client *ac, uint32_t buf_add, int dir)
 			break;
 		}
 	}
-	pr_debug("%s: mem_unmap-mem_map_handle: 0x%x",
+	pr_err("%s: mem_unmap-mem_map_handle: 0x%x",
 		__func__, mem_unmap.mem_map_handle);
 	rc = apr_send_pkt(ac->mmap_apr, (uint32_t *) &mem_unmap);
 	if (rc < 0) {
@@ -4518,7 +4529,11 @@ int q6asm_set_lgesoundmabl_lrbalancecontrol(struct audio_client *ac, int lrbalan
 fail_cmd:
 	return rc;
 }
+
 #endif //CONFIG_SND_LGE_MABL
+
+#endif //                   
+
 
 int q6asm_read(struct audio_client *ac)
 {

@@ -22,7 +22,10 @@
 #include <asm/unaligned.h>
 
 #ifdef CONFIG_LGE_PM_VZW_FAST_CHG
+
 extern bool usb_connected_flag;
+
+
 extern bool usb_configured_flag;
 extern struct delayed_work usb_detect_w;
 extern void set_vzw_usb_charging_state(int state);

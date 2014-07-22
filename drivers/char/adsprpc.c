@@ -564,8 +564,12 @@ static int get_args(uint32_t kernel, uint32_t sc, remote_arg_t *pra,
 		rpra[i].buf.len = pra[i].buf.len;
 		if (!rpra[i].buf.len)
 			continue;
+
 		//if (fds)
 		//	pr_err("adsprpc: get_args i=%d, fd=%d, num=%d\n", i, fds[i], list[i].num);
+
+
+
 		if (me->smmu.enabled && fds && (fds[i] >= 0)) {
 			len = buf_page_size(pra[i].buf.len);
 			handles[i] = ion_import_dma_buf(me->iclient, fds[i]);

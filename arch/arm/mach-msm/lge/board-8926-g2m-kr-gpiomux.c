@@ -160,7 +160,11 @@ static struct gpiomux_setting vibrator_suspend_cfg = {
 };
 
 static struct gpiomux_setting vibrator_active_cfg_gpio_pwm = {
+
        .func = GPIOMUX_FUNC_3, //2013-08-22 beekay.lee@lge.com For WX(MSM8x26). GPIO34 has alternative function 3(=GP1_CLK)
+
+       .func = GPIOMUX_FUNC_3, //                                                                                          
+
        .drv = GPIOMUX_DRV_2MA,
        .pull = GPIOMUX_PULL_NONE,
 };
@@ -237,7 +241,11 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
+
 #ifdef CONFIG_MACH_LGE  /* LGE_CHANGE_S,  Added for COMMON_I2C */
+
+#ifdef CONFIG_MACH_LGE  /*                                     */
+
 	{
 		.gpio      = 10,	/* BLSP1 QUP3 I2C_SDA */
 		.settings = {
@@ -378,14 +386,22 @@ static struct gpiomux_setting sd_card_det_sleep_config = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_IN,
 };
+
 #else // not CONFIG_MACH_LGE
+
+#else //                    
+
 static struct gpiomux_setting sd_card_det_sleep_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
 	.pull = GPIOMUX_PULL_UP,
 	.dir = GPIOMUX_IN,
 };
+
 #endif // CONFIG_MACH_LGE
+
+#endif //                
+
 
 static struct msm_gpiomux_config sd_card_det __initdata = {
 	.gpio = 37,
@@ -506,7 +522,11 @@ static struct msm_gpiomux_config usb_otg_sw_configs[] __initdata = {
 };
 #endif
 
+
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+/*                                                      */
+
 #ifdef CONFIG_LGE_NFC_PN547
 static struct gpiomux_setting nfc_pn547_sda_cfg = {
 	.func = GPIOMUX_FUNC_3,
@@ -584,7 +604,11 @@ static struct msm_gpiomux_config msm_nfc_configs[] __initdata = {
 	},
 };
 #endif
+
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up*/
+
+/*                                                      */
+
 
 
 // GPIO related function <<7.CAMERA>>
@@ -632,7 +656,11 @@ static struct gpiomux_setting cam_settings[] = {
 	},
 };
 
+
 /* LGE_CHANGE_S, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+
 static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
 	{
 		.gpio = 26, /* CAM_MCLK0 */
@@ -698,13 +726,18 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
 		},
 	},
 };
+
 /* LGE_CHANGE_E, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+
 
 
 // GPIO related function <<8.FLASH LED>>
 //Need to set GPIO[032] FLASH_STROBE_TRIG
 static struct msm_gpiomux_config gpio_func_flash_led_configs[] __initdata = {
 };
+
 #ifdef CONFIG_MACH_LGE
 // GPIO related function <<0.Resreved Pin>>
 #define MSM8x26_GPIO_END 121
@@ -735,11 +768,17 @@ static struct msm_gpiomux_config gpio_func_reserved_pin_config __initdata = {
 
 #endif /* CONFIG_MACH_LGE */
 
+
+
 void __init msm8226_init_gpiomux(void)
 {
 	int rc;
 #ifdef CONFIG_MACH_LGE
+
 	int gpio_index = 0;
+
+	//int gpio_index = 0;
+
 	hw_rev_type hw_rev;
 	hw_rev = lge_get_board_revno();
 #endif
@@ -758,10 +797,17 @@ void __init msm8226_init_gpiomux(void)
 
 	msm_gpiomux_install(msm_blsp_configs, ARRAY_SIZE(msm_blsp_configs));
 	// GPIO related function <<7.CAMERA>>
+
 /* LGE_CHANGE_S, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
 	msm_gpiomux_install(msm_sensor_configs_rev_b, ARRAY_SIZE(msm_sensor_configs_rev_b));
 	printk(KERN_ERR " [Camera] In greater than HW_REV_B, MAIN_CAM0_RESET_N has been changed from GPIO_98 to GPIO_114\n");
 /* LGE_CHANGE_E, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+	msm_gpiomux_install(msm_sensor_configs_rev_b, ARRAY_SIZE(msm_sensor_configs_rev_b));
+	printk(KERN_ERR " [Camera] In greater than HW_REV_B, MAIN_CAM0_RESET_N has been changed from GPIO_98 to GPIO_114\n");
+/*                                                                                  */
+
 
 
 	// GPIO related function <<8.FLASH LED>>
@@ -772,6 +818,7 @@ void __init msm8226_init_gpiomux(void)
 				ARRAY_SIZE(wcnss_5wire_interface));
 
 	msm_gpiomux_install(&sd_card_det, 1);
+
 #ifdef CONFIG_MACH_LGE
 	switch ( hw_rev ){
 		case HW_REV_0 :
@@ -801,6 +848,8 @@ void __init msm8226_init_gpiomux(void)
 #endif /* CONFIG_MACH_LGE */
 
 
+
+
 	if (hw_rev == HW_REV_0) {
 		msm_gpiomux_install(msm_melfas_configs, ARRAY_SIZE(msm_melfas_configs));
 		printk(KERN_ERR "[Touch] HW_REV_0 \n");
@@ -825,11 +874,19 @@ void __init msm8226_init_gpiomux(void)
 #endif
 
 
+
 /*  LGE_CHANGE_S, [NFC][garam.kim@lge.com], NFC Bring up */
 #ifdef CONFIG_LGE_NFC_PN547
 	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
 #endif
 /*  LGE_CHANGE_E, [NFC][garam.kim@lge.com], NFC Bring up */
+
+/*                                                       */
+#ifdef CONFIG_LGE_NFC_PN547
+	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
+#endif
+/*                                                       */
+
 
 #if defined(CONFIG_TSPDRV)
 	msm_gpiomux_install(vibrator_configs, ARRAY_SIZE(vibrator_configs));

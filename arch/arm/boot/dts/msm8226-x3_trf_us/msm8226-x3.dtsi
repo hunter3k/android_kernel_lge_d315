@@ -28,6 +28,7 @@
 			status = "disable";
 		};
 	};
+
 	lge_sw_irrc { /* LGE_UPDATE 20110107 euna.jo@lge.com WX_IRRC */
 		compatible = "lge,sw_irrc";
 		vreg_irrc-supply = <&pm8226_l19>;
@@ -40,6 +41,8 @@
 		revision = "rev_a...";
 		vreg2_irrc-supply = <&pm8226_l6>;
 	};
+
+
 };
 
 &sdcc1 {
@@ -165,8 +168,11 @@
     qcom,fcc-resolution = <10>;
 };
 
+
 &slim_msm {
 	tapan_codec {
 			qcom,cdc-micbias1-ext-cap;
 	};
 };
+
+

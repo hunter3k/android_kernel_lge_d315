@@ -70,7 +70,11 @@
 #define WLED_OP_FDBCK_DEFAULT		0x00
 #ifdef CONFIG_MACH_LGE
 #define WLED1_LED1_CABC_EN(base)			(base + 0x66) //CABC
+
 #endif //CONFIG_MACH_LGE
+
+#endif //               
+
 
 #define WLED_MAX_LEVEL			4095
 #define WLED_8_BIT_MASK			0xFF
@@ -81,7 +85,11 @@
 #ifdef CONFIG_MACH_LGE
 #define WLED_CABC_EN_MASK		0x80
 #define WLED_CABC_EN_ON			0x80
+
 #endif //CONFIG_MACH_LGE
+
+#endif //               
+
 
 #define WLED_SYNC_VAL			0x07
 #define WLED_SYNC_RESET_VAL		0x00
@@ -113,7 +121,11 @@
 #define FLASH_FAULT_DETECT(base)	(base + 0x51)
 #define FLASH_PERIPHERAL_SUBTYPE(base)	(base + 0x05)
 #define FLASH_CURRENT_RAMP(base)	(base + 0x54)
+
 #define FLASH_VPH_PWR_DROOP(base) (base + 0x5A)  /* LGE_CHANGE, Modified VDROOP for flash current on low voltage, 2013-11-24, hyungtae.lee@lge.com */
+
+#define FLASH_VPH_PWR_DROOP(base) (base + 0x5A)  /*                                                                                                */
+
 
 #define FLASH_MAX_LEVEL			0x4F
 #define TORCH_MAX_LEVEL			0x0F
@@ -129,10 +141,17 @@
 #define FLASH_TMR_WATCHDOG		0x03
 #define FLASH_TMR_SAFETY		0x00
 
+
 /* [LGE_UPDATE_S] FOR FLASH LED */
 #define FLASH_FAULT_DETECT_MASK		0X80
 #define FLASH_HW_VREG_OK		0x40
 /* [LGE_UPDATE_E] */
+
+/*                              */
+#define FLASH_FAULT_DETECT_MASK		0X80
+#define FLASH_HW_VREG_OK		0x40
+/*                */
+
 #define FLASH_VREG_MASK			0xC0
 #define FLASH_STARTUP_DLY_MASK		0x02
 #define FLASH_CURRENT_RAMP_MASK		0xBF
@@ -174,7 +193,11 @@
 #define FLASH_RAMP_UP_DELAY_US		1000
 #define FLASH_RAMP_DN_DELAY_US		2160
 
+
 #define FLASH_VPH_PWR_DROOP_MASK 0xF3  /* LGE_CHANGE, Modified VDROOP for flash current on low voltage, 2013-11-24, hyungtae.lee@lge.com */
+
+#define FLASH_VPH_PWR_DROOP_MASK 0xF3  /*                                                                                                */
+
 
 #define LED_TRIGGER_DEFAULT		"none"
 
@@ -940,6 +963,10 @@ static int qpnp_flash_set(struct qpnp_led_data *led)
 		if (led->flash_cfg->torch_enable) {
 
 
+
+			usleep(FLASH_RAMP_UP_DELAY_US);  /*                                                                                                */
+
+
 			if (led->flash_cfg->peripheral_subtype ==
 							FLASH_SUBTYPE_DUAL) {
 				rc = qpnp_torch_regulator_operate(led, true);
@@ -1633,6 +1660,12 @@ static int __devinit qpnp_wled_init(struct qpnp_led_data *led)
 
 	}
 #if defined(CONFIG_LGE_TOVIS_540P_PANEL_CABC)
+
+
+#ifndef CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL
+if(!gpio_get_value(23)){
+#endif
+
 	rc = qpnp_led_masked_write(led, WLED1_LED1_CABC_EN(led->base),
 			WLED_CABC_EN_MASK,WLED_CABC_EN_ON);
 	pr_info("%s:cabc write",__func__);
@@ -1641,6 +1674,13 @@ static int __devinit qpnp_wled_init(struct qpnp_led_data *led)
 				"WLED cabc_en reg write failed(%d)\n",rc);
 		return rc;
 	}
+
+
+#ifndef CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL
+}else
+	pr_info("%s:cabc not write. lcd maker id: %d",__func__, gpio_get_value(23));
+#endif
+
 #elif defined(CONFIG_LGE_TOVIS_ILI9806E_WVGA_PANEL_CABC)
 	rc = qpnp_led_masked_write(led, WLED1_LED1_CABC_EN(led->base),
 			WLED_CABC_EN_MASK,WLED_CABC_EN_ON);
@@ -2393,11 +2433,16 @@ static int __devinit qpnp_flash_init(struct qpnp_led_data *led)
 {
 	int rc;
 
+
 	/* [LGE_UPDATE_S] For FLASH LED */
+
+	/*                              */
+
 	struct spmi_controller *ctrl = spmi_busnum_to_ctrl(0);
 	u8 buf = 0x01;
 
 	spmi_ext_register_writel(ctrl, 0, 0x1544, &buf, 1);
+
 	/* [LGE_UPDATE_E] */
 	led->flash_cfg->flash_on = false;
 
@@ -2405,6 +2450,15 @@ static int __devinit qpnp_flash_init(struct qpnp_led_data *led)
 	rc = qpnp_led_masked_write(led, FLASH_VPH_PWR_DROOP(led->base),
 		FLASH_VPH_PWR_DROOP_MASK, 0xC3);
 /* LGE_CHANGE_E, Modified VDROOP for flash current on low voltage, 2013-11-24, hyungtae.lee@lge.com */
+
+	/*                */
+	led->flash_cfg->flash_on = false;
+
+/*                                                                                                  */
+	rc = qpnp_led_masked_write(led, FLASH_VPH_PWR_DROOP(led->base),
+		FLASH_VPH_PWR_DROOP_MASK, 0xC3);
+/*                                                                                                  */
+
 
 	rc = qpnp_led_masked_write(led,
 		FLASH_LED_STROBE_CTRL(led->base),
@@ -3629,13 +3683,21 @@ static int __init qpnp_led_init(void)
 	return spmi_driver_register(&qpnp_leds_driver);
 }
 
+
 /* LGE_CHANGE_S, fix flash-boost failure on probe, 2013-10-27, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+
 #if 0 //QCT_original
 module_init(qpnp_led_init);
 #else
 late_initcall(qpnp_led_init);
 #endif
+
 /* LGE_CHANGE_S, fix flash-boost failure on probe, 2013-10-27, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+
 
 static void __exit qpnp_led_exit(void)
 {

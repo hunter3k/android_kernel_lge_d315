@@ -58,11 +58,11 @@ unsigned char F54_RxToRxReport(void)
 
 #ifdef F54_Porting
 	memset(buf, 0, sizeof(buf));
-	ret += sprintf(buf+ret, "\n===========================================================");
-	ret += sprintf(buf+ret, "=====================================================\n");
+	ret += sprintf(buf+ret, "\n===");
+	ret += sprintf(buf+ret, "====\n");
 	ret += sprintf(buf+ret, "\t\t\t\t\tReceiver To Receiver Short Test\n");
-	ret += sprintf(buf+ret, "===========================================================");
-	ret += sprintf(buf+ret, "=====================================================\n        ");
+	ret += sprintf(buf+ret, "===");
+	ret += sprintf(buf+ret, "====\n        ");
 	for (i = 0; i < numberOfRx; i++)
 		ret += sprintf(buf+ret, "%7d",i);
 	ret += sprintf(buf+ret, "\n-----------------------------------------------------");
@@ -287,12 +287,16 @@ unsigned char F54_RxToRxReport(void)
 	command = 0x02;
 	writeRMI(F54_Command_Base, &command, 1);
 
+
 	read_count = 0;
 	do {
 		if(++read_count > 10) {
 			TOUCH_INFO_MSG("%s[%d], command = %d\n", __func__, __LINE__, command);
 			return 2;
 		}
+
+	do {
+
 		delayMS(1); //wait 1ms
 		readRMI(F54_Command_Base, &command, 1);
 	} while (command != 0x00);
@@ -509,13 +513,13 @@ int F54_GetRxToRxReport(char *buf)
 	printk("\n");
 */
 /*
-	ret += sprintf(buf+ret, "\n===========================================================");
-	ret += sprintf(buf+ret, "=====================================================\n");
+	ret += sprintf(buf+ret, "\n===");
+	ret += sprintf(buf+ret, "====\n");
 
 	ret += sprintf(buf+ret, "\t\t\t\t\tReceiver To Receiver Short Test\n");
 
-	ret += sprintf(buf+ret, "===========================================================");
-	ret += sprintf(buf+ret, "=====================================================\n      :");
+	ret += sprintf(buf+ret, "===");
+	ret += sprintf(buf+ret, "====\n      :");
 	for (i = 0; i < numberOfRx; i++)
 		ret += sprintf(buf+ret, "%7d",i);
 	ret += sprintf(buf+ret, "\n-----------------------------------------------------");

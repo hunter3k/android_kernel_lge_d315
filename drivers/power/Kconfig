@@ -505,12 +505,15 @@ config LGE_PM
 	  Power Management, Battery charging, Battery Monitoring System
 	  with battery FET and fuel gauge.
 
+
 config EXTERNAL_FUELGAUGE
 	tristate "extenal fuel gauging external driver"
 	depends on I2C && LGE_PM
 	default n
 	help
 	  Say Y here to enable support for external fuel gauge chip lge feature.
+
+
 config MAX17048_FUELGAUGE
 	tristate "Maxim MAX17048 fuel gauging external driver"
 	depends on I2C && LGE_PM
@@ -562,11 +565,14 @@ config LGE_PM_CHARGING_TEMP_SCENARIO
 	help
 	  Say Y here to enable LGE Charging Temp Scenario
 
+
 config LGE_PM_VZW_CHARGING_TEMP_SCENARIO
 	bool "VZW Charging Temp Scenario"
 	depends on LGE_PM
 	help
 	  Say Y here to enable LGE Charging Temp Scenario
+
+
 
 config LGE_PM_BATTERY_PROFILE_DATA
 	bool "Apply battery profile data for W7"
@@ -638,6 +644,15 @@ config LGE_PM_VZW_FAST_CHG
 	help
 	  Say Y here to meet VZW requirement.
 
+
+
+config LGE_PM_VZW_HIGH_TEMP_PWR_OFF
+	bool "Notify power-off due to high temperature in chargerlogo"
+	depends on LGE_PM
+	help
+	  Say Y here to notify in chargerlogo when occurring power-off due to high temperature
+
+
 config LGE_PM_VZW_LLK
 	bool "VZW store mode"
 	depends on LGE_PM
@@ -661,6 +676,7 @@ config LGE_PM_WORKAROUND_PORT_OPEN_FAIL_IN_FACTORY_TEST
 	depends on LGE_PM
 	help
 	  This code is workaround code for OVD detection by USBIN Voltage in factory test
+
 	  
 config LGE_PM_BMS_FACTORY_TEST
 	bool "Workaround code for fuel gauge fail in factory test"
@@ -685,4 +701,7 @@ config LGE_WIRELESS_CHARGER_RT9536
 	default n
 	help
 	   Say Y here to support rt9536 wireless charger
+
+
+
 endif # POWER_SUPPLY

@@ -63,9 +63,12 @@
 	};
 };
 
+
 &soc {
 	qcom,msm-thermal {
 		qcom,vdd-restriction-temp;
 		qcom,vdd-restriction-temp-hysteresis;
 	};
 };
+
+

@@ -1167,6 +1167,7 @@ config USB_G_LGE_ANDROID_CDROM_MAC_SUPPORT
 
 	default y
 
+
 config USB_G_LGE_SERIALNO_REDIRECTION
     boolean "LGE specific serial number support in LGE Android"
     help
@@ -1175,5 +1176,7 @@ config USB_G_LGE_SERIALNO_REDIRECTION
       Say y if this must be needed.
 
     default n
+
+
 
 endif # USB_GADGET

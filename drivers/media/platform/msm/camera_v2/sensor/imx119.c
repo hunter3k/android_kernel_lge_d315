@@ -17,7 +17,11 @@ DEFINE_MSM_MUTEX(imx119_mut);
 
 static struct msm_sensor_ctrl_t imx119_s_ctrl;
 
+
 /* LGE_CHANGE_S, jaehan.jeong, 2013.7.30, To separate power settings depending on HW revisions, [STARTS HERE] */
+
+/*                                                                                                            */
+
 #if defined(CONFIG_MACH_MSM8226_G2MDS_OPEN_CIS) || defined(CONFIG_MACH_MSM8226_G2MDS_GLOBAL_COM) || defined(CONFIG_MACH_MSM8926_G2M_OPEN) || defined(CONFIG_MACH_MSM8926_G2M_VDF) || defined(CONFIG_MACH_MSM8926_G2M_GLOBAL) || defined(CONFIG_MACH_MSM8926_G2M_KR) || defined(CONFIG_MACH_MSM8226_G2MSS_GLOBAL_COM)
 static struct msm_sensor_power_setting imx119_power_setting_rev_0[] = {
 	 /* Set GPIO_RESET to low to disable power on reset*/
@@ -165,6 +169,7 @@ static struct msm_sensor_power_setting imx119_power_setting_rev_c[] = {
 	},
 
 };
+
 #elif defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_B2LN_LGU) || defined(CONFIG_MACH_MSM8926_B2LN_SKT) || defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM) || defined(CONFIG_MACH_MSM8926_JAGDSNM_CMCC_CN)
 static struct msm_sensor_power_setting imx119_power_setting_b1l[] = {
 	 /* Set GPIO_RESET to low to disable power on reset*/
@@ -262,6 +267,8 @@ static struct msm_sensor_power_setting imx119_power_setting_w5[] = {
 
 };
 
+
+
 #else
 static struct msm_sensor_power_setting imx119_power_setting_rev_0[] = {
 
@@ -358,7 +365,11 @@ static struct msm_sensor_power_setting imx119_power_setting_rev_a[] = {
 };
 #endif
 
+
 /* LGE_CHANGE_E, jaehan.jeong, 2013.7.30, To separate power settings depending on HW revisions,  [ENDS HERE] */
+
+/*                                                                                                           */
+
 
 static struct v4l2_subdev_info imx119_subdev_info[] = {
 	{
@@ -418,7 +429,11 @@ static int32_t imx119_platform_probe(struct platform_device *pdev)
 	return rc;
 }
 
+
 #if defined(CONFIG_MACH_MSM8226_G2MDS_OPEN_CIS) || defined(CONFIG_MACH_MSM8226_G2MDS_GLOBAL_COM) || defined(CONFIG_MACH_MSM8926_G2M_OPEN) || defined(CONFIG_MACH_MSM8926_G2M_VDF) || defined(CONFIG_MACH_MSM8926_G2M_GLOBAL) || defined(CONFIG_MACH_MSM8926_G2M_KR) || defined(CONFIG_MACH_MSM8226_G2MSS_GLOBAL_COM)
+
+#if defined(CONFIG_MACH_MSM8226_G2MDS_OPEN_CIS) || defined(CONFIG_MACH_MSM8226_G2MDS_GLOBAL_COM) || defined(CONFIG_MACH_MSM8926_G2M_OPEN) || defined(CONFIG_MACH_MSM8926_G2M_VDF) || defined(CONFIG_MACH_MSM8926_G2M_GLOBAL) || defined(CONFIG_MACH_MSM8926_G2M_KR)
+
 static void imx119_power_setting(void)
 {
 	hw_rev_type rev_type = 0;
@@ -449,6 +464,7 @@ static void imx119_power_setting(void)
 	}
 
 }
+
 #elif defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_B2LN_LGU) || defined(CONFIG_MACH_MSM8926_B2LN_SKT) || defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM) || defined(CONFIG_MACH_MSM8926_JAGDSNM_CMCC_CN)
 static void imx119_power_setting(void)
 {
@@ -463,6 +479,8 @@ static void imx119_power_setting(void)
 	imx119_s_ctrl.power_setting_array.power_setting = imx119_power_setting_w5;
 	imx119_s_ctrl.power_setting_array.size = ARRAY_SIZE(imx119_power_setting_w5);
 }
+
+
 #else
 static void imx119_power_setting(void)
 {
@@ -516,12 +534,20 @@ static void __exit imx119_exit_module(void)
 
 static struct msm_sensor_ctrl_t imx119_s_ctrl = {
 	.sensor_i2c_client = &imx119_sensor_i2c_client,
+
 /* LGE_CHANGE_S, jaehan.jeong, 2013.7.30, To separate power settings depending on HW revisions, [STARTS HERE] */
+
+/*                                                                                                            */
+
 /*
 	.power_setting_array.power_setting = imx119_power_setting,
 	.power_setting_array.size = ARRAY_SIZE(imx119_power_setting),
  */
+
 /* LGE_CHANGE_E, jaehan.jeong, 2013.7.30, To separate power settings depending on HW revisions,  [ENDS HERE] */
+
+/*                                                                                                           */
+
 	.msm_sensor_mutex = &imx119_mut,
 	.sensor_v4l2_subdev_info = imx119_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(imx119_subdev_info),

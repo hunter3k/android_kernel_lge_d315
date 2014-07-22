@@ -12,18 +12,26 @@
  */
 
 &cci {
+
 	actuator0: qcom,actuator_0@18 {
+
+	actuator0: qcom,actuator@18 {
+
 		cell-index = <1>;//Use Af_main_1 of dw9714
 		reg = <0x18 0x0>;
 		compatible = "qcom,actuator";
 		qcom,cci-master = <0>;
 	};
+
 	actuator1: qcom,actuator_1@18 {
 		cell-index = <2>;//Use Af_main_2 of dw9718
 		reg = <0x18 0x0>;
 		compatible = "qcom,actuator";
 		qcom,cci-master = <0>;
 	};
+
+
+
 	led_flash0: qcom,camera-led-flash {
 		cell-index = <0>;
 		compatible = "qcom,camera-led-flash";
@@ -107,6 +115,7 @@
 		qcom,poll3 = <0 0x0 1 0x0 1 20>;
 		qcom,mem3  = <0xC6 0x00 1 0 1 0>;
 	};
+
 	eeprom2: qcom,eeprom@a0 {
 		cell-index = <0>;
 		reg = <0xa0 0x0>;
@@ -136,6 +145,13 @@
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
 		qcom,slave-id = <0x20 0x0 0x111>;
+
+	/* Rev 0 */
+	qcom,camera_rev_0@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
@@ -207,10 +223,17 @@
 	};
 
 	/* Rev A */
+
 		qcom,camera_rev_a@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
 		qcom,slave-id = <0x20 0x0 0x111>;
+
+	qcom,camera_rev_a@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
@@ -245,6 +268,7 @@
 		status = "okay";
 		revision = "rev_a";
 	};
+
 	qcom,camera_rev_a@34 {
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
@@ -283,6 +307,8 @@
 		status = "okay";
 		revision = "rev_a";
 	};
+
+
 	qcom,camera_rev_a@6e {
 		compatible = "qcom,imx119";
 		reg = <0x6e>;
@@ -318,11 +344,19 @@
 		status = "ok";
 		revision = "rev_a";
 	};
+
 	/*  Rev B */
 	qcom,camera_rev_b@20 {
 		compatible = "qcom,imx111";
 		reg = <0x20 0x0>;
 		qcom,slave-id = <0x20 0x0 0x111>;
+
+	/* Rev B */
+	qcom,camera_rev_b@34 {
+		compatible = "qcom,imx111";
+		reg = <0x34 0x0>;
+		qcom,slave-id = <0x34 0x0 0x111>;
+
 		qcom,csiphy-sd-index = <0>;
 		qcom,csid-sd-index = <0>;
 		qcom,actuator-src = <&actuator0>;
@@ -357,6 +391,7 @@
 		status = "okay";
 		revision = "rev_b...";
 	};
+
 	qcom,camera_rev_b@34 {
 		compatible = "qcom,imx219";
 		reg = <0x34 0x0>;
@@ -395,6 +430,8 @@
 		status = "okay";
 		revision = "rev_b...";
 	};
+
+
 	qcom,camera_rev_b@6e {
 		compatible = "qcom,imx119";
 		reg = <0x6e>;

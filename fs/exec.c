@@ -65,6 +65,7 @@
 #include "internal.h"
 
 #include <trace/events/sched.h>
+
 /* LGE_CHANGE_S
  *
  * do read/mmap profiling during booting
@@ -74,6 +75,17 @@
  */
 #include "sreadahead_prof.h"
 /* LGE_CHAGE_E */
+
+/*             
+  
+                                        
+                                             
+  
+                                  
+ */
+#include "sreadahead_prof.h"
+/*             */
+
 
 
 int core_uses_pid;
@@ -152,6 +164,7 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
 		goto exit;
 
 	fsnotify_open(file);
+
 /* LGE_CHANGE_S
  *
  * do read/mmap profiling during booting
@@ -161,6 +174,17 @@ SYSCALL_DEFINE1(uselib, const char __user *, library)
  */
 	sreadahead_prof( file, 0, 0);
 /* LGE_CHANGE_E */
+
+/*             
+  
+                                        
+                                             
+  
+                                  
+ */
+	sreadahead_prof( file, 0, 0);
+/*              */
+
 
 
 	error = -ENOEXEC;
@@ -804,6 +828,7 @@ struct file *open_exec(const char *name)
 		goto exit;
 
 	fsnotify_open(file);
+
 /* LGE_CHANGE_S
  *
  * do read/mmap profiling during booting
@@ -813,6 +838,17 @@ struct file *open_exec(const char *name)
  */
 	sreadahead_prof( file, 0, 0);
 /* LGE_CHANGE_E */
+
+/*             
+  
+                                        
+                                             
+  
+                                  
+ */
+	sreadahead_prof( file, 0, 0);
+/*              */
+
 
 
 	err = deny_write_access(file);

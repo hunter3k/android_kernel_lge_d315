@@ -1001,12 +1001,12 @@ mms136_version_show(struct device *dev, struct device_attribute *attr, char *buf
 	i2c_master_send(ts->client, &chbuf[0], 1);
 	i2c_master_recv(ts->client, &chbuf[0], 3);
 
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n====================================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "Firmware Version : %d.%02d \n", (verbuf[2]&0x80?1:0), verbuf[2]&0x7F);
 	len += snprintf(buf + len, PAGE_SIZE - len, "Boot:0x%X  Core:0x%X  Config:0x%X \n", verbuf[0], verbuf[1], verbuf[2]);
 	len += snprintf(buf + len, PAGE_SIZE - len, "FW Product : %s \n", product);
 	len += snprintf(buf + len, PAGE_SIZE - len, "Num of Channel. TX:%d RX:%d KEY:%d\n", chbuf[0], chbuf[1], chbuf[2]);
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n====================================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=\n");
 
 	power_unlock(POWER_SYSFS_LOCK);
 
@@ -1051,12 +1051,12 @@ mms136_status_show(struct device *dev, struct device_attribute *attr, char *buf)
 	int len = 0;
 
 	len = snprintf(buf, PAGE_SIZE, "\nMMS-136 Device Status\n");
-	len += snprintf(buf + len, PAGE_SIZE - len, "=============================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "irq num       is %d\n", ts->client->irq);
 	len += snprintf(buf + len, PAGE_SIZE - len, "gpio_irq num  is %d(level=%d)\n", ts->pdata->i2c_int_gpio, gpio_get_value(ts->pdata->i2c_int_gpio));
 	len += snprintf(buf + len, PAGE_SIZE - len, "gpio_scl num  is %d\n", 19 /*ts->pdata->gpio_scl*/);
 	len += snprintf(buf + len, PAGE_SIZE - len, "gpio_sda num  is %d\n", 18 /*ts->pdata->gpio_sda*/);
-	len += snprintf(buf + len, PAGE_SIZE - len, "=============================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=\n");
 	return len;
 }
 
@@ -1751,9 +1751,9 @@ mms136_chstatus_show(struct device *dev, struct device_attribute *attr, char *bu
 		len += snprintf(buf + len, PAGE_SIZE - len, "*** LCD STATUS : ON ***\n");
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->pdata->tx_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1799,6 +1799,7 @@ mms136_chstatus_show(struct device *dev, struct device_attribute *attr, char *bu
 		}
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
+
 	if (ts->pdata->key_num) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
 		write_buf[0] = UNIVERSAL_CMD;
@@ -1836,9 +1837,48 @@ mms136_chstatus_show(struct device *dev, struct device_attribute *attr, char *bu
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+	write_buf[0] = UNIVERSAL_CMD;
+	write_buf[1] = UNIVCMD_KEY_CH_STATUS;
+	write_buf[2] = 0xff; 
+	write_buf[3] = 0; 
+	i2c_master_send(ts->client, write_buf, 4);
+
+	while (gpio_get_value(ts->pdata->i2c_int_gpio)) {
+		flag++;
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+
+	for (t = 0; t < ts->pdata->key_num ; t++)
+	{
+		data = read_buf[2 * t] | (read_buf[2 * t + 1] << 8);
+		if ((alloc_flag != -1) && (ret != -1)) {
+			if ((data > chstatus_max[ts->pdata->rx_num * ts->pdata->tx_num + t]) || (data < chstatus_min[ts->pdata->rx_num * ts->pdata->tx_num + t])) {
+				error_point[ts->pdata->rx_num * ts->pdata->tx_num + t] = 1;
+				ts->pdata->self_diagnostic[0] = 0;
+			}
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	if (alloc_flag == -1) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "<<No spec examination>>");
 	} else if (ret == -1) {
@@ -1850,9 +1890,9 @@ mms136_chstatus_show(struct device *dev, struct device_attribute *attr, char *bu
 	} else {
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->self_diagnostic[0] == 1  ? "PASS" : "FAIL");
 		if (ts->pdata->self_diagnostic[0] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->pdata->tx_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -1881,9 +1921,9 @@ mms136_chstatus_show(struct device *dev, struct device_attribute *attr, char *bu
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	write_buf[0] = UNIVERSAL_CMD;
 	write_buf[1] = UNIVERSAL_CMD_EXIT;
@@ -2040,9 +2080,9 @@ mms136_rawdata_show(struct device *dev, struct device_attribute *attr, char *buf
 		len += snprintf(buf + len, PAGE_SIZE - len, "*** LCD STATUS : ON ***\n");
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->pdata->tx_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2089,6 +2129,7 @@ mms136_rawdata_show(struct device *dev, struct device_attribute *attr, char *buf
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->pdata->key_num) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
 		write_buf[0] = UNIVERSAL_CMD;
@@ -2127,9 +2168,48 @@ mms136_rawdata_show(struct device *dev, struct device_attribute *attr, char *buf
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+	write_buf[0] = UNIVERSAL_CMD;
+	write_buf[1] = UNIVCMD_KEY_RAW_DATA;
+	write_buf[2] = 0xff;
+	write_buf[3] = 0;
+
+	i2c_master_send(ts->client, write_buf, 4);
+
+	while (gpio_get_value(ts->pdata->i2c_int_gpio)) {
+		flag++;
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+
+	for (t = 0; t < ts->pdata->key_num ; t++)
+	{
+		data = read_buf[2 * t] | (read_buf[2 * t + 1] << 8);
+		if ((alloc_flag != -1) && (ret != -1)) {
+			if ((data > raw_data_max[ts->pdata->rx_num * ts->pdata->tx_num + t]) || (data < raw_data_min[ts->pdata->rx_num * ts->pdata->tx_num + t])) {
+				error_point[ts->pdata->rx_num * ts->pdata->tx_num + t] = 1;
+				ts->pdata->self_diagnostic[1] = 0;
+			}
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	if (alloc_flag == -1) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "<<No spec examination>>");
@@ -2142,9 +2222,9 @@ mms136_rawdata_show(struct device *dev, struct device_attribute *attr, char *buf
 	} else {
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->self_diagnostic[1] == 1 ? "PASS" : "FAIL");
 		if (ts->pdata->self_diagnostic[1] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->pdata->tx_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2174,9 +2254,9 @@ mms136_rawdata_show(struct device *dev, struct device_attribute *attr, char *buf
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	write_buf[0] = UNIVERSAL_CMD;
 	write_buf[1] = UNIVERSAL_CMD_EXIT;
@@ -2324,9 +2404,9 @@ mms136_jitter_show(struct device *dev, struct device_attribute *attr, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "*** LCD STATUS : ON ***\n");
 		len += snprintf(buf + len, PAGE_SIZE - len, "************************\n");
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->pdata->tx_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2373,6 +2453,7 @@ mms136_jitter_show(struct device *dev, struct device_attribute *attr, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->pdata->key_num) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
 		write_buf[0] = UNIVERSAL_CMD;
@@ -2411,9 +2492,48 @@ mms136_jitter_show(struct device *dev, struct device_attribute *attr, char *buf)
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+	write_buf[0] = UNIVERSAL_CMD;
+	write_buf[1] = UNIVCMD_KEY_JITTER;
+	write_buf[2] = 0xff;
+	write_buf[3] = 0;
+
+	i2c_master_send(ts->client, write_buf, 4);
+
+	while (gpio_get_value(ts->pdata->i2c_int_gpio)) {
+		flag++;
+		if (flag == 100) {
+			flag = 0;
+			break;
+		}
+		udelay(100);
+	}
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT_SIZE;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, &read_size, 1);
+
+	write_buf[0] = UNIVERSAL_CMD_RESULT;
+	i2c_master_send(ts->client, write_buf, 1);
+	i2c_master_recv(ts->client, read_buf, read_size);
+
+	for (i = 0; i < ts->pdata->key_num ; i++)
+	{
+		data = read_buf[i];
+		if ((alloc_flag != -1) && (ret != -1)) {
+			if ((data > jitter_upper_limit) || (data < jitter_low_limit)) {
+				error_point[ ts->pdata->rx_num * ts->pdata->tx_num + i] = 1;
+				ts->pdata->self_diagnostic[2] = 0;
+			}
+		}
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	if (alloc_flag == -1) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "<<No spec examination>>");
@@ -2422,9 +2542,9 @@ mms136_jitter_show(struct device *dev, struct device_attribute *attr, char *buf)
 	} else {
 		len += snprintf(buf + len, PAGE_SIZE - len, "Result = %s\n", ts->pdata->self_diagnostic[2] == 1 ? "PASS" : "FAIL");
 		if (ts->pdata->self_diagnostic[2] == 0) {
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-			len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+			len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 			for (j = 0; j < ts->pdata->tx_num; j++)
 				len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2453,9 +2573,9 @@ mms136_jitter_show(struct device *dev, struct device_attribute *attr, char *buf)
 			}
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	write_buf[0] = UNIVERSAL_CMD;
 	write_buf[1] = UNIVERSAL_CMD_EXIT;
@@ -2528,9 +2648,9 @@ mms136_delta_show(struct device *dev, struct device_attribute *attr, char *buf)
 	}
 
 	len = snprintf(buf, PAGE_SIZE, "\n<< SHOW DELTA >>\n");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "%5c", c);
 	for (j = 0; j < ts->pdata->tx_num; j++)
 		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", j);
@@ -2575,6 +2695,7 @@ mms136_delta_show(struct device *dev, struct device_attribute *attr, char *buf)
 		len += snprintf(buf + len, PAGE_SIZE - len, "\n");
 	}
 
+
 	if (ts->pdata->key_num) {
 		len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
 		for (j = 0; j<ts->pdata->key_num; j++) {
@@ -2607,9 +2728,42 @@ mms136_delta_show(struct device *dev, struct device_attribute *attr, char *buf)
 			len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
 		}
 	}
-	len += snprintf(buf + len, PAGE_SIZE - len, "\n===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "===============================================");
-	len += snprintf(buf + len, PAGE_SIZE - len, "========================\n");
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "key: ");
+	for (j = 0; j<ts->pdata->key_num; j++) {
+		write_buf[0] = UNIVERSAL_CMD;
+		write_buf[1] = UNIVCMD_CMD_KEY_DELTA;
+		write_buf[2] = j;
+		msg[0].len = 4;
+
+		if (i2c_transfer(ts->client->adapter, &msg[0], 1) != 1) {
+			TOUCH_INFO_MSG("KEY_DELTA i2c transfer failed\n");
+			return -1;
+		}
+
+		sz = i2c_smbus_read_byte_data(ts->client, UNIVERSAL_CMD_RESULT_SIZE);
+
+		write_buf[0] = UNIVERSAL_CMD_RESULT;
+		msg[0].len = 1;
+		msg[1].len = sz;
+		msg[1].buf = read_buf;
+
+		if (i2c_transfer(ts->client->adapter, msg, ARRAY_SIZE(msg)) != ARRAY_SIZE(msg)) {
+			return -1;
+		}
+
+		sz >>= 1;
+
+		data = read_buf[1];
+		data = ((data << 8) | read_buf[0]);
+
+		len += snprintf(buf + len, PAGE_SIZE - len, "%5d", data);
+	}
+
+
+	len += snprintf(buf + len, PAGE_SIZE - len, "\n=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "=====");
+	len += snprintf(buf + len, PAGE_SIZE - len, "===\n");
 
 	if (irq_flag == 1) {
 		TOUCH_INFO_MSG("enable_irq\n");
@@ -2769,7 +2923,7 @@ mms136_self_diagnostic_show(struct device *dev, struct device_attribute *attr, c
 	len += snprintf(buf + len, PAGE_SIZE - len, "Firmware Version : %d.%02d \n", (verbuf[2]&0x80?1:0), verbuf[2]&0x7F);
 	len += snprintf(buf + len, PAGE_SIZE - len, "Boot:0x%X Core:0x%X Config:0x%X \n", verbuf[0], verbuf[1], verbuf[2]);
 	len += snprintf(buf + len, PAGE_SIZE - len, "FW Product : %s \n", product);
-	len += snprintf(buf + len, PAGE_SIZE - len, "=======RESULT========\n");
+	len += snprintf(buf + len, PAGE_SIZE - len, "RESULT=\n");
 	len += snprintf(buf + len, PAGE_SIZE - len, "Channel Status : %s\n", ts->pdata->self_diagnostic[0] == 1 ? "Pass" : "Fail");
 	len += snprintf(buf + len, PAGE_SIZE - len, "Raw Data : %s\n", ts->pdata->self_diagnostic[1] == 1 ? "Pass" : "Fail");
 	//len += snprintf(buf + len, PAGE_SIZE - len, "Jitter : %s\n", ts->pdata->self_diagnostic[2] == 1 ? "Pass" : "Fail");

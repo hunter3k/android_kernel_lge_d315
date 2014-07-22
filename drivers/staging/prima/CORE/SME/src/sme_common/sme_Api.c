@@ -39,7 +39,7 @@
  * PERFORMANCE OF THIS SOFTWARE.
  */
 
-/**=========================================================================
+/**===
 
   \file  smeApi.c
 
@@ -49,9 +49,9 @@
 
    Qualcomm Confidential and Proprietary.
 
-  ========================================================================*/
+  ==*/
 
-/*===========================================================================
+/*=====
 
                       EDIT HISTORY FOR FILE
 
@@ -66,7 +66,7 @@
 06/03/10     js                     Added support to hostapd driven
  *                                  deauth/disassoc/mic failure
 
-===========================================================================*/
+=====*/
 
 /*--------------------------------------------------------------------------
   Include Files
@@ -3191,11 +3191,14 @@ eHalStatus sme_RoamDelPMKIDfromCache( tHalHandle hHal, tANI_U8 sessionId, tANI_U
       }
       sme_ReleaseGlobalLock( &pMac->sme );
    }
+
    // 20140210 real-wifi@lge.com, jinseok.oh, Supplicant pending when PMKID status return 1  [START]
    if ( status > 0 ) {
       status = -1;
    }
    // 20140210 real-wifi@lge.com, jinseok.oh, Supplicant pending when PMKID status return 1 [END]
+
+
    return (status);
 }
 /* ---------------------------------------------------------------------------

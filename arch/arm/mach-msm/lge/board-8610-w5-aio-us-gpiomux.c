@@ -273,8 +273,13 @@ static struct gpiomux_setting cam_settings[] = {
 };
 
 /*
+
  * This source has changed to match at lgps15 HDK board
  * changed by junil0814.lee@lge.com 2013-06-05
+
+                                                       
+                                              
+
  */
 static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	{
@@ -505,7 +510,11 @@ static struct gpiomux_setting mms100s_ts_ldo_sus_cfg = {
 static struct gpiomux_setting synaptics_ts_int_act_cfg = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
+
 	.pull = GPIOMUX_PULL_NONE,
+
+	.pull = GPIOMUX_PULL_UP,
+
 	.dir = GPIOMUX_IN,
 };
 
@@ -533,14 +542,22 @@ static struct gpiomux_setting synaptics_ts_ldo_sus_cfg = {
 static struct gpiomux_setting synaptics_ts_makerid_act_cfg = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
+
 	.pull = GPIOMUX_PULL_NONE,
+
+	.pull = GPIOMUX_PULL_UP,
+
 	.dir = GPIOMUX_IN,
 };
 
 static struct gpiomux_setting synaptics_ts_makerid_sus_cfg = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
+
 	.pull = GPIOMUX_PULL_NONE,
+
+	.pull = GPIOMUX_PULL_UP,
+
 	.dir = GPIOMUX_IN,
 };
 
@@ -687,7 +704,11 @@ void __init msm8610_init_gpiomux(void)
 	msm_gpiomux_install(msm_keypad_configs,
 				ARRAY_SIZE(msm_keypad_configs));
 	msm_gpiomux_install(sd_card_det, ARRAY_SIZE(sd_card_det));
+
 	/* LGE_CHANGE_S, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
+
+	/*                                                                                  */
+
 	if(revision == HW_REV_0) {
 		msm_gpiomux_install(msm_sensor_configs, ARRAY_SIZE(msm_sensor_configs));
 		printk(KERN_ERR " [Camera] below HW_REV_0 is using power source from PM\n");
@@ -700,7 +721,11 @@ void __init msm8610_init_gpiomux(void)
 		msm_gpiomux_install(msm_sensor_configs_rev_b, ARRAY_SIZE(msm_sensor_configs_rev_b));
 		printk(KERN_ERR " [Camera] In greater than HW_REV_B, MAIN_CAM0_RESET_N has been changed from GPIO_98 to GPIO_114\n");
 	}
+
 /* LGE_CHANGE_E, Add gpiomux for ex-ldo used gpio, 2013-09-04, hyungtae.lee@lge.com */
+
+/*                                                                                  */
+
 
 	msm_gpiomux_install(msm_gpio_int_configs,
 			ARRAY_SIZE(msm_gpio_int_configs));

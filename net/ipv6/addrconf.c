@@ -92,10 +92,17 @@
 #include <linux/export.h>
 
 /* Set to 3 to get tracing... */
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #define ACONF_DEBUG 2 // The original value.
 //#define ACONF_DEBUG 3 // To debug...
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+//#define ACONF_DEBUG 2 // The original value.
+#define ACONF_DEBUG 3 // To debug...
+//                                                                                                        
+
 
 #if ACONF_DEBUG >= 3
 #define ADBG(x) printk x
@@ -104,7 +111,11 @@
 #endif
 
 #define	INFINITY_LIFE_TIME	0xFFFFFFFF
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+
 //The value of global scope is 1.
 //The value of link-local scope is 33.
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
@@ -116,7 +127,11 @@
 //The 50 milli-seconds is requirements of LGU+.
 #define LGE_DATA_WAITING_TIME_FOR_DAD_OF_LGU 5
 #endif
+
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+
 static inline u32 cstamp_delta(unsigned long cstamp)
 {
 	return (cstamp - INITIAL_JIFFIES) * 100UL / HZ;
@@ -1859,11 +1874,19 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
 	struct inet6_dev *in6_dev;
 	struct net *net = dev_net(dev);
 
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
 	ADBG((KERN_DEBUG "[LGE_DATA][%s()] The prefix is received now !", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+	printk(KERN_DEBUG "[LGE_DATA][%s()] The prefix is received now !", __func__);
+#endif
+//                                                                                                        
+
 
 	pinfo = (struct prefix_info *) opt;
 
@@ -2940,6 +2963,7 @@ static void addrconf_rs_timer(unsigned long data)
 		goto out;
 
 	/* Announcement received after solicitation was sent */
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 	if (idev->if_flags & IF_RA_RCVD){
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
@@ -2948,6 +2972,16 @@ static void addrconf_rs_timer(unsigned long data)
 		goto out;
     }
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+	if (idev->if_flags & IF_RA_RCVD){
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+printk(KERN_DEBUG "[LGE_DATA][%s()] The RA msg had been received!", __func__);
+#endif
+		goto out;
+    }
+//                                                                                                        
+
 	spin_lock(&ifp->lock);
 	if (ifp->probes++ < idev->cnf.rtr_solicits) {
 		/* The wait after the last probe can be shorter */
@@ -2956,11 +2990,19 @@ static void addrconf_rs_timer(unsigned long data)
 				   idev->cnf.rtr_solicit_delay :
 				   idev->cnf.rtr_solicit_interval);
 		spin_unlock(&ifp->lock);
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
         ADBG((KERN_DEBUG "[LGE_DATA][%s()][stage 2] rs is sent now!", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+        printk(KERN_DEBUG "[LGE_DATA][%s()][stage 2] rs is sent now!", __func__);
+#endif
+//                                                                                                        
+
 		ndisc_send_rs(idev->dev, &ifp->addr, &in6addr_linklocal_allrouters);
 	} else {
 		spin_unlock(&ifp->lock);
@@ -2991,11 +3033,19 @@ static void addrconf_dad_kick(struct inet6_ifaddr *ifp)
 		rand_num = net_random() % (idev->cnf.rtr_solicit_delay ? : 1);
 
 	ifp->probes = idev->cnf.dad_transmits;
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
     ADBG((KERN_DEBUG "[LGE_DATA][%s()] dad_transmits == %d, ramd_num == %lu", __func__, idev->cnf.dad_transmits, rand_num));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+    printk(KERN_DEBUG "[LGE_DATA][%s()] dad_transmits == %d, ramd_num == %lu", __func__, idev->cnf.dad_transmits, rand_num);
+#endif
+//                                                                                                        
+
 	addrconf_mod_timer(ifp, AC_DAD, rand_num);
 }
 
@@ -3003,13 +3053,18 @@ static void addrconf_dad_start(struct inet6_ifaddr *ifp, u32 flags)
 {
 	struct inet6_dev *idev = ifp->idev;
 	struct net_device *dev = idev->dev;
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
+
+//                                                                                                        
+
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
     int ipv6AddrType = 0; //initializing
 
     const char InterfaceNameToApply[6]="rmnet";
     char CurrentInterfaceName[6]={0};//initializing
     ipv6AddrType = ipv6_addr_type(&ifp->addr);
+
 
     ADBG((KERN_DEBUG "[LGE_DATA][%s()] dad_start! dev_name == %s", __func__, dev->name));
     ADBG((KERN_DEBUG "[LGE_DATA][%s()] ipv6_addr_type == %d", __func__, ipv6AddrType));
@@ -3021,6 +3076,18 @@ static void addrconf_dad_start(struct inet6_ifaddr *ifp, u32 flags)
     }
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
+
+    printk(KERN_DEBUG "[LGE_DATA][%s()] dad_start! dev_name == %s", __func__, dev->name);
+    printk(KERN_DEBUG "[LGE_DATA][%s()] ipv6_addr_type == %d", __func__, ipv6AddrType);
+
+    strncpy(CurrentInterfaceName,dev->name,5);
+    if(CurrentInterfaceName == NULL){
+        printk(KERN_DEBUG "[LGE_DATA] CurrentInterfaceName is NULL !\n");
+        return;
+    }
+#endif
+//                                                                                                        
+
 	addrconf_join_solict(dev, &ifp->addr);
 
 	net_srandom(ifp->addr.s6_addr32[3]);
@@ -3030,7 +3097,11 @@ static void addrconf_dad_start(struct inet6_ifaddr *ifp, u32 flags)
 	if (ifp->state == INET6_IFADDR_STATE_DEAD)
 		goto out;
 
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
+
+//                                                                                                        
+
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
 	if (((strcmp(InterfaceNameToApply, CurrentInterfaceName) == 0) && (ipv6AddrType == LGE_DATA_GLOBAL_SCOPE))
         || (dev->flags&(IFF_NOARP|IFF_LOOPBACK) ||
@@ -3045,16 +3116,28 @@ static void addrconf_dad_start(struct inet6_ifaddr *ifp, u32 flags)
 	    ifp->flags & IFA_F_NODAD)
 // Kernel Original implemenatation END
 #endif
+
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
+
+//                                                                                                        
+
     {
 		ifp->flags &= ~(IFA_F_TENTATIVE|IFA_F_OPTIMISTIC|IFA_F_DADFAILED);
 		spin_unlock(&ifp->lock);
 		read_unlock_bh(&idev->lock);
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
         ADBG((KERN_DEBUG "[LGE_DATA][%s()] ipv6_addr_type == %d, Because the IPv6 type is Global Scope, we will immediately finish the DAD process for Global Scope.", __func__, ipv6AddrType));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-07-02
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+        printk(KERN_DEBUG "[LGE_DATA][%s()] ipv6_addr_type == %d, Because the IPv6 type is Global Scope, we will immediately finish the DAD process for Global Scope.", __func__, ipv6AddrType);
+#endif
+//                                                                                                        
+
 		addrconf_dad_completed(ifp);
 		return;
 	}
@@ -3090,13 +3173,21 @@ static void addrconf_dad_timer(unsigned long data)
 	struct inet6_ifaddr *ifp = (struct inet6_ifaddr *) data;
 	struct inet6_dev *idev = ifp->idev;
 	struct in6_addr mcaddr;
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
 	struct net_device *dev = idev->dev;
     const char InterfaceNameToApply[6]="rmnet";
     char CurrentInterfaceName[6]={0};//initializing
 #endif
+
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+
 	if (!ifp->probes && addrconf_dad_end(ifp))
 		goto out;
 
@@ -3117,11 +3208,19 @@ static void addrconf_dad_timer(unsigned long data)
 		/*
 		 * DAD was successful
 		 */
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
         ADBG((KERN_DEBUG "[LGE_DATA][%s()] DAD was successful!", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+        printk(KERN_DEBUG "[LGE_DATA][%s()] DAD was successful!", __func__);
+#endif
+//                                                                                                        
+
 		ifp->flags &= ~(IFA_F_TENTATIVE|IFA_F_OPTIMISTIC|IFA_F_DADFAILED);
 		spin_unlock(&ifp->lock);
 		read_unlock(&idev->lock);
@@ -3132,15 +3231,23 @@ static void addrconf_dad_timer(unsigned long data)
 	}
 
 	ifp->probes--;
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
     ADBG((KERN_DEBUG "[LGE_DATA][%s()], ifp->idev->nd_parms->retrans_time == %d", __func__, ifp->idev->nd_parms->retrans_time));
 	ADBG((KERN_DEBUG "[LGE_DATA][%s()] dev_name == %s", __func__, dev->name));
 
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+    printk(KERN_DEBUG "[LGE_DATA][%s()], ifp->idev->nd_parms->retrans_time == %d", __func__, ifp->idev->nd_parms->retrans_time);
+	printk(KERN_DEBUG "[LGE_DATA][%s()] dev_name == %s", __func__, dev->name);
+
+
     strncpy(CurrentInterfaceName,dev->name,5);
     if(CurrentInterfaceName == NULL){
         spin_unlock(&ifp->lock);
         read_unlock(&idev->lock);
+
         ADBG(KERN_DEBUG "[LGE_DATA] CurrentInterfaceName is NULL !\n");
 		goto out;
     }
@@ -3150,6 +3257,17 @@ static void addrconf_dad_timer(unsigned long data)
     if(strcmp(InterfaceNameToApply, CurrentInterfaceName) == 0){//In case of rmnet, this patch will be applied bacause We should not impact to the Wi-Fi and so on.
 	    addrconf_mod_timer(ifp, AC_DAD, LGE_DATA_WAITING_TIME_FOR_DAD_OF_LGU);
         ADBG((KERN_DEBUG "[LGE_DATA][%s()] The waiting time for link-local DAD is set as [%d] milli-seconds in case of only rmnet interface !", __func__, LGE_DATA_WAITING_TIME_FOR_DAD_OF_LGU*10));
+
+        printk(KERN_DEBUG "[LGE_DATA] CurrentInterfaceName is NULL !\n");
+		goto out;
+    }
+
+	printk(KERN_DEBUG "[LGE_DATA][%s()] CopyInterfaceName == %s, CurrentInterfaceName == %s", __func__, InterfaceNameToApply, CurrentInterfaceName);
+
+    if(strcmp(InterfaceNameToApply, CurrentInterfaceName) == 0){//In case of rmnet, this patch will be applied bacause We should not impact to the Wi-Fi and so on.
+	    addrconf_mod_timer(ifp, AC_DAD, LGE_DATA_WAITING_TIME_FOR_DAD_OF_LGU);
+        printk(KERN_DEBUG "[LGE_DATA][%s()] The waiting time for link-local DAD is set as [%d] milli-seconds in case of only rmnet interface !", __func__, LGE_DATA_WAITING_TIME_FOR_DAD_OF_LGU*10);
+
     }else{
 //kernel original code -- START
         addrconf_mod_timer(ifp, AC_DAD, ifp->idev->nd_parms->retrans_time);
@@ -3158,16 +3276,28 @@ static void addrconf_dad_timer(unsigned long data)
 #else
     addrconf_mod_timer(ifp, AC_DAD, ifp->idev->nd_parms->retrans_time);
 #endif
+
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+
 	spin_unlock(&ifp->lock);
 	read_unlock(&idev->lock);
 
 	/* send a neighbour solicitation for our addr */
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
     ADBG((KERN_DEBUG "[LGE_DATA][%s()] send a neighbour solicitation for our addr !", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+    printk(KERN_DEBUG "[LGE_DATA][%s()] send a neighbour solicitation for our addr !", __func__);
+#endif
+//                                                                                                        
+
 	addrconf_addr_solict_mult(&ifp->addr, &mcaddr);
 	ndisc_send_ns(ifp->idev->dev, NULL, &ifp->addr, &mcaddr, &in6addr_any);
 out:
@@ -3183,11 +3313,19 @@ static void addrconf_dad_completed(struct inet6_ifaddr *ifp)
 	 */
 
 	ipv6_ifa_notify(RTM_NEWADDR, ifp);
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
     ADBG((KERN_DEBUG "[LGE_DATA][%s()] dad_is_completed!", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+    printk(KERN_DEBUG "[LGE_DATA][%s()] dad_is_completed!", __func__);
+#endif
+//                                                                                                        
+
 	/* If added prefix is link local and we are prepared to process
 	   router advertisements, start sending router solicitations.
 	 */
@@ -3202,11 +3340,19 @@ static void addrconf_dad_completed(struct inet6_ifaddr *ifp)
 		 *	[...] as part of DAD [...] there is no need
 		 *	to delay again before sending the first RS
 		 */
+
 // LGE_CHANGE_S, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
 #ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
         ADBG((KERN_DEBUG "[LGE_DATA][%s()][stage 1] rs is sent now!", __func__));
 #endif
 // LGE_CHANGE_E, [LGE_DATA][LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER], heeyeon.nah@lge.com, 2013-05-21
+
+//                                                                                                        
+#ifdef CONFIG_LGP_DATA_TCPIP_SLAAC_IPV6_ALLOCATION_BOOSTER
+        printk(KERN_DEBUG "[LGE_DATA][%s()][stage 1] rs is sent now!", __func__);
+#endif
+//                                                                                                        
+
 		ndisc_send_rs(ifp->idev->dev, &ifp->addr, &in6addr_linklocal_allrouters);
 
 		spin_lock_bh(&ifp->lock);

@@ -14,9 +14,15 @@
  */
 
 /* 
+
  * DGMS MC-C05702-7 : Apply Autorun
  * CONFIG_USB_G_LGE_ANDROID_AUTORUN
  * CONFIG_USB_G_LGE_ANDROID_AUTORUN_LGE
+
+                                   
+                                   
+                                       
+
  */
 
 #ifndef __U_LGEUSB_H__
@@ -36,4 +42,8 @@ int lgeusb_get_sw_ver(char *);
 int lgeusb_get_sub_ver(char *);
 #endif
 
+
 #endif /* __U_LGEUSB_H__ */
+
+#endif /*                */
+

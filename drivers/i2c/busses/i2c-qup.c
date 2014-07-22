@@ -136,8 +136,14 @@ enum {
 #define QUP_OUT_FIFO_NOT_EMPTY		0x10
 #define I2C_GPIOS_DT_CNT		(2)		/* sda and scl */
 
+
 // LGE Added. Atmel touch IC for checking i2c suspend
 bool i2c_suspended = false;
+
+
+#if defined(CONFIG_TOUCHSCREEN_ATMEL_S540)
+bool i2c_suspended = false;		/* Use atme touch IC for checking i2c suspend */
+#endif
 
 static char const * const i2c_rsrcs[] = {"i2c_clk", "i2c_sda"};
 
@@ -1780,6 +1786,13 @@ static int qup_i2c_suspend(struct device *device)
 		pm_runtime_enable(device);
 	}
 
+
+
+	dev->pwr_state = MSM_I2C_SYS_SUSPENDED;
+#if defined(CONFIG_TOUCHSCREEN_ATMEL_S540)
+	i2c_suspended = true;
+#endif
+
 	return 0;
 }
 
@@ -1790,6 +1803,7 @@ static int qup_i2c_resume(struct device *device)
 	 * Even if it's not enabled, rely on 1st client transaction to do
 	 * clock ON and gpio configuration
 	 */
+
 	dev_dbg(device, "system resume");
 #if defined(CONFIG_MACH_MSM8926_X3_KR) || defined(CONFIG_MACH_MSM8926_X3N_KR) || defined(CONFIG_MACH_MSM8926_G2M_KR) || defined(CONFIG_MACH_MSM8926_F70N_KR)
 	if(lge_get_board_revno() <  HW_REV_B) {
@@ -1830,6 +1844,13 @@ static int qup_i2c_resume(struct device *device)
 #endif
 	// LGE Added. Atmel touch IC for checking i2c suspend
 	i2c_suspended = false;
+
+
+	dev_dbg(device, "system resume\n");
+	dev->pwr_state = MSM_I2C_PM_SUSPENDED;
+#if defined(CONFIG_TOUCHSCREEN_ATMEL_S540)
+	i2c_suspended = false;
+#endif
 
 	return 0;
 }

@@ -90,14 +90,20 @@
 #ifndef CONFIG_MACH_MSM8X10_W5_AIO_US
 #ifndef CONFIG_MACH_MSM8926_X3_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W3C_TRF_US
+
 #ifndef CONFIG_MACH_MSM8X10_W5_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W5C_TRF_US
+
+
 #include "f_ecm.c"
 #endif
 #endif
 #endif
+
 #endif
 #endif
+
+
 #include "f_qc_rndis.c"
 #include "u_ether.c"
 #include "u_qc_ether.c"
@@ -282,10 +288,13 @@ static char serial_string[256];
 #define CHARGE_ONLY_STRING_IDX  3
 static char charge_only_string[256];
 #endif
+
 #ifdef CONFIG_USB_G_LGE_SERIALNO_REDIRECTION
 #define STRING_SERIAL_REDI_IDX      4
 static char serial_string_redi[256];
 #endif
+
+
 
 /* String Table */
 static struct usb_string strings_dev[] = {
@@ -295,9 +304,12 @@ static struct usb_string strings_dev[] = {
 #ifdef CONFIG_USB_G_LGE_ANDROID
     [CHARGE_ONLY_STRING_IDX].s = charge_only_string,
 #endif
+
 #ifdef CONFIG_USB_G_LGE_SERIALNO_REDIRECTION
     [STRING_SERIAL_REDI_IDX].s = serial_string_redi,
 #endif
+
+
 	{  }			/* end of list */
 };
 
@@ -1065,8 +1077,11 @@ static struct android_usb_function ncm_function = {
 #ifndef CONFIG_MACH_MSM8X10_W5_AIO_US
 #ifndef CONFIG_MACH_MSM8926_X3_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W3C_TRF_US
+
 #ifndef CONFIG_MACH_MSM8X10_W5_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W5C_TRF_US
+
+
 /* ecm transport string */
 static char ecm_transports[MAX_XPORT_STR_LEN];
 
@@ -1189,8 +1204,11 @@ static struct android_usb_function ecm_qc_function = {
 #endif
 #endif
 #endif
+
 #endif
 #endif
+
+
 /* MBIM - used with BAM */
 #define MAX_MBIM_INSTANCES 1
 
@@ -1860,8 +1878,11 @@ static struct android_usb_function rndis_qc_function = {
 #ifndef CONFIG_MACH_MSM8X10_W5_AIO_US
 #ifndef CONFIG_MACH_MSM8926_X3_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W3C_TRF_US
+
 #ifndef CONFIG_MACH_MSM8X10_W5_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W5C_TRF_US
+
+
 static int ecm_function_bind_config(struct android_usb_function *f,
 					struct usb_configuration *c)
 {
@@ -1927,8 +1948,11 @@ static struct android_usb_function ecm_function = {
 #endif
 #endif
 #endif
+
 #endif
 #endif
+
+
 
 struct mass_storage_function_config {
 	struct fsg_config fsg;
@@ -1950,7 +1974,11 @@ static int mass_storage_function_init(struct android_usb_function *f,
 	if (!config)
 		return -ENOMEM;
 
+
 #ifdef CONFIG_USB_G_LGE_ANDROID	/* by mo2chunghan.lee@lge.com, 09/20/2012 */
+
+#ifdef CONFIG_USB_G_LGE_ANDROID	/*                                        */
+
 		config->fsg.vendor_name = "LGE";
 		config->fsg.product_name = "Android Platform";
 #endif
@@ -2161,7 +2189,11 @@ static struct android_usb_function cdrom_storage_function = {
 	.bind_config	= cdrom_storage_function_bind_config,
 	.attributes	= cdrom_storage_function_attributes,
 };
+
 #endif /* CONFIG_USB_G_LGE_ANDROID_AUTORUN */
+
+#endif /*                                  */
+
 
 #ifdef CONFIG_USB_G_LGE_ANDROID
 /* charge only mode */
@@ -2186,7 +2218,11 @@ static struct android_usb_function charge_only_function = {
    .cleanup    = charge_only_function_cleanup,
    .bind_config    = charge_only_function_bind_config,
 };
+
 #endif /* CONFIG_USB_G_LGE_ANDROID */
+
+#endif /*                          */
+
 
 static int accessory_function_init(struct android_usb_function *f,
 					struct usb_composite_dev *cdev)
@@ -2335,14 +2371,20 @@ static struct android_usb_function *supported_functions[] = {
 #ifndef CONFIG_MACH_MSM8X10_W5_AIO_US
 #ifndef CONFIG_MACH_MSM8926_X3_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W3C_TRF_US
+
 #ifndef CONFIG_MACH_MSM8X10_W5_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W5C_TRF_US
+
+
 	&ecm_qc_function,
 #endif
 #endif
 #endif
+
 #endif
 #endif
+
+
 #ifdef CONFIG_SND_PCM
 	&audio_function,
 #endif
@@ -2367,14 +2409,20 @@ static struct android_usb_function *supported_functions[] = {
 #ifndef CONFIG_MACH_MSM8X10_W5_AIO_US
 #ifndef CONFIG_MACH_MSM8926_X3_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W3C_TRF_US
+
 #ifndef CONFIG_MACH_MSM8X10_W5_TRF_US
 #ifndef CONFIG_MACH_MSM8X10_W5C_TRF_US
+
+
 	&ecm_function,
 #endif
 #endif
 #endif
+
 #endif
 #endif
+
+
 	&ncm_function,
 	&mass_storage_function,
 #ifdef CONFIG_USB_G_LGE_ANDROID
@@ -3087,7 +3135,11 @@ static void android_lge_factory_bind(struct usb_composite_dev *cdev)
     }
 }
 
+
 #endif /* CONFIG_USB_G_LGE_ANDROID && CONFIG_LGE_PM */
+
+#endif /*                                           */
+
 
 static int android_bind_config(struct usb_configuration *c)
 {
@@ -3159,7 +3211,11 @@ static int android_bind(struct usb_composite_dev *cdev)
 
 	/* Default strings - should be updated by userspace */
 #ifdef CONFIG_USB_G_LGE_ANDROID
+
 	/* Default string as LGE products */
+
+	/*                                */
+
 	ret = lgeusb_get_manufacturer_name(lge_manufacturer);
 	if (!ret)
 		strlcpy(manufacturer_string, lge_manufacturer,

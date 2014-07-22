@@ -228,7 +228,11 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
+
 #ifdef CONFIG_MACH_LGE  /* LGE_CHANGE_S,  Added for COMMON_I2C */
+
+#ifdef CONFIG_MACH_LGE  /*                                     */
+
 	{
 		.gpio      = 10,	/* BLSP1 QUP3 I2C_SDA */
 		.settings = {
@@ -362,14 +366,22 @@ static struct gpiomux_setting sd_card_det_sleep_config = {
 	.pull = GPIOMUX_PULL_NONE,
 	.dir = GPIOMUX_IN,
 };
+
 #else // not CONFIG_MACH_LGE
+
+#else //                    
+
 static struct gpiomux_setting sd_card_det_sleep_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
 	.pull = GPIOMUX_PULL_UP,
 	.dir = GPIOMUX_IN,
 };
+
 #endif // CONFIG_MACH_LGE
+
+#endif //                
+
 
 static struct msm_gpiomux_config sd_card_det __initdata = {
 	.gpio = 37,
@@ -502,7 +514,11 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 		},
 	},
 	{
+
 		.gpio = 114, /* CAM1_RST_N */
+
+		.gpio = 37, /* CAM1_RST_N */
+
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -595,12 +611,16 @@ static int gpio_reserved_pin_rev_B[] = {
 	0, 1, 2, 3, 5, 12, 13, 14, 15, 17, 31, 49, 50, 51, 52, 53, 54, 55, 56, 60, 63, 64, 65, 73, 74, 75, 76, 78, 79, 82, 83, 84, 88, 90, 94, 95, 96, 97, 103, 104, 115, 116, 117, 118,
 	MSM8x26_GPIO_END // This is included to notify the end of reserved GPIO configuration.
 	};
+
 	
 static int gpio_reserved_pin_rev_D[] = {
 	0, 1, 2, 3, 5, 12, 13, 14, 15, 31, 34, 49, 50, 51, 52, 53, 54, 55, 56, 63, 64, 65, 67, 73, 74, 75, 76, 78, 79, 80, 82, 83, 84, 88, 90, 94, 95, 96, 97, 98, 103, 104, 109, 115, 116, 117, 118,
 	MSM8x26_GPIO_END // This is included to notify the end of reserved GPIO configuration.
 	};
 	
+
+
+
 static struct gpiomux_setting reserved_pin_cfg = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
@@ -622,7 +642,11 @@ static struct msm_gpiomux_config gpio_func_reserved_pin_config __initdata = {
 //Need to set GPIO[020] NFC_VEN
 //Need to set GPIO[021] NFC_IRQ
 //Need to set GPIO[022] NFC_MODE
+
 /*  LGE_CHANGE_S, [NFC][minwoo.kwon@lge.com], NFC Bring up*/
+
+/*                                                        */
+
 #ifdef CONFIG_LGE_NFC_PN544_C3
 static struct gpiomux_setting nfc_pn544_sda_cfg = {
 	.func = GPIOMUX_FUNC_3,
@@ -700,7 +724,11 @@ static struct msm_gpiomux_config msm_nfc_configs[] __initdata = {
 	},
 };
 #endif
+
 /*  LGE_CHANGE_E, [NFC][minwoo.kwon@lge.com], NFC Bring up*/
+
+/*                                                        */
+
 
 void __init msm8226_init_gpiomux(void)
 {
@@ -751,6 +779,7 @@ void __init msm8226_init_gpiomux(void)
             for ( gpio_index = 0 ; gpio_reserved_pin_rev_B[gpio_index] < MSM8x26_GPIO_END ; gpio_index++ ){
 				gpio_func_reserved_pin_config.gpio = gpio_reserved_pin_rev_B[gpio_index];
 				msm_gpiomux_install(&gpio_func_reserved_pin_config, 1);
+
 			}
 			break;
 		case HW_REV_C :
@@ -760,14 +789,27 @@ void __init msm8226_init_gpiomux(void)
 				msm_gpiomux_install(&gpio_func_reserved_pin_config, 1);
 			}
 			break;
+
+				}
+			break;
+		case HW_REV_C :
+		case HW_REV_D :
+
 		case HW_REV_E :
 		case HW_REV_1_0 :
 		case HW_REV_1_1 :
 		default :
+
 		    for ( gpio_index = 0 ; gpio_reserved_pin_rev_D[gpio_index] < MSM8x26_GPIO_END ; gpio_index++ ){
 				gpio_func_reserved_pin_config.gpio = gpio_reserved_pin_rev_D[gpio_index];
 				msm_gpiomux_install(&gpio_func_reserved_pin_config, 1);
 			}
+
+			for ( gpio_index = 0 ; gpio_reserved_pin_rev_B[gpio_index] < MSM8x26_GPIO_END ; gpio_index++ ){
+				gpio_func_reserved_pin_config.gpio = gpio_reserved_pin_rev_B[gpio_index];
+				msm_gpiomux_install(&gpio_func_reserved_pin_config, 1);
+				}
+
 			break;
 	}
 #endif
@@ -809,11 +851,19 @@ void __init msm8226_init_gpiomux(void)
 #endif
 
 
+
 /*  LGE_CHANGE_S, [NFC][minwoo.kwon@lge.com], NFC Bring up */
 #ifdef CONFIG_LGE_NFC_PN544_C3
 	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
 #endif
 /*  LGE_CHANGE_E, [NFC][minwoo.kwon@lge.com], NFC Bring up */
+
+/*                                                         */
+#ifdef CONFIG_LGE_NFC_PN544_C3
+	msm_gpiomux_install(msm_nfc_configs, ARRAY_SIZE(msm_nfc_configs));
+#endif
+/*                                                         */
+
 
 
 }

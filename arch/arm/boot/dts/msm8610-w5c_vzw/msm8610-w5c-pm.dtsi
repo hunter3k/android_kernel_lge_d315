@@ -53,7 +53,11 @@
 		qcom,vibrator@c000 {
 			status = "okay";
 			qcom,vib-timeout-ms = <15000>;
+
 			qcom,vib-vtg-level-mV = <3000>;
+
+			qcom,vib-vtg-level-mV = <3100>;
+
 		};
 	};
 };
@@ -191,7 +195,11 @@
     status = "ok";
 
     qcom,r-sense-uohm = <10000>;
+
     qcom,v-cutoff-uv = <3200000>;
+
+    qcom,v-cutoff-uv = <3400000>;
+
     qcom,max-voltage-uv = <4350000>;
     qcom,r-conn-mohm = <18>;
     qcom,shutdown-soc-valid-limit = <20>;

@@ -42,7 +42,7 @@
 #ifndef WLAN_QCT_WLANTL_H
 #define WLAN_QCT_WLANTL_H
 
-/*===========================================================================
+/*=====
 
                W L A N   T R A N S P O R T   L A Y E R
                        E X T E R N A L  A P I
@@ -51,21 +51,21 @@
 DESCRIPTION
   This file contains the external API exposed by the wlan transport layer
   module.
-<<<<<<< HEAD:CORE/TL/inc/wlan_qct_tl.h
+:CORE/TL/inc/wlan_qct_tl.h
   
       
   Copyright (c) 2008 QUALCOMM Incorporated. All Rights Reserved.
   Qualcomm Confidential and Proprietary
-=======
+
 
 
   Copyright (c) 2008 Qualcomm Technologies, Inc. All Rights Reserved.
   Qualcomm Technologies Confidential and Proprietary
 >>>>>>> 326d6cf... wlan: remove obsolete ANI_CHIPSET_VOLANS featurization:prima/CORE/TL/inc/wlan_qct_tl.h
-===========================================================================*/
+=====*/
 
 
-/*===========================================================================
+/*=====
 
                       EDIT HISTORY FOR FILE
 
@@ -89,15 +89,15 @@ when        who    what, where, why
 08/06/08    lti     Added QOS support 
 05/01/08    lti     Created module.
 
-===========================================================================*/
+=====*/
 
 
 
-/*===========================================================================
+/*=====
 
                           INCLUDE FILES FOR MODULE
 
-===========================================================================*/
+=====*/
 
 /*----------------------------------------------------------------------------
  * Include Files
@@ -126,10 +126,10 @@ when        who    what, where, why
 /*Size of the LLC/SNAP header*/
 #define WLANTL_LLC_SNAP_SIZE                   8
 
-/*============================================================================
+/*======
  *     GENERIC STRUCTURES - not belonging to TL 
  *     TO BE MOVED TO A GLOBAL HEADER
- ============================================================================*/
+ ======*/
 /*Maximum number of ACs */
 #define WLANTL_MAX_AC                         4
 
@@ -339,9 +339,9 @@ typedef enum
   WLANTL_BI_DIR = 2,
 }WLANTL_TSDirType;
 
-/*============================================================================
+/*======
  *     GENERIC STRUCTURES - END
- ============================================================================*/
+ ======*/
 
 
 
@@ -727,7 +727,7 @@ typedef VOS_STATUS (*WLANTL_SuspendCBType)( v_PVOID_t      pvosGCtx,
                                             VOS_STATUS     vosStatus);
 
 
-/*==========================================================================
+/*====
 
   DESCRIPTION 
     Traffic status changed callback function
@@ -745,7 +745,7 @@ typedef VOS_STATUS (*WLANTL_SuspendCBType)( v_PVOID_t      pvosGCtx,
   SIDE EFFECTS 
     NONE
  
-============================================================================*/
+======*/
 /* IF traffic status is changed, send notification to SME */
 typedef VOS_STATUS (*WLANTL_TrafficStatusChangedCBType)
 (
@@ -754,7 +754,7 @@ typedef VOS_STATUS (*WLANTL_TrafficStatusChangedCBType)
    v_PVOID_t                     pUserCtxt
 );
 
-/*==========================================================================
+/*====
 
   DESCRIPTION 
     RSSI threshold crossed notification callback function
@@ -769,7 +769,7 @@ typedef VOS_STATUS (*WLANTL_TrafficStatusChangedCBType)
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 /* If RSSI realm is changed, send notification to Clients, SME, HDD */
 typedef VOS_STATUS (*WLANTL_RSSICrossThresholdCBType)
 (
@@ -796,7 +796,7 @@ typedef struct
  * Function Declarations and Documentation
  * -------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_Open
 
@@ -823,7 +823,7 @@ typedef struct
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS 
 WLANTL_Open
 ( 
@@ -831,7 +831,7 @@ WLANTL_Open
   WLANTL_ConfigInfoType*  pTLConfig
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_Start
 
@@ -859,14 +859,14 @@ WLANTL_Open
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS 
 WLANTL_Start
 ( 
   v_PVOID_t  pvosGCtx 
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_Stop
 
@@ -892,14 +892,14 @@ WLANTL_Start
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS 
 WLANTL_Stop
 ( 
   v_PVOID_t  pvosGCtx 
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_Close
 
@@ -924,7 +924,7 @@ WLANTL_Stop
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS 
 WLANTL_Close
 ( 
@@ -935,7 +935,7 @@ WLANTL_Close
 /*----------------------------------------------------------------------------
     INTERACTION WITH HDD
  ---------------------------------------------------------------------------*/
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_ConfigureSwFrameTXXlationForAll
 
@@ -954,7 +954,7 @@ WLANTL_Close
 
    void.
 
-============================================================================*/
+======*/
 void
 WLANTL_ConfigureSwFrameTXXlationForAll
 (
@@ -962,7 +962,7 @@ WLANTL_ConfigureSwFrameTXXlationForAll
   v_BOOL_t enableFrameXlation
 );
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_RegisterSTAClient
 
@@ -1005,7 +1005,7 @@ WLANTL_ConfigureSwFrameTXXlationForAll
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_RegisterSTAClient 
 ( 
@@ -1017,7 +1017,7 @@ WLANTL_RegisterSTAClient
   v_S7_t                    rssi
 );
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_ClearSTAClient
 
@@ -1048,7 +1048,7 @@ WLANTL_RegisterSTAClient
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_ClearSTAClient 
 ( 
@@ -1056,7 +1056,7 @@ WLANTL_ClearSTAClient
   v_U8_t           ucSTAId 
 );
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_ChangeSTAState
 
@@ -1099,7 +1099,7 @@ WLANTL_ClearSTAClient
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_ChangeSTAState 
 ( 
@@ -1108,7 +1108,7 @@ WLANTL_ChangeSTAState
   WLANTL_STAStateType   tlSTAState 
 );
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_STAPtkInstalled
 
@@ -1139,14 +1139,14 @@ WLANTL_ChangeSTAState
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_STAPtkInstalled
 (
   v_PVOID_t             pvosGCtx,
   v_U8_t                ucSTAId
 );
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_GetSTAState
 
@@ -1182,7 +1182,7 @@ WLANTL_STAPtkInstalled
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_GetSTAState
 (
@@ -1191,7 +1191,7 @@ WLANTL_GetSTAState
   WLANTL_STAStateType   *ptlSTAState
 );
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_STAPktPending
 
@@ -1230,7 +1230,7 @@ WLANTL_GetSTAState
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_STAPktPending 
 ( 
@@ -1239,7 +1239,7 @@ WLANTL_STAPktPending
   WLANTL_ACEnumType    ucAc
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_SetSTAPriority
 
@@ -1272,7 +1272,7 @@ WLANTL_STAPktPending
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_SetSTAPriority 
 ( 
@@ -1285,7 +1285,7 @@ WLANTL_SetSTAPriority
     INTERACTION WITH BAP
  ---------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_RegisterBAPClient
 
@@ -1318,7 +1318,7 @@ WLANTL_SetSTAPriority
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_RegisterBAPClient 
 ( 
@@ -1328,7 +1328,7 @@ WLANTL_RegisterBAPClient
 );
 
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_TxBAPFrm
 
@@ -1371,7 +1371,7 @@ WLANTL_RegisterBAPClient
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_TxBAPFrm 
 ( 
@@ -1386,7 +1386,7 @@ WLANTL_TxBAPFrm
     INTERACTION WITH SME
  ---------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_GetRssi
 
@@ -1423,7 +1423,7 @@ WLANTL_TxBAPFrm
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_GetRssi 
 ( 
@@ -1432,7 +1432,7 @@ WLANTL_GetRssi
   v_S7_t*               puRssi
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_GetSnr
 
@@ -1469,7 +1469,7 @@ WLANTL_GetRssi
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_GetSnr
 (
@@ -1477,7 +1477,7 @@ WLANTL_GetSnr
   tANI_S8*          pSnr
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_GetLinkQuality
 
@@ -1514,7 +1514,7 @@ WLANTL_GetSnr
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_GetLinkQuality 
 ( 
@@ -1523,7 +1523,7 @@ WLANTL_GetLinkQuality
   v_U32_t*              puLinkQuality
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_FlushStaTID
 
@@ -1550,7 +1550,7 @@ WLANTL_GetLinkQuality
     VOS_STATUS_SUCCESS:  Everything is good :) 
     
   SIDE EFFECTS 
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_FlushStaTID 
 ( 
@@ -1563,7 +1563,7 @@ WLANTL_FlushStaTID
     INTERACTION WITH PE
  ---------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_RegisterMgmtFrmClient
 
@@ -1592,7 +1592,7 @@ WLANTL_FlushStaTID
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS  
 WLANTL_RegisterMgmtFrmClient
 ( 
@@ -1600,7 +1600,7 @@ WLANTL_RegisterMgmtFrmClient
   WLANTL_MgmtFrmRxCBType  pfnTlMgmtFrmRx
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_DeRegisterMgmtFrmClient
 
@@ -1625,14 +1625,14 @@ WLANTL_RegisterMgmtFrmClient
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_DeRegisterMgmtFrmClient
 (
   v_PVOID_t               pvosGCtx
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_TxMgmtFrm
 
@@ -1690,7 +1690,7 @@ WLANTL_DeRegisterMgmtFrmClient
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS 
 WLANTL_TxMgmtFrm
 ( 
@@ -1709,7 +1709,7 @@ WLANTL_TxMgmtFrm
     INTERACTION WITH HAL
  ---------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_ResetNotification
 
@@ -1735,14 +1735,14 @@ WLANTL_TxMgmtFrm
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_ResetNotification
 ( 
   v_PVOID_t   pvosGCtx 
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_SuspendDataTx
 
@@ -1780,7 +1780,7 @@ WLANTL_ResetNotification
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_SuspendDataTx
 ( 
@@ -1789,7 +1789,7 @@ WLANTL_SuspendDataTx
   WLANTL_SuspendCBType    pfnSuspendTx
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_ResumeDataTx
 
@@ -1819,7 +1819,7 @@ WLANTL_SuspendDataTx
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_ResumeDataTx
 ( 
@@ -1832,7 +1832,7 @@ WLANTL_ResumeDataTx
     CLIENT INDEPENDENT INTERFACE
  ---------------------------------------------------------------------------*/
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_GetTxPktCount
 
@@ -1864,7 +1864,7 @@ WLANTL_ResumeDataTx
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_GetTxPktCount
 ( 
@@ -1874,7 +1874,7 @@ WLANTL_GetTxPktCount
   v_U32_t*       puTxPktCount
 );
 
-/*==========================================================================
+/*====
 
   FUNCTION    WLANTL_GetRxPktCount
 
@@ -1906,7 +1906,7 @@ WLANTL_GetTxPktCount
     
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_GetRxPktCount
 ( 
@@ -1916,11 +1916,11 @@ WLANTL_GetRxPktCount
   v_U32_t*       puRxPktCount
 );
 
-/*==========================================================================
+/*====
     VOSS SCHEDULER INTERACTION
-  ==========================================================================*/
+  ====*/
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_McProcessMsg
 
   DESCRIPTION 
@@ -1948,7 +1948,7 @@ WLANTL_GetRxPktCount
    
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_McProcessMsg
 (
@@ -1956,7 +1956,7 @@ WLANTL_McProcessMsg
   vos_msg_t*       message
 );
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_McFreeMsg
 
   DESCRIPTION 
@@ -1983,7 +1983,7 @@ WLANTL_McProcessMsg
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_McFreeMsg
 (
@@ -1991,7 +1991,7 @@ WLANTL_McFreeMsg
   vos_msg_t*       message
 );
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_TxProcessMsg
 
   DESCRIPTION 
@@ -2021,7 +2021,7 @@ WLANTL_McFreeMsg
   corresponding API for more info. 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_TxProcessMsg
 (
@@ -2029,7 +2029,7 @@ WLANTL_TxProcessMsg
   vos_msg_t*       message
 );
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_McFreeMsg
 
   DESCRIPTION 
@@ -2056,7 +2056,7 @@ WLANTL_TxProcessMsg
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_TxFreeMsg
 (
@@ -2065,7 +2065,7 @@ WLANTL_TxFreeMsg
 );
 
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_EnableUAPSDForAC
 
   DESCRIPTION 
@@ -2095,7 +2095,7 @@ WLANTL_TxFreeMsg
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_EnableUAPSDForAC
 (
@@ -2110,7 +2110,7 @@ WLANTL_EnableUAPSDForAC
 );
 
 
-/*==========================================================================
+/*====
   FUNCTION    WLANTL_DisableUAPSDForAC
 
   DESCRIPTION 
@@ -2136,7 +2136,7 @@ WLANTL_EnableUAPSDForAC
 
   SIDE EFFECTS 
   
-============================================================================*/
+======*/
 VOS_STATUS
 WLANTL_DisableUAPSDForAC
 (
@@ -2146,7 +2146,7 @@ WLANTL_DisableUAPSDForAC
 );
 
 #if defined WLAN_FEATURE_NEIGHBOR_ROAMING
-/*==========================================================================
+/*====
   FUNCTION     WLANTL_RegRSSIIndicationCB
 
   DESCRIPTION  Registration function to get notification if RSSI cross
@@ -2167,7 +2167,7 @@ WLANTL_DisableUAPSDForAC
 
   SIDE EFFECTS NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_RegRSSIIndicationCB
 (
    v_PVOID_t                       pAdapter,
@@ -2178,7 +2178,7 @@ VOS_STATUS WLANTL_RegRSSIIndicationCB
    v_PVOID_t                       usrCtxt
 );
 
-/*==========================================================================
+/*====
   FUNCTION     WLANTL_DeregRSSIIndicationCB
 
   DESCRIPTION  Remove specific threshold from list
@@ -2194,7 +2194,7 @@ VOS_STATUS WLANTL_RegRSSIIndicationCB
 
   SIDE EFFECTS NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_DeregRSSIIndicationCB
 (
    v_PVOID_t                       pAdapter,
@@ -2204,7 +2204,7 @@ VOS_STATUS WLANTL_DeregRSSIIndicationCB
    VOS_MODULE_ID                   moduleID
 );
 
-/*==========================================================================
+/*====
 
    FUNCTION
 
@@ -2214,14 +2214,14 @@ VOS_STATUS WLANTL_DeregRSSIIndicationCB
 
    RETURN VALUE
 
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_BMPSRSSIRegionChangedNotification
 (
    v_PVOID_t             pAdapter,
    tpSirRSSINotification pRSSINotification
 );
 
-/*==========================================================================
+/*====
   FUNCTION     WLANTL_SetAlpha
 
   DESCRIPTION  ALPLA is weight value to calculate AVG RSSI
@@ -2240,14 +2240,14 @@ VOS_STATUS WLANTL_BMPSRSSIRegionChangedNotification
 
   SIDE EFFECTS NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_SetAlpha
 (
    v_PVOID_t pAdapter,
    v_U8_t    valueAlpha
 );
 
-/*==========================================================================
+/*====
   FUNCTION     WLANTL_RegGetTrafficStatus
 
   DESCRIPTION  Registration function for traffic status monitoring
@@ -2270,7 +2270,7 @@ VOS_STATUS WLANTL_SetAlpha
 
   SIDE EFFECTS NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_RegGetTrafficStatus
 (
    v_PVOID_t                          pAdapter,
@@ -2280,7 +2280,7 @@ VOS_STATUS WLANTL_RegGetTrafficStatus
    v_PVOID_t                          usrCtxt
 );
 #endif
-/*==========================================================================
+/*====
   FUNCTION      WLANTL_GetStatistics
 
   DESCRIPTION   Get traffic statistics for identified station 
@@ -2295,7 +2295,7 @@ VOS_STATUS WLANTL_RegGetTrafficStatus
 
   SIDE EFFECTS  NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_GetStatistics
 (
    v_PVOID_t                  pAdapter,
@@ -2303,7 +2303,7 @@ VOS_STATUS WLANTL_GetStatistics
    v_U8_t                     STAid
 );
 
-/*==========================================================================
+/*====
   FUNCTION      WLANTL_ResetStatistics
 
   DESCRIPTION   Reset statistics structure for identified station ID
@@ -2318,14 +2318,14 @@ VOS_STATUS WLANTL_GetStatistics
 
   SIDE EFFECTS  NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_ResetStatistics
 (
    v_PVOID_t                  pAdapter,
    v_U8_t                     STAid
 );
 
-/*==========================================================================
+/*====
   FUNCTION      WLANTL_GetSpecStatistic
 
   DESCRIPTION   Get specific field within statistics structure for
@@ -2342,7 +2342,7 @@ VOS_STATUS WLANTL_ResetStatistics
 
   SIDE EFFECTS  NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_GetSpecStatistic
 (
    v_PVOID_t                    pAdapter,
@@ -2351,7 +2351,7 @@ VOS_STATUS WLANTL_GetSpecStatistic
    v_U8_t                       STAid
 );
 
-/*==========================================================================
+/*====
   FUNCTION      WLANTL_ResetSpecStatistic
 
   DESCRIPTION   Reset specific field within statistics structure for
@@ -2368,14 +2368,14 @@ VOS_STATUS WLANTL_GetSpecStatistic
 
   SIDE EFFECTS  NONE
   
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_ResetSpecStatistic
 (
    v_PVOID_t                    pAdapter,
    WLANTL_TRANSFER_STATIC_TYPE  statType,
    v_U8_t                       STAid
 );
-/*===============================================================================
+/*==
   FUNCTION      WLANTL_IsReplayPacket
    
   DESCRIPTION   This function does replay check for valid stations
@@ -2390,14 +2390,14 @@ VOS_STATUS WLANTL_ResetSpecStatistic
                 VOS_FALSE   packet is not a replay packet
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 v_BOOL_t WLANTL_IsReplayPacket
 (
     v_U64_t    currentReplayCounter,
     v_U64_t    previousReplayCounter
 );
 
-/*===============================================================================
+/*==
   FUNCTION      WLANTL_GetReplayCounterFromRxBD
      
   DESCRIPTION   This function extracts 48-bit replay packet number from RX BD 
@@ -2410,7 +2410,7 @@ v_BOOL_t WLANTL_IsReplayPacket
   RETRUN        v_U64_t    Packet number extarcted from RX BD
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 v_U64_t
 WLANTL_GetReplayCounterFromRxBD
 (
@@ -2457,7 +2457,7 @@ WLANTL_SetACWeights
   v_U8_t*               pACWeights
 );
 
-/*==========================================================================
+/*====
   FUNCTION      WLANTL_GetSoftAPStatistics
 
   DESCRIPTION   Collect the cumulative statistics for all Softap stations
@@ -2472,7 +2472,7 @@ WLANTL_SetACWeights
 
   SIDE EFFECTS  NONE
 
-============================================================================*/
+======*/
 VOS_STATUS WLANTL_GetSoftAPStatistics(v_PVOID_t pAdapter, WLANTL_TRANSFER_STA_TYPE *statsSum, v_BOOL_t bReset);
 
 #ifdef __cplusplus
@@ -2480,7 +2480,7 @@ VOS_STATUS WLANTL_GetSoftAPStatistics(v_PVOID_t pAdapter, WLANTL_TRANSFER_STA_TY
 #endif 
 
 
- /*===========================================================================
+ /*=====
 
   FUNCTION    WLANTL_AssocFailed
 
@@ -2513,11 +2513,11 @@ VOS_STATUS WLANTL_GetSoftAPStatistics(v_PVOID_t pAdapter, WLANTL_TRANSFER_STA_TY
    To avoid this, we might need PE to wait for TX_thread process the message,
    but this is not currently implemented. 
    
-============================================================================*/
+======*/
 void WLANTL_AssocFailed(v_U8_t staId);
 
 
-/*===============================================================================
+/*==
   FUNCTION      WLANTL_PostResNeeded
      
   DESCRIPTION   This function posts message to TL to reserve BD/PDU memory
@@ -2529,11 +2529,11 @@ void WLANTL_AssocFailed(v_U8_t staId);
   RETURN        None
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 
 void WLANTL_PostResNeeded(v_PVOID_t pvosGCtx);
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_Finish_ULA
 
@@ -2559,12 +2559,12 @@ void WLANTL_PostResNeeded(v_PVOID_t pvosGCtx);
    
   SIDE EFFECTS
    
-============================================================================*/
+======*/
 
 VOS_STATUS WLANTL_Finish_ULA( void (*callbackRoutine) (void *callbackContext),
                               void *callbackContext);
 
-/*===============================================================================
+/*==
   FUNCTION       WLANTL_UpdateRssiBmps
 
   DESCRIPTION    This function updates the TL's RSSI (in BMPS mode)
@@ -2580,11 +2580,11 @@ VOS_STATUS WLANTL_Finish_ULA( void (*callbackRoutine) (void *callbackContext),
   RETURN         None
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 
 void WLANTL_UpdateRssiBmps(v_PVOID_t pvosGCtx, v_U8_t staId, v_S7_t rssi);
 
-/*===============================================================================
+/*==
   FUNCTION       WLANTL_UpdateSnrBmps
 
   DESCRIPTION    This function updates the TL's SNR (in BMPS mode)
@@ -2600,11 +2600,11 @@ void WLANTL_UpdateRssiBmps(v_PVOID_t pvosGCtx, v_U8_t staId, v_S7_t rssi);
   RETURN         None
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 
 void WLANTL_UpdateSnrBmps(v_PVOID_t pvosGCtx, v_U8_t staId, v_S7_t snr);
 
-/*==========================================================================
+/*====
   FUNCTION   WLANTL_SetTxXmitPending
 
   DESCRIPTION
@@ -2624,7 +2624,7 @@ void WLANTL_UpdateSnrBmps(v_PVOID_t pvosGCtx, v_U8_t staId, v_S7_t snr);
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 
 v_VOID_t
 WLANTL_SetTxXmitPending
@@ -2632,7 +2632,7 @@ WLANTL_SetTxXmitPending
   v_PVOID_t       pvosGCtx
 );
 
-/*==========================================================================
+/*====
   FUNCTION   WLANTL_IsTxXmitPending
 
   DESCRIPTION
@@ -2656,7 +2656,7 @@ WLANTL_SetTxXmitPending
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 
 v_BOOL_t
 WLANTL_IsTxXmitPending
@@ -2664,7 +2664,7 @@ WLANTL_IsTxXmitPending
   v_PVOID_t       pvosGCtx
 );
 
-/*==========================================================================
+/*====
   FUNCTION   WLANTL_ClearTxXmitPending
 
   DESCRIPTION
@@ -2684,7 +2684,7 @@ WLANTL_IsTxXmitPending
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 
 v_VOID_t
 WLANTL_ClearTxXmitPending
@@ -2692,7 +2692,7 @@ WLANTL_ClearTxXmitPending
   v_PVOID_t       pvosGCtx
 );
 
-/*==========================================================================
+/*====
   FUNCTION   WLANTL_UpdateSTABssIdforIBSS
 
   DESCRIPTION
@@ -2721,7 +2721,7 @@ WLANTL_ClearTxXmitPending
       VOS_STATUS_SUCCESS:  Everything is good :)
 
   SIDE EFFECTS
-============================================================================*/
+======*/
 
 VOS_STATUS
 WLANTL_UpdateSTABssIdforIBSS
@@ -2733,7 +2733,7 @@ WLANTL_UpdateSTABssIdforIBSS
 
 
 
-/*===============================================================================
+/*==
   FUNCTION       WLANTL_UpdateLinkCapacity
 
   DESCRIPTION    This function updates the STA's Link Capacity in TL
@@ -2749,7 +2749,7 @@ WLANTL_UpdateSTABssIdforIBSS
   RETURN         None
 
   SIDE EFFECTS   none
- ===============================================================================*/
+ ==*/
 
 void
 WLANTL_UpdateLinkCapacity
@@ -2758,7 +2758,7 @@ WLANTL_UpdateLinkCapacity
   v_U8_t staId,
   v_U32_t linkCapacity);
 
-/*===========================================================================
+/*=====
 
   FUNCTION    WLANTL_GetSTALinkCapacity
 
@@ -2794,7 +2794,7 @@ WLANTL_UpdateLinkCapacity
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 
 VOS_STATUS
 WLANTL_GetSTALinkCapacity
@@ -2804,7 +2804,7 @@ WLANTL_GetSTALinkCapacity
   v_U32_t               *plinkCapacity
 );
 
-/*===========================================================================
+/*=====
   FUNCTION   WLANTL_TxThreadDebugHandler
 
   DESCRIPTION
@@ -2824,7 +2824,7 @@ WLANTL_GetSTALinkCapacity
   RETURN VALUE   None
 
   SIDE EFFECTS
-============================================================================*/
+======*/
 
 v_VOID_t
 WLANTL_TxThreadDebugHandler
@@ -2832,7 +2832,7 @@ WLANTL_TxThreadDebugHandler
   v_PVOID_t       *pvosGCtx
 );
 
-/*==========================================================================
+/*====
   FUNCTION   WLANTL_TLDebugMessage
 
   DESCRIPTION
@@ -2850,7 +2850,7 @@ WLANTL_TxThreadDebugHandler
 
   SIDE EFFECTS
 
-============================================================================*/
+======*/
 
 v_VOID_t
 WLANTL_TLDebugMessage

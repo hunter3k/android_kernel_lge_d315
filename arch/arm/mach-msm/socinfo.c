@@ -75,7 +75,11 @@ const char *hw_platform[] = {
 };
 
 #ifdef CONFIG_MACH_LGE
+
 /* LGE platform id */
+
+/*                 */
+
 enum {
 		HW_PLATFORM_LGE_START  = 100,
 		HW_PLATFORM_LGPS14     = 100,
@@ -84,9 +88,12 @@ enum {
         HW_PLATFORM_LG_X5      = 102,
         HW_PLATFORM_LG_X3      = 103,
         HW_PLATFORM_LG_W3      = 121,
+
         HW_PLATFORM_LG_E7WIFI  = 161,
         HW_PLATFORM_LG_E7LTE   = 162,
         HW_PLATFORM_LG_E9      = 171,
+
+
 		HW_PLATFORM_LGE_INVALID= 200
 };
 
@@ -95,10 +102,14 @@ const char *hw_platform_lge[] = {
         [HW_PLATFORM_LG_W7 - HW_PLATFORM_LGE_START]    = "W7",
         [HW_PLATFORM_LG_X5 - HW_PLATFORM_LGE_START]    = "X5",
         [HW_PLATFORM_LG_X3 - HW_PLATFORM_LGE_START]    = "X3",
+
         [HW_PLATFORM_LG_W3 - HW_PLATFORM_LGE_START]    = "W3",
         [HW_PLATFORM_LG_E7WIFI - HW_PLATFORM_LGE_START] = "E7WIFI",
         [HW_PLATFORM_LG_E7LTE - HW_PLATFORM_LGE_START] = "E7LTE",
         [HW_PLATFORM_LG_E9 - HW_PLATFORM_LGE_START]    = "E9",
+
+        [HW_PLATFORM_LG_W3 - HW_PLATFORM_LGE_START]    = "W3"
+
 };
 #endif
 
