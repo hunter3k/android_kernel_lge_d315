@@ -3518,6 +3518,9 @@ static struct clk_lookup msm_clocks_8226[] = {
 	CLK_LOOKUP("cam_src_clk", mclk1_clk_src.c, "6e.qcom,camera"),   /* LGE_CHANGE_S, soojong.jin, 2013.11.16, for G2 mini*/
 
 #endif
+#ifdef CONFIG_IMX219
+	CLK_LOOKUP("cam_src_clk", mclk0_clk_src.c, "20.qcom,camera"),
+#endif
 #ifdef CONFIG_HI543	/*                                           */
 	CLK_LOOKUP("cam_src_clk", mclk0_clk_src.c, "40.qcom,camera"),
 	CLK_LOOKUP("cam_src_clk", mclk0_clk_src.c, "40.qcom,camera_rev_b"),
@@ -3592,6 +3595,9 @@ static struct clk_lookup msm_clocks_8226[] = {
 #ifdef CONFIG_IMX119	/* LGE_CHANGE,  Added for IMX111 clock source */
 	CLK_LOOKUP("cam_clk", camss_mclk1_clk.c, "6e.qcom,camera"),   /* LGE_CHANGE_S, soojong.jin, 2013.11.16, for G2 mini*/
 
+#endif
+#ifdef CONFIG_IMX219
+	CLK_LOOKUP("cam_clk", camss_mclk0_clk.c, "20.qcom,camera"),
 #endif
 #ifdef CONFIG_HI543	/*                                           */
 	CLK_LOOKUP("cam_clk", camss_mclk0_clk.c, "40.qcom,camera"),

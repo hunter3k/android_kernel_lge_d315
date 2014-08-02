@@ -113,6 +113,7 @@ static void msm_actuator_parse_i2c_params(struct msm_actuator_ctrl_t *a_ctrl,
 				i2c_byte1 = write_arr[i].reg_addr;
 				i2c_byte2 = value;
 
+
 				/* LGE_CHANGE_S, jaehan.jeong, 2014.2.13, To apply  the change I2C order for DW9718, [STARTS HERE] */
 				switch (actuator_name) {
 				case ACTUATOR_MAIN_CAM_2:
@@ -133,6 +134,9 @@ static void msm_actuator_parse_i2c_params(struct msm_actuator_ctrl_t *a_ctrl,
 				default:
 
 #ifdef CONFIG_IMX179 /*                                                                 */ 
+
+#if defined(CONFIG_IMX179) || defined(CONFIG_IMX219) /*                                                                 */ 
+
 				if (size != (i+1)) {
 					i2c_byte2 = (value & 0xFF00) >> 8;
 					CDBG("byte1:0x%x, byte2:0x%x\n",

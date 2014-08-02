@@ -10,8 +10,12 @@ obj-$(CONFIG_IMX135) += imx135.o
 obj-$(CONFIG_IMX111) += imx111.o
 obj-$(CONFIG_IMX179) += imx179.o
 
+
 obj-$(CONFIG_IMX219) += imx219.o
 
+
+
+obj-$(CONFIG_IMX219) += imx219.o
 
 obj-$(CONFIG_IMX119) += imx119.o
 obj-$(CONFIG_HI543)  += hi543.o

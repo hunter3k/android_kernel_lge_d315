@@ -11,7 +11,10 @@
  *
  */
 #include "msm_sensor.h"
+
 #include <mach/board_lge.h>		//to use lge_get_board_revno()
+
+
 #define IMX219_SENSOR_NAME "imx219"
 
 #define CONFIG_IMX219_DEBUG
@@ -25,7 +28,11 @@
 DEFINE_MSM_MUTEX(imx219_mut);
 
 static struct msm_sensor_ctrl_t imx219_s_ctrl;
+
 #if defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT)
+
+
+
 static struct msm_sensor_power_setting imx219_power_setting[] = {
 	 /* Set GPIO_RESET to low to disable power on reset*/
 	{
@@ -83,6 +90,7 @@ static struct msm_sensor_power_setting imx219_power_setting[] = {
 		.delay = 0,
 	},
 };
+
 #endif
 /* LGE_CHANGE_S, jaehan.jeong, 2013.7.30,  To separate power settings depending on HW revisions, [STARTS HERE] */
 static struct msm_sensor_power_setting imx219_power_setting_rev_0[] = {
@@ -255,6 +263,8 @@ static struct msm_sensor_power_setting imx219_power_setting_rev_b[] = {
 #endif
 /* LGE_CHANGE_E, jaehan.jeong, 2013.7.30,  To separate power settings depending on HW revisions,  [ENDS HERE] */
 
+
+
 static struct v4l2_subdev_info imx219_subdev_info[] = {
 	{
 		.code = V4L2_MBUS_FMT_SBGGR10_1X10,
@@ -319,6 +329,7 @@ static int32_t imx219_platform_probe(struct platform_device *pdev)
 static int __init imx219_init_module(void)
 {
 	int32_t rc = 0;
+
 	hw_rev_type rev_type = 0;
 	pr_info("%s:%d\n", __func__, __LINE__);
       rev_type = lge_get_board_revno();
@@ -353,6 +364,9 @@ static int __init imx219_init_module(void)
 	}
 #endif
 
+
+	pr_info("%s:%d\n", __func__, __LINE__);
+
 	rc = platform_driver_probe(&imx219_platform_driver,
 		imx219_platform_probe);
 	if (!rc)
@@ -376,10 +390,15 @@ static void __exit imx219_exit_module(void)
 
 static struct msm_sensor_ctrl_t imx219_s_ctrl = {
 	.sensor_i2c_client = &imx219_sensor_i2c_client,
+
 #if defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT)
 	.power_setting_array.power_setting = imx219_power_setting,
 	.power_setting_array.size = ARRAY_SIZE(imx219_power_setting),
 #endif
+
+	.power_setting_array.power_setting = imx219_power_setting,
+	.power_setting_array.size = ARRAY_SIZE(imx219_power_setting),
+
 	.msm_sensor_mutex = &imx219_mut,
 	.sensor_v4l2_subdev_info = imx219_subdev_info,
 	.sensor_v4l2_subdev_info_size = ARRAY_SIZE(imx219_subdev_info),
