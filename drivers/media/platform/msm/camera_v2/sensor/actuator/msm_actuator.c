@@ -328,7 +328,6 @@ static int32_t msm_actuator_move_focus(
 /*                                                                                     */
 
 #endif
-
 	if (copy_from_user(&ringing_params_kernel,
 		&(move_params->ringing_params[a_ctrl->curr_region_index]),
 		sizeof(struct damping_params_t))) {
