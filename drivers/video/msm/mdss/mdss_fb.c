@@ -289,9 +289,13 @@ static void mdss_fb_set_bl_brightness(struct led_classdev *led_cdev,
 	MDSS_BRIGHT_TO_BL(bl_lvl, value, mfd->panel_info->bl_max,
 
 
+
 		//		mfd->panel_info->brightness_max);  // Quarx: We Need it?!
 
 						MDSS_MAX_BL_BRIGHTNESS);
+
+				mfd->panel_info->brightness_max);
+
 #endif
 
 #endif

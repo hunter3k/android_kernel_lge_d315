@@ -108,6 +108,7 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata, int enable)
 	if (enable) {
 #ifdef CONFIG_FB_MSM_MIPI_LGIT_LH470WX1_VIDEO_HD_PT_PANEL
 
+
 #if defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_B2LN_LGU) || defined(CONFIG_MACH_MSM8926_B2LN_SKT) || defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM)
 		if(HW_REV_0 == hw_rev)
 #endif		
@@ -118,8 +119,10 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata, int enable)
 					printk("mdss_dsi_panel_reset called \n");
 
 		if(HW_REV_0 == hw_rev)
+
+
     	{
-			if (!has_dsv_f && pdata->panel_info.panel_power_on == 0)//          
+			if (!has_dsv_f && pdata->panel_info.panel_power_on == 0)//LGE Change
 			{
 				if(gpio_get_value(ctrl_pdata->rst_gpio)) {
 
@@ -158,7 +161,7 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata, int enable)
 		}
 
 #if defined(CONFIG_LGE_MIPI_TOVIS_VIDEO_540P_PANEL) || defined(CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL)
-		if (!has_dsv_f && pdata->panel_info.panel_power_on == 0)//          
+		if (!has_dsv_f && pdata->panel_info.panel_power_on == 0)//LGE Change
 			mdss_dsi_panel_reset(pdata, 1);
 
 #else
@@ -187,7 +190,7 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata, int enable)
 		}
 
 #if defined(CONFIG_LGE_MIPI_TOVIS_VIDEO_540P_PANEL) || defined(CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL) || defined(CONFIG_FB_MSM_MIPI_LGIT_LH470WX1_VIDEO_HD_PT_PANEL) || defined(CONFIG_FB_MSM_MIPI_TOVIS_LM570HN1A_VIDEO_HD_PT_PANEL)
-		if (!has_dsv_f) //          
+		if (!has_dsv_f) //LGE Change
 			mdss_dsi_panel_reset(pdata, 0);
 
 #else
@@ -579,11 +582,17 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 	#if defined(CONFIG_FB_MSM_MIPI_TOVIS_LM570HN1A_VIDEO_HD_PT_PANEL)
 	{
 
+
 #if defined(CONFIG_MACH_MSM8926_X10_VZW) || defined(CONFIG_MACH_MSM8926_B2L_ATT) || defined(CONFIG_MACH_MSM8926_B2LN_LGU) || defined(CONFIG_MACH_MSM8926_B2LN_SKT) || defined(CONFIG_MACH_MSM8926_B2LN_KT) || defined(CONFIG_MACH_MSM8926_JAGNM_ATT) || defined(CONFIG_MACH_MSM8926_JAGNM_GLOBAL_COM)
 		if(HW_REV_0 != lge_get_board_revno())
 #endif		
 
 		if(HW_REV_0 != lge_get_board_revno())
+
+
+#if defined(CONFIG_MACH_MSM8926_B1L_VZW) || defined(CONFIG_MACH_MSM8926_B1L_ATT)
+		if(HW_REV_0 != lge_get_board_revno())
+#endif		
 
 		{
 			pr_info("[LCD] %s: delay(40) \n",__func__);
