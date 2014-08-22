@@ -76,6 +76,7 @@ extern int has_dsv_f;
 #endif
 
 
+
 #if defined (CONFIG_MACH_MSM8X10_W5) || defined (CONFIG_MACH_MSM8X10_W6)
 /* At booting up, Between LG Logo and Operation Animation showing, abnormal LG Logo is appearing one time.
 Because LG Logo image format is RGB888, Android side image format is RGBA8888, both Image formats are mismatched.
@@ -115,6 +116,8 @@ static struct dsi_panel_cmds lge_sleep_out_cmds;
 #endif
 
 #endif
+
+
 
 
 void mdss_dsi_panel_pwm_cfg(struct mdss_dsi_ctrl_pdata *ctrl)
@@ -278,9 +281,6 @@ void mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable)
 
 		if (gpio_is_valid(ctrl_pdata->disp_en_gpio))
 			gpio_set_value((ctrl_pdata->disp_en_gpio), 1);
-#endif
-#if defined(CONFIG_LGE_MIPI_NT35521_VIDEO_720P_PANEL)
-		usleep(50000);
 #endif
 
 		for (i = 0; i < pdata->panel_info.rst_seq_len; ++i) {
@@ -760,6 +760,7 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 #endif
 
 
+
 #if defined(CONFIG_FB_MSM_MIPI_LGIT_LH470WX1_VIDEO_HD_PT_PANEL)
 
 	if(HW_REV_0 == hw_rev)
@@ -774,6 +775,8 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 		}
 	}
 #endif
+
+
 
 #if defined(CONFIG_LGE_MIPI_TOVIS_VIDEO_540P_PANEL) || defined(CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL) || defined(CONFIG_FB_MSM_MIPI_LGIT_LH470WX1_VIDEO_HD_PT_PANEL)
 
@@ -823,6 +826,7 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 		}
 	}
 #endif
+
 
 #if defined(CONFIG_FB_MSM_MIPI_TOVIS_LM570HN1A_VIDEO_HD_PT_PANEL)
 
@@ -884,6 +888,9 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 #endif
 
 	pr_info("%s:-\n", __func__);
+
+	pr_debug("%s:-\n", __func__);
+
 	return 0;
 }
 
@@ -910,6 +917,7 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 	pr_info("%s+: ctrl=%p ndx=%d\n", __func__, ctrl, ctrl->ndx);
 
 	mipi  = &pdata->panel_info.mipi;
+
 
 
 #ifdef CONFIG_FB_MSM_MIPI_LGD_LH500WX9_VIDEO_HD_PT_PANEL
@@ -1025,6 +1033,8 @@ static int mdss_dsi_panel_off(struct mdss_panel_data *pdata)
 	}
 #endif
 
+
+
 #if defined(CONFIG_LGE_MIPI_TOVIS_VIDEO_540P_PANEL) || defined(CONFIG_FB_MSM_MIPI_TIANMA_VIDEO_QHD_PT_PANEL)
 	if (!is_dsv_cont_splash_screening_f && gpio_is_valid(ctrl->disp_en_gpio)){
 		gpio_set_value((ctrl->disp_en_gpio), 0);
@@ -1059,7 +1069,6 @@ is_done_drawing_logo is set to 1 at mdss_dsi_panel_off.
 			mdss_dsi_panel_reset(pdata, 0);
 	}
 #endif
-
 
 
 	pr_info("%s:-\n", __func__);
@@ -1656,6 +1665,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		"lge,sleep-in-cmds", "qcom,mdss-dsi-off-command-state");
 	#endif
 
+
 #ifdef CONFIG_FB_MSM_MIPI_LGIT_LH470WX1_VIDEO_HD_PT_PANEL
 
 
@@ -1795,6 +1805,8 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		"lge,VSS-HSS-PPS-cmds", "qcom,mdss-dsi-on-command-state");
 	printk("lge_display_on_cmds_2.cmd_cnt = %d\n",lge_display_on_cmds_2.cmd_cnt);
 #endif
+
+
 
 
 

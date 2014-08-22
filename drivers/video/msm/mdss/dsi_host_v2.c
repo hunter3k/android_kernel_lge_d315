@@ -51,12 +51,15 @@ static struct dsi_host_v2_private *dsi_host_private;
 static int msm_dsi_clk_ctrl(struct mdss_panel_data *pdata, int enable);
 
 
+
 #if defined(CONFIG_MACH_MSM8X10_W5) || defined(CONFIG_MACH_MSM8X10_W65)
 
 #if defined(CONFIG_MACH_MSM8X10_W5)
 
 extern int lge_lcd_id;
 #endif
+
+
 
 int msm_dsi_init(void)
 {
@@ -980,6 +983,7 @@ int msm_dsi_cmdlist_commit(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp)
 	else
 		msm_dsi_cmdlist_tx(ctrl, req);
 
+
 #if !(defined (CONFIG_MACH_MSM8X10_W6) || defined(CONFIG_MACH_MSM8X10_W55))
 #if defined (CONFIG_MACH_MSM8X10_W5)
 		if(lge_lcd_id == 1)				//W5 tovis LCD
@@ -989,6 +993,8 @@ int msm_dsi_cmdlist_commit(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp)
 #if defined(CONFIG_MACH_MSM8X10_W65)
 	dsi_set_tx_power_mode(1);
 #endif
+
+
 
 
 
@@ -1039,13 +1045,7 @@ static int msm_dsi_cal_clk_rate(struct mdss_panel_data *pdata,
 
 	*bitclk_rate = (width + hbp + hfp + hspw) * (height + vbp + vfp + vspw);
 	*bitclk_rate *= mipi->frame_rate;
-
-	if(pdata->panel_info.bpp==18){
-		*bitclk_rate *=24;
-	}else{
-		*bitclk_rate *= pdata->panel_info.bpp;
-	}
-
+	*bitclk_rate *= pdata->panel_info.bpp;
 	*bitclk_rate /= lanes;
 
 	*byteclk_rate = *bitclk_rate / 8;
@@ -1070,7 +1070,7 @@ static int msm_dsi_on(struct mdss_panel_data *pdata)
 	unsigned char *ctrl_base = dsi_host_private->dsi_base;
 	struct mdss_dsi_ctrl_pdata *ctrl_pdata = NULL;
 
-	pr_info("msm_dsi_on++\n");
+	pr_debug("msm_dsi_on\n");
 
 	pinfo = &pdata->panel_info;
 
@@ -1159,6 +1159,7 @@ static int msm_dsi_on(struct mdss_panel_data *pdata)
 
 	msm_dsi_sw_reset();
 	msm_dsi_host_init(mipi);
+
 	
 
 #if defined(CONFIG_MACH_MSM8X10_W5)
@@ -1212,6 +1213,9 @@ static int msm_dsi_on(struct mdss_panel_data *pdata)
 
 
 #endif	
+
+
+
 	if (mipi->force_clk_lane_hs) {
 		u32 tmp;
 
@@ -1266,7 +1270,6 @@ static int msm_dsi_off(struct mdss_panel_data *pdata)
 
 	mutex_unlock(&ctrl_pdata->mutex);
 
-	pr_info("msm_dsi_off--\n");
 	return ret;
 }
 
@@ -1302,20 +1305,9 @@ static int msm_dsi_cont_on(struct mdss_panel_data *pdata)
 	msm_dsi_ahb_ctrl(1);
 	msm_dsi_prepare_clocks();
 	msm_dsi_clk_enable();
-	//msm_dsi_set_irq(ctrl_pdata, DSI_INTR_ERROR_MASK);
+	msm_dsi_set_irq(ctrl_pdata, DSI_INTR_ERROR_MASK);
 	dsi_host_private->clk_count = 1;
 	dsi_host_private->dsi_on = 1;
-
-#if defined(CONFIG_FB_MSM_MIPI_TIANMA_CMD_HVGA_PT_PANEL)
-    if (gpio_is_valid(ctrl_pdata->disp_te_gpio)) {
-        ret = gpio_request(ctrl_pdata->disp_te_gpio, "disp_te");
-        if (ret)
-            pr_err("gpio request failed %d\n", ret);
-
-        ctrl_pdata->disp_te_gpio_requested = 1;
-    }
-#endif
-
 	mutex_unlock(&ctrl_pdata->mutex);
 	return 0;
 }

@@ -676,8 +676,11 @@ int mdss_mdp_rotator_play(struct msm_fb_data_type *mfd,
 	if (!mfd->panel_info->cont_splash_enabled)
 		mdss_iommu_attach(mdp5_data->mdata);
 
+
 	if (!mfd->panel_info->cont_splash_enabled)
 		mdss_iommu_attach(mdp5_data->mdata);
+
+
 
 
 	mdss_mdp_overlay_free_buf(&rot->src_buf);

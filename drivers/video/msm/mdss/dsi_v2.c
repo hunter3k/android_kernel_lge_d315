@@ -23,12 +23,15 @@
 static struct dsi_interface dsi_intf;
 
 
+
 #if defined(CONFIG_MACH_MSM8X10_W5) || defined(CONFIG_MACH_MSM8X10_W65)
 
 #if defined(CONFIG_MACH_MSM8X10_W5)
 
 extern int lge_lcd_id;
 #endif
+
+
 
 static int dsi_off(struct mdss_panel_data *pdata)
 {
@@ -73,6 +76,7 @@ static int dsi_panel_handler(struct mdss_panel_data *pdata, int enable)
 
 	if (enable) {
 
+
 #if !(defined (CONFIG_MACH_MSM8X10_W6) || defined(CONFIG_MACH_MSM8X10_W55))
 #if defined (CONFIG_MACH_MSM8X10_W5)
 		if(lge_lcd_id == 1){				// W5 Tovis LCD
@@ -92,6 +96,10 @@ static int dsi_panel_handler(struct mdss_panel_data *pdata, int enable)
 		dsi_ctrl_gpio_request(ctrl_pdata);
 		mdss_dsi_panel_reset(pdata, 1);
 #endif 
+
+
+		dsi_ctrl_gpio_request(ctrl_pdata);
+		mdss_dsi_panel_reset(pdata, 1);
 
 		rc = ctrl_pdata->on(pdata);
 		if (rc)
@@ -144,7 +152,6 @@ static int dsi_event_handler(struct mdss_panel_data *pdata,
 		return -ENODEV;
 	}
 
-	pr_info("%s+:event=%d\n", __func__, event);
 	switch (event) {
 	case MDSS_EVENT_UNBLANK:
 		rc = dsi_on(pdata);
@@ -168,7 +175,6 @@ static int dsi_event_handler(struct mdss_panel_data *pdata,
 		pr_debug("%s: unhandled event=%d\n", __func__, event);
 		break;
 	}
-	pr_info("%s-:event=%d, rc=%d\n", __func__, event, rc);
 	return rc;
 }
 
@@ -601,7 +607,7 @@ int dsi_panel_device_register_v2(struct platform_device *dev,
 		return rc;
 	}
 
-	pr_info("%s: Panal data initialized\n", __func__);
+	pr_debug("%s: Panal data initialized\n", __func__);
 	return 0;
 }
 
